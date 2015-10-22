@@ -1,0 +1,22 @@
+% Range expressions
+
+### Range expressions
+
+The `..` operator will construct an object of one of the `std::ops::Range` variants.
+
+```
+1..2;   // std::ops::Range
+3..;    // std::ops::RangeFrom
+..4;    // std::ops::RangeTo
+..;     // std::ops::RangeFull
+```
+
+The following expressions are equivalent.
+
+```
+let x = std::ops::Range {start: 0, end: 10};
+let y = 0..10;
+
+assert_eq!(x,y);
+```
+
