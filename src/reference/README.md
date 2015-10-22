@@ -1,7 +1,5 @@
 % The Rust Reference
 
-# Introduction
-
 This document is the primary reference for the Rust programming language. It
 provides three kinds of material:
 
