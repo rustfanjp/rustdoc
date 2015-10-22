@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <title>Getting Started</title>
+    <title>`type` Aliases</title>
 
     <link rel="stylesheet" type="text/css" href="rustbook.css">
 
@@ -37,7 +37,7 @@
 <ul class='chapter'>
 <li><a  href='README.html'><b>1.</b> Introduction</a>
 </li>
-<li><a class='active' href='getting-started.html'><b>2.</b> Getting Started</a>
+<li><a  href='getting-started.html'><b>2.</b> Getting Started</a>
 <ul class='section'>
 <li><a  href='installing-rust.html'><b>2.1.</b> Installing Rust</a>
 </li>
@@ -139,7 +139,7 @@
 </li>
 <li><a  href='attributes.html'><b>5.27.</b> Attributes</a>
 </li>
-<li><a  href='type-aliases.html'><b>5.28.</b> `type` aliases</a>
+<li><a class='active' href='type-aliases.html'><b>5.28.</b> `type` aliases</a>
 </li>
 <li><a  href='casting-between-types.html'><b>5.29.</b> Casting between types</a>
 </li>
@@ -193,10 +193,104 @@
 <div id='page'>
 
 
-    <h1 class="title">Getting Started</h1>
-    <p>このセクションでは、Rustと関連したツールの立ち上げを行います。
-まず、Rustをインストールし、&quot;Hello World&quot;プログラムを試します。
-最後はRustのビルドシステム/パッケージマネージャであるCargoについてです。</p>
+    <h1 class="title">`type` Aliases</h1>
+    <p>The <code>type</code> keyword lets you declare an alias of another type:</p>
+<span class='rusttest'>fn main() {
+    type Name = String;
+    
+}</span><pre class='rust rust-example-rendered'>
+<span class='kw'>type</span> <span class='ident'>Name</span> <span class='op'>=</span> <span class='ident'>String</span>;</pre>
+
+<p>You can then use this type as if it were a real type:</p>
+<span class='rusttest'>fn main() {
+    type Name = String;
+    
+    let x: Name = &quot;Hello&quot;.to_string();
+    
+}</span><pre class='rust rust-example-rendered'>
+<span class='kw'>type</span> <span class='ident'>Name</span> <span class='op'>=</span> <span class='ident'>String</span>;
+
+<span class='kw'>let</span> <span class='ident'>x</span>: <span class='ident'>Name</span> <span class='op'>=</span> <span class='string'>&quot;Hello&quot;</span>.<span class='ident'>to_string</span>();</pre>
+
+<p>Note, however, that this is an <em>alias</em>, not a new type entirely. In other
+words, because Rust is strongly typed, you’d expect a comparison between two
+different types to fail:</p>
+<span class='rusttest'>fn main() {
+    let x: i32 = 5;
+    let y: i64 = 5;
+    
+    if x == y {
+       // ...
+    }
+    
+}</span><pre class='rust rust-example-rendered'>
+<span class='kw'>let</span> <span class='ident'>x</span>: <span class='ident'>i32</span> <span class='op'>=</span> <span class='number'>5</span>;
+<span class='kw'>let</span> <span class='ident'>y</span>: <span class='ident'>i64</span> <span class='op'>=</span> <span class='number'>5</span>;
+
+<span class='kw'>if</span> <span class='ident'>x</span> <span class='op'>==</span> <span class='ident'>y</span> {
+   <span class='comment'>// ...</span>
+}</pre>
+
+<p>this gives</p>
+
+<pre><code class="language-text">error: mismatched types:
+ expected `i32`,
+    found `i64`
+(expected i32,
+    found i64) [E0308]
+     if x == y {
+             ^
+</code></pre>
+
+<p>But, if we had an alias:</p>
+<span class='rusttest'>fn main() {
+    type Num = i32;
+    
+    let x: i32 = 5;
+    let y: Num = 5;
+    
+    if x == y {
+       // ...
+    }
+    
+}</span><pre class='rust rust-example-rendered'>
+<span class='kw'>type</span> <span class='ident'>Num</span> <span class='op'>=</span> <span class='ident'>i32</span>;
+
+<span class='kw'>let</span> <span class='ident'>x</span>: <span class='ident'>i32</span> <span class='op'>=</span> <span class='number'>5</span>;
+<span class='kw'>let</span> <span class='ident'>y</span>: <span class='ident'>Num</span> <span class='op'>=</span> <span class='number'>5</span>;
+
+<span class='kw'>if</span> <span class='ident'>x</span> <span class='op'>==</span> <span class='ident'>y</span> {
+   <span class='comment'>// ...</span>
+}</pre>
+
+<p>This compiles without error. Values of a <code>Num</code> type are the same as a value of
+type <code>i32</code>, in every way.</p>
+
+<p>You can also use type aliases with generics:</p>
+<span class='rusttest'>fn main() {
+    use std::result;
+    
+    enum ConcreteError {
+        Foo,
+        Bar,
+    }
+    
+    type Result&lt;T&gt; = result::Result&lt;T, ConcreteError&gt;;
+    
+}</span><pre class='rust rust-example-rendered'>
+<span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>result</span>;
+
+<span class='kw'>enum</span> <span class='ident'>ConcreteError</span> {
+    <span class='ident'>Foo</span>,
+    <span class='ident'>Bar</span>,
+}
+
+<span class='kw'>type</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span> <span class='op'>=</span> <span class='ident'>result</span>::<span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>T</span>, <span class='ident'>ConcreteError</span><span class='op'>&gt;</span>;</pre>
+
+<p>This creates a specialized version of the <code>Result</code> type, which always has a
+<code>ConcreteError</code> for the <code>E</code> part of <code>Result&lt;T, E&gt;</code>. This is commonly used
+in the standard library to create custom errors for each subsection. For
+example, <a href="../std/io/type.Result.html">io::Result</a>.</p>
 
     <script type="text/javascript">
         window.playgroundUrl = "https://play.rust-lang.org";

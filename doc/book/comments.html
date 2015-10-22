@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <title>Getting Started</title>
+    <title>Comments</title>
 
     <link rel="stylesheet" type="text/css" href="rustbook.css">
 
@@ -37,7 +37,7 @@
 <ul class='chapter'>
 <li><a  href='README.html'><b>1.</b> Introduction</a>
 </li>
-<li><a class='active' href='getting-started.html'><b>2.</b> Getting Started</a>
+<li><a  href='getting-started.html'><b>2.</b> Getting Started</a>
 <ul class='section'>
 <li><a  href='installing-rust.html'><b>2.1.</b> Installing Rust</a>
 </li>
@@ -91,7 +91,7 @@
 </li>
 <li><a  href='primitive-types.html'><b>5.3.</b> Primitive Types</a>
 </li>
-<li><a  href='comments.html'><b>5.4.</b> Comments</a>
+<li><a class='active' href='comments.html'><b>5.4.</b> Comments</a>
 </li>
 <li><a  href='if.html'><b>5.5.</b> if</a>
 </li>
@@ -193,10 +193,90 @@
 <div id='page'>
 
 
-    <h1 class="title">Getting Started</h1>
-    <p>このセクションでは、Rustと関連したツールの立ち上げを行います。
-まず、Rustをインストールし、&quot;Hello World&quot;プログラムを試します。
-最後はRustのビルドシステム/パッケージマネージャであるCargoについてです。</p>
+    <h1 class="title">Comments</h1>
+    <p>Now that we have some functions, it’s a good idea to learn about comments.
+Comments are notes that you leave to other programmers to help explain things
+about your code. The compiler mostly ignores them.</p>
+
+<p>Rust has two kinds of comments that you should care about: <em>line comments</em>
+and <em>doc comments</em>.</p>
+<span class='rusttest'>fn main() {
+    // Line comments are anything after ‘//’ and extend to the end of the line.
+    
+    let x = 5; // this is also a line comment.
+    
+    // If you have a long explanation for something, you can put line comments next
+    // to each other. Put a space between the // and your comment so that it’s
+    // more readable.
+    
+}</span><pre class='rust rust-example-rendered'>
+<span class='comment'>// Line comments are anything after ‘//’ and extend to the end of the line.</span>
+
+<span class='kw'>let</span> <span class='ident'>x</span> <span class='op'>=</span> <span class='number'>5</span>; <span class='comment'>// this is also a line comment.</span>
+
+<span class='comment'>// If you have a long explanation for something, you can put line comments next</span>
+<span class='comment'>// to each other. Put a space between the // and your comment so that it’s</span>
+<span class='comment'>// more readable.</span></pre>
+
+<p>The other kind of comment is a doc comment. Doc comments use <code>///</code> instead of
+<code>//</code>, and support Markdown notation inside:</p>
+<span class='rusttest'>fn main() {
+    /// Adds one to the number given.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// let five = 5;
+    ///
+    /// assert_eq!(6, add_one(5));
+    /// # fn add_one(x: i32) -&gt; i32 {
+    /// #     x + 1
+    /// # }
+    /// ```
+    fn add_one(x: i32) -&gt; i32 {
+        x + 1
+    }
+    
+}</span><pre class='rust rust-example-rendered'>
+<span class='doccomment'>/// Adds one to the number given.</span>
+<span class='doccomment'>///</span>
+<span class='doccomment'>/// # Examples</span>
+<span class='doccomment'>///</span>
+<span class='doccomment'>/// ```</span>
+<span class='doccomment'>/// let five = 5;</span>
+<span class='doccomment'>///</span>
+<span class='doccomment'>/// assert_eq!(6, add_one(5));</span>
+<span class='doccomment'>/// # fn add_one(x: i32) -&gt; i32 {</span>
+<span class='doccomment'>/// #     x + 1</span>
+<span class='doccomment'>/// # }</span>
+<span class='doccomment'>/// ```</span>
+<span class='kw'>fn</span> <span class='ident'>add_one</span>(<span class='ident'>x</span>: <span class='ident'>i32</span>) <span class='op'>-&gt;</span> <span class='ident'>i32</span> {
+    <span class='ident'>x</span> <span class='op'>+</span> <span class='number'>1</span>
+}</pre>
+
+<p>There is another style of doc comment, <code>//!</code>, to comment containing items (e.g.
+crates, modules or functions), instead of the items following it. Commonly used
+inside crates root (lib.rs) or modules root (mod.rs):</p>
+<span class='rusttest'>fn main() {
+    //! # The Rust Standard Library
+    //!
+    //! The Rust Standard Library provides the essential runtime
+    //! functionality for building portable Rust software.
+    
+}</span><pre class='rust rust-example-rendered'>
+<span class='doccomment'>//! # The Rust Standard Library</span>
+<span class='doccomment'>//!</span>
+<span class='doccomment'>//! The Rust Standard Library provides the essential runtime</span>
+<span class='doccomment'>//! functionality for building portable Rust software.</span></pre>
+
+<p>When writing doc comments, providing some examples of usage is very, very
+helpful. You’ll notice we’ve used a new macro here: <code>assert_eq!</code>. This compares
+two values, and <code>panic!</code>s if they’re not equal to each other. It’s very helpful
+in documentation. There’s another macro, <code>assert!</code>, which <code>panic!</code>s if the
+value passed to it is <code>false</code>.</p>
+
+<p>You can use the <a href="documentation.html"><code>rustdoc</code></a> tool to generate HTML documentation
+from these doc comments, and also to run the code examples as tests!</p>
 
     <script type="text/javascript">
         window.playgroundUrl = "https://play.rust-lang.org";

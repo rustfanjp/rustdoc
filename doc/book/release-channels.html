@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <title>Getting Started</title>
+    <title>Release Channels</title>
 
     <link rel="stylesheet" type="text/css" href="rustbook.css">
 
@@ -37,7 +37,7 @@
 <ul class='chapter'>
 <li><a  href='README.html'><b>1.</b> Introduction</a>
 </li>
-<li><a class='active' href='getting-started.html'><b>2.</b> Getting Started</a>
+<li><a  href='getting-started.html'><b>2.</b> Getting Started</a>
 <ul class='section'>
 <li><a  href='installing-rust.html'><b>2.1.</b> Installing Rust</a>
 </li>
@@ -79,7 +79,7 @@
 </li>
 <li><a  href='borrow-and-asref.html'><b>4.10.</b> Borrow and AsRef</a>
 </li>
-<li><a  href='release-channels.html'><b>4.11.</b> Release Channels</a>
+<li><a class='active' href='release-channels.html'><b>4.11.</b> Release Channels</a>
 </li>
 </ul>
 </li>
@@ -193,10 +193,72 @@
 <div id='page'>
 
 
-    <h1 class="title">Getting Started</h1>
-    <p>このセクションでは、Rustと関連したツールの立ち上げを行います。
-まず、Rustをインストールし、&quot;Hello World&quot;プログラムを試します。
-最後はRustのビルドシステム/パッケージマネージャであるCargoについてです。</p>
+    <h1 class="title">Release Channels</h1>
+    <p>The Rust project uses a concept called ‘release channels’ to manage releases.
+It’s important to understand this process to choose which version of Rust
+your project should use.</p>
+
+<h1 id="overview" class='section-header'><a
+                           href="#overview">Overview</a></h1>
+<p>There are three channels for Rust releases:</p>
+
+<ul>
+<li>Nightly</li>
+<li>Beta</li>
+<li>Stable</li>
+</ul>
+
+<p>New nightly releases are created once a day. Every six weeks, the latest
+nightly release is promoted to ‘Beta’. At that point, it will only receive
+patches to fix serious errors. Six weeks later, the beta is promoted to
+‘Stable’, and becomes the next release of <code>1.x</code>.</p>
+
+<p>This process happens in parallel. So every six weeks, on the same day,
+nightly goes to beta, beta goes to stable. When <code>1.x</code> is released, at
+the same time, <code>1.(x + 1)-beta</code> is released, and the nightly becomes the
+first version of <code>1.(x + 2)-nightly</code>.</p>
+
+<h1 id="choosing-a-version" class='section-header'><a
+                           href="#choosing-a-version">Choosing a version</a></h1>
+<p>Generally speaking, unless you have a specific reason, you should be using the
+stable release channel. These releases are intended for a general audience.</p>
+
+<p>However, depending on your interest in Rust, you may choose to use nightly
+instead. The basic tradeoff is this: in the nightly channel, you can use
+unstable, new Rust features. However, unstable features are subject to change,
+and so any new nightly release may break your code. If you use the stable
+release, you cannot use experimental features, but the next release of Rust
+will not cause significant issues through breaking changes.</p>
+
+<h1 id="helping-the-ecosystem-through-ci" class='section-header'><a
+                           href="#helping-the-ecosystem-through-ci">Helping the ecosystem through CI</a></h1>
+<p>What about beta? We encourage all Rust users who use the stable release channel
+to also test against the beta channel in their continuous integration systems.
+This will help alert the team in case there’s an accidental regression.</p>
+
+<p>Additionally, testing against nightly can catch regressions even sooner, and so
+if you don’t mind a third build, we’d appreciate testing against all channels.</p>
+
+<p>As an example, many Rust programmers use <a href="https://travis-ci.org/">Travis</a> to
+test their crates, which is free for open source projects. Travis <a href="http://docs.travis-ci.com/user/languages/rust/">supports
+Rust directly</a>, and you can use a <code>.travis.yml</code> file like this to
+test on all channels:</p>
+
+<pre><code class="language-yaml">language: rust
+rust:
+  - nightly
+  - beta
+  - stable
+
+matrix:
+  allow_failures:
+    - rust: nightly
+</code></pre>
+
+<p>With this configuration, Travis will test all three channels, but if something
+breaks on nightly, it won’t fail your build. A similar configuration is
+recommended for any CI system, check the documentation of the one you’re
+using for more details.</p>
 
     <script type="text/javascript">
         window.playgroundUrl = "https://play.rust-lang.org";

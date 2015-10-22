@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <title>Getting Started</title>
+    <title>Slice patterns</title>
 
     <link rel="stylesheet" type="text/css" href="rustbook.css">
 
@@ -37,7 +37,7 @@
 <ul class='chapter'>
 <li><a  href='README.html'><b>1.</b> Introduction</a>
 </li>
-<li><a class='active' href='getting-started.html'><b>2.</b> Getting Started</a>
+<li><a  href='getting-started.html'><b>2.</b> Getting Started</a>
 <ul class='section'>
 <li><a  href='installing-rust.html'><b>2.1.</b> Installing Rust</a>
 </li>
@@ -177,7 +177,7 @@
 </li>
 <li><a  href='box-syntax-and-patterns.html'><b>6.8.</b> Box Syntax and Patterns</a>
 </li>
-<li><a  href='slice-patterns.html'><b>6.9.</b> Slice Patterns</a>
+<li><a class='active' href='slice-patterns.html'><b>6.9.</b> Slice Patterns</a>
 </li>
 <li><a  href='associated-constants.html'><b>6.10.</b> Associated Constants</a>
 </li>
@@ -193,10 +193,70 @@
 <div id='page'>
 
 
-    <h1 class="title">Getting Started</h1>
-    <p>このセクションでは、Rustと関連したツールの立ち上げを行います。
-まず、Rustをインストールし、&quot;Hello World&quot;プログラムを試します。
-最後はRustのビルドシステム/パッケージマネージャであるCargoについてです。</p>
+    <h1 class="title">Slice patterns</h1>
+    <p>If you want to match against a slice or array, you can use <code>&amp;</code> with the
+<code>slice_patterns</code> feature:</p>
+<span class='rusttest'>#![feature(slice_patterns)]
+
+fn main() {
+    let v = vec![&quot;match_this&quot;, &quot;1&quot;];
+
+    match &amp;v[..] {
+        [&quot;match_this&quot;, second] =&gt; println!(&quot;The second element is {}&quot;, second),
+        _ =&gt; {},
+    }
+}
+</span><pre class='rust rust-example-rendered'>
+<span class='attribute'>#<span class='op'>!</span>[<span class='ident'>feature</span>(<span class='ident'>slice_patterns</span>)]</span>
+
+<span class='kw'>fn</span> <span class='ident'>main</span>() {
+    <span class='kw'>let</span> <span class='ident'>v</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[<span class='string'>&quot;match_this&quot;</span>, <span class='string'>&quot;1&quot;</span>];
+
+    <span class='kw'>match</span> <span class='kw-2'>&amp;</span><span class='ident'>v</span>[..] {
+        [<span class='string'>&quot;match_this&quot;</span>, <span class='ident'>second</span>] <span class='op'>=&gt;</span> <span class='macro'>println</span><span class='macro'>!</span>(<span class='string'>&quot;The second element is {}&quot;</span>, <span class='ident'>second</span>),
+        _ <span class='op'>=&gt;</span> {},
+    }
+}</pre>
+
+<p>The <code>advanced_slice_patterns</code> gate lets you use <code>..</code> to indicate any number of
+elements inside a pattern matching a slice. This wildcard can only be used once
+for a given array. If there&#39;s an identifier before the <code>..</code>, the result of the
+slice will be bound to that name. For example:</p>
+<span class='rusttest'>#![feature(advanced_slice_patterns, slice_patterns)]
+
+fn is_symmetric(list: &amp;[u32]) -&gt; bool {
+    match list {
+        [] | [_] =&gt; true,
+        [x, inside.., y] if x == y =&gt; is_symmetric(inside),
+        _ =&gt; false
+    }
+}
+
+fn main() {
+    let sym = &amp;[0, 1, 4, 2, 4, 1, 0];
+    assert!(is_symmetric(sym));
+
+    let not_sym = &amp;[0, 1, 7, 2, 4, 1, 0];
+    assert!(!is_symmetric(not_sym));
+}
+</span><pre class='rust rust-example-rendered'>
+<span class='attribute'>#<span class='op'>!</span>[<span class='ident'>feature</span>(<span class='ident'>advanced_slice_patterns</span>, <span class='ident'>slice_patterns</span>)]</span>
+
+<span class='kw'>fn</span> <span class='ident'>is_symmetric</span>(<span class='ident'>list</span>: <span class='kw-2'>&amp;</span>[<span class='ident'>u32</span>]) <span class='op'>-&gt;</span> <span class='ident'>bool</span> {
+    <span class='kw'>match</span> <span class='ident'>list</span> {
+        [] <span class='op'>|</span> [_] <span class='op'>=&gt;</span> <span class='boolval'>true</span>,
+        [<span class='ident'>x</span>, <span class='ident'>inside</span>.., <span class='ident'>y</span>] <span class='kw'>if</span> <span class='ident'>x</span> <span class='op'>==</span> <span class='ident'>y</span> <span class='op'>=&gt;</span> <span class='ident'>is_symmetric</span>(<span class='ident'>inside</span>),
+        _ <span class='op'>=&gt;</span> <span class='boolval'>false</span>
+    }
+}
+
+<span class='kw'>fn</span> <span class='ident'>main</span>() {
+    <span class='kw'>let</span> <span class='ident'>sym</span> <span class='op'>=</span> <span class='kw-2'>&amp;</span>[<span class='number'>0</span>, <span class='number'>1</span>, <span class='number'>4</span>, <span class='number'>2</span>, <span class='number'>4</span>, <span class='number'>1</span>, <span class='number'>0</span>];
+    <span class='macro'>assert</span><span class='macro'>!</span>(<span class='ident'>is_symmetric</span>(<span class='ident'>sym</span>));
+
+    <span class='kw'>let</span> <span class='ident'>not_sym</span> <span class='op'>=</span> <span class='kw-2'>&amp;</span>[<span class='number'>0</span>, <span class='number'>1</span>, <span class='number'>7</span>, <span class='number'>2</span>, <span class='number'>4</span>, <span class='number'>1</span>, <span class='number'>0</span>];
+    <span class='macro'>assert</span><span class='macro'>!</span>(<span class='op'>!</span><span class='ident'>is_symmetric</span>(<span class='ident'>not_sym</span>));
+}</pre>
 
     <script type="text/javascript">
         window.playgroundUrl = "https://play.rust-lang.org";

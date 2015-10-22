@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <title>Getting Started</title>
+    <title>Attributes</title>
 
     <link rel="stylesheet" type="text/css" href="rustbook.css">
 
@@ -37,7 +37,7 @@
 <ul class='chapter'>
 <li><a  href='README.html'><b>1.</b> Introduction</a>
 </li>
-<li><a class='active' href='getting-started.html'><b>2.</b> Getting Started</a>
+<li><a  href='getting-started.html'><b>2.</b> Getting Started</a>
 <ul class='section'>
 <li><a  href='installing-rust.html'><b>2.1.</b> Installing Rust</a>
 </li>
@@ -137,7 +137,7 @@
 </li>
 <li><a  href='const-and-static.html'><b>5.26.</b> `const` and `static`</a>
 </li>
-<li><a  href='attributes.html'><b>5.27.</b> Attributes</a>
+<li><a class='active' href='attributes.html'><b>5.27.</b> Attributes</a>
 </li>
 <li><a  href='type-aliases.html'><b>5.28.</b> `type` aliases</a>
 </li>
@@ -193,10 +193,87 @@
 <div id='page'>
 
 
-    <h1 class="title">Getting Started</h1>
-    <p>このセクションでは、Rustと関連したツールの立ち上げを行います。
-まず、Rustをインストールし、&quot;Hello World&quot;プログラムを試します。
-最後はRustのビルドシステム/パッケージマネージャであるCargoについてです。</p>
+    <h1 class="title">Attributes</h1>
+    <p>Declarations can be annotated with ‘attributes’ in Rust. They look like this:</p>
+<span class='rusttest'>fn main() {
+    #[test]
+    fn foo() {}
+    
+}</span><pre class='rust rust-example-rendered'>
+<span class='attribute'>#[<span class='ident'>test</span>]</span></pre>
+
+<p>or like this:</p>
+<span class='rusttest'>fn main() {
+    mod foo {
+    #![test]
+    }
+    
+}</span><pre class='rust rust-example-rendered'>
+<span class='attribute'>#<span class='op'>!</span>[<span class='ident'>test</span>]</span></pre>
+
+<p>The difference between the two is the <code>!</code>, which changes what the attribute
+applies to:</p>
+<span class='rusttest'>fn main() {
+    #[foo]
+    struct Foo;
+    
+    mod bar {
+        #![bar]
+    }
+    
+}</span><pre class='rust rust-example-rendered'>
+<span class='attribute'>#[<span class='ident'>foo</span>]</span>
+<span class='kw'>struct</span> <span class='ident'>Foo</span>;
+
+<span class='kw'>mod</span> <span class='ident'>bar</span> {
+    <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>bar</span>]</span>
+}</pre>
+
+<p>The <code>#[foo]</code> attribute applies to the next item, which is the <code>struct</code>
+declaration. The <code>#![bar]</code> attribute applies to the item enclosing it, which is
+the <code>mod</code> declaration. Otherwise, they’re the same. Both change the meaning of
+the item they’re attached to somehow.</p>
+
+<p>For example, consider a function like this:</p>
+<span class='rusttest'>fn main() {
+    #[test]
+    fn check() {
+        assert_eq!(2, 1 + 1);
+    }
+    
+}</span><pre class='rust rust-example-rendered'>
+<span class='attribute'>#[<span class='ident'>test</span>]</span>
+<span class='kw'>fn</span> <span class='ident'>check</span>() {
+    <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='number'>2</span>, <span class='number'>1</span> <span class='op'>+</span> <span class='number'>1</span>);
+}</pre>
+
+<p>It is marked with <code>#[test]</code>. This means it’s special: when you run
+<a href="testing.html">tests</a>, this function will execute. When you compile as usual, it won’t
+even be included. This function is now a test function.</p>
+
+<p>Attributes may also have additional data:</p>
+<span class='rusttest'>fn main() {
+    #[inline(always)]
+    fn super_fast_fn() {
+    }
+    
+}</span><pre class='rust rust-example-rendered'>
+<span class='attribute'>#[<span class='ident'>inline</span>(<span class='ident'>always</span>)]</span>
+<span class='kw'>fn</span> <span class='ident'>super_fast_fn</span>() {</pre>
+
+<p>Or even keys and values:</p>
+<span class='rusttest'>fn main() {
+    #[cfg(target_os = &quot;macos&quot;)]
+    mod macos_only {
+    }
+    
+}</span><pre class='rust rust-example-rendered'>
+<span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>target_os</span> <span class='op'>=</span> <span class='string'>&quot;macos&quot;</span>)]</span>
+<span class='kw'>mod</span> <span class='ident'>macos_only</span> {</pre>
+
+<p>Rust attributes are used for a number of different things. There is a full list
+of attributes <a href="../reference.html#attributes">in the reference</a>. Currently, you are not allowed to
+create your own attributes, the Rust compiler defines them.</p>
 
     <script type="text/javascript">
         window.playgroundUrl = "https://play.rust-lang.org";
