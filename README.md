@@ -3,6 +3,7 @@
 # 文書
 
 [rust book](http://rustfanjp.github.io/rustdoc/doc/book/index.html)
+[rust reference](http://rustfanjp.github.io/rustdoc/doc/reference/index.html)
 
 # デプロイ
 
