@@ -108,19 +108,30 @@ fn render(book: &Book, tgt: &Path) -> CliResult<()> {
             }));
         }
 
+        let header = tmp.path().join("header.html");
+        {
+            let mut buffer = BufWriter::new(try!(File::create(&header)));
+            try!(writeln!(&mut buffer, 
+"<script type=\"text/javascript\" src=\"../share/jquery-2.1.0.min.js\"></script>"
+            ));
+        }
+
         // write the prelude to a temporary HTML file for rustdoc inclusion
         let prelude = tmp.path().join("prelude.html");
         {
             let mut buffer = BufWriter::new(try!(File::create(&prelude)));
-            try!(writeln!(&mut buffer, r#"
-                <div id="nav">
-                    <button id="toggle-nav">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="bar"></span>
-                        <span class="bar"></span>
-                        <span class="bar"></span>
-                    </button>
-                </div>"#));
+            try!(writeln!(&mut buffer,
+r#"
+  <div id="nav">
+    <button id="toggle-nav">
+    <span class="sr-only">Toggle navigation</span>
+    <span class="bar"></span>
+    <span class="bar"></span>
+    <span class="bar"></span>
+  </button>
+</div>
+"#
+            ));
             let _ = write_toc(book, &item, &mut buffer);
             try!(writeln!(&mut buffer, "<div id='page-wrapper'>"));
             try!(writeln!(&mut buffer, "<div id='page'>"));
@@ -141,7 +152,7 @@ fn render(book: &Book, tgt: &Path) -> CliResult<()> {
             "".to_string(),
             preprocessed_path.display().to_string(),
             format!("-o{}", out_path.display()),
-            format!("--html-in-header={}", prelude.display()),
+            format!("--html-in-header={}", header.display()),
             format!("--html-before-content={}", prelude.display()),
             format!("--html-after-content={}", postlude.display()),
             format!("--markdown-playground-url=https://play.rust-lang.org"),
