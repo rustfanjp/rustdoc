@@ -13,7 +13,7 @@ function (make_doc TARGET_NAME DIR_NAME)
   )
 
   add_custom_target ("${TARGET_NAME}_FORMAT"
-    COMMAND "${PROJECT_SOURCE_DIR}/format.sh"
+    COMMAND "${PROJECT_SOURCE_DIR}/tool/format.sh"
     WORKING_DIRECTORY "./_book"
     DEPENDS "${TARGET_NAME}_BUILD"
   )
