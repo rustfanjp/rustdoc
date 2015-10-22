@@ -10,8 +10,6 @@
  * except according to those terms.
  */
 
-@import url('../rust.css');
-
 body {
     max-width: none;
     font-family:  "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", "游ゴシック", YuGothic, "メイリオ", Meiryo, sans-serif;
@@ -19,6 +17,7 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
+    font-family:  "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", "游ゴシック", YuGothic, "メイリオ", Meiryo, sans-serif;
     font-weight: bold;
     color: #333;
 }
@@ -153,4 +152,13 @@ pre {
 
 .right {
     float: right;
+}
+
+a {
+  color : #008CFF;
+  text-decoration : none;
+}
+
+li a {
+  color : #333;
 }
