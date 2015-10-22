@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <title>The Rust Programming Language</title>
+
+    <link rel="stylesheet" type="text/css" href="rustbook.css">
+
+    
+                <div id="nav">
+                    <button id="toggle-nav">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                    </button>
+                </div>
+<div id='toc' class='mobile-hidden'>
+<ul class='chapter'>
+<li><a class='active' href='README.html'><b>1.</b> Introduction</a>
+</li>
+<li><a  href='getting-started.html'><b>2.</b> Getting Started</a>
+</li>
+<li><a  href='installing-rust.html'><b>3.</b> Installing Rust</a>
+</li>
+</ul>
+</div>
+<div id='page-wrapper'>
+<div id='page'>
+
+
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+                <div id="nav">
+                    <button id="toggle-nav">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                    </button>
+                </div>
+<div id='toc' class='mobile-hidden'>
+<ul class='chapter'>
+<li><a class='active' href='README.html'><b>1.</b> Introduction</a>
+</li>
+<li><a  href='getting-started.html'><b>2.</b> Getting Started</a>
+</li>
+<li><a  href='installing-rust.html'><b>3.</b> Installing Rust</a>
+</li>
+</ul>
+</div>
+<div id='page-wrapper'>
+<div id='page'>
+
+
+    <h1 class="title">The Rust Programming Language</h1>
+    <p>ようこそ！
+この本は<a href="https://www.rust-lang.org">Rust Programming Language</a>の解説本です。
+Rustはシステムプログラミング言語であり、安全性、速度、平行性の両立を目標としています。
+Rustはガベージコレクタ無しでこれらの目標を追及し、他のプログラミング言語では上手に出来ない事が出来ます。
+例えば、多言語への埋め込みや、ワークスペース・実行時間の制限、ドライバーやオペレーティングシステムの様な低レベルコードの記述等です。
+Rustは、コンパイル時の安全性チェックにより実行時オーバーヘッド無しに全てのデータ競合を排除し、既存のプログラミング言語を改善します。
+Rustは、他の高レベルプログラミング言語にありがちな抽象化をゼロコストで行う、&#39;ゼロコスト抽象化&#39;を目標としています。
+一方で、Rustは、低レベルプログラミング言語の様な、プログラムの細かな制御を可能にします。</p>
+
+<p>&quot;The Rust Programming Language&quot;は次の8つのセクションに分かれます。
+このイントロダクションは最初の1つであり、残りは以下の通りです。</p>
+
+<ul>
+<li><a href="getting-started.html">Getting started</a> - Rust開発環境の立ち上げ</li>
+<li><a href="learn-rust.html">Learn Rust</a> - Rustのチュートリアル</li>
+<li><a href="effective-rust.html">Effective Rust</a> - TODO</li>
+<li><a href="syntax-and-semantics.html">Syntax and Semantics</a> - Rustの文法と意味論</li>
+<li><a href="nightly-rust.html">Nightly Rust</a> - 開発中のRustの新機能</li>
+<li><a href="glossary.html">Glossary</a> - この本における単語の用法</li>
+<li><a href="bibliograpy.html">Bibliography</a> - 参考文献</li>
+</ul>
+
+<p>このイントロダクションを読み終えた後、&#39;Learn Rust&#39;か、&#39;Syntax and Semantics&#39;に行くのが良いでしょう。
+TODO</p>
+
+<h3 id="contributing" class='section-header'><a
+                           href="#contributing">Contributing</a></h3>
+<p>この本を生成するソースファイルはGithubにあります。
+<a href="https://github.com/rust-lang/rust/tree/master/src/doc/trpl">github.com/rust-lang/rust/tree/master/src/doc/trpl</a></p>
+
+<p>(訳注) 日本語訳を生成するソースファイルは以下にあります。
+TODO</p>
+
+<h3 id="rust-イントロダクション" class='section-header'><a
+                           href="#rust-イントロダクション">Rust イントロダクション</a></h3>
+<p>Rustに興味を持ちましたか？
+それでは、小さなコードをためして、Rustの力を確認しましょう。</p>
+
+<p>Rustのユニークなコンセプトとして&#39;ownership&#39;があります。
+次の例を見てください。</p>
+<span class='rusttest'>fn main() {
+    let mut x = vec![&quot;Hello&quot;, &quot;world&quot;];
+}
+</span><pre class='rust rust-example-rendered'>
+<span class='kw'>fn</span> <span class='ident'>main</span>() {
+    <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>x</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[<span class='string'>&quot;Hello&quot;</span>, <span class='string'>&quot;world&quot;</span>];
+}</pre>
+
+<p>このプログラムは<code>x</code>名付けられた<a href="variable-bindings.html">変数束縛(variable binding)</a>を作ります。
+この変数束縛の値は<code>Vec&lt;T&gt;</code>型の&#39;ベクタ&#39;ですが、これは、標準ライブラリで定義された<a href="macros.html">マクロ(macro)</a>を用いて作られています。
+このマクロは<code>vec</code>と名付けられていて、<code>!</code>を伴って呼び出されています。
+これは、「make things explicit」というRustの一般原則に従っています。
+マクロは関数呼び出しよりもずっと複雑な事を行えるので、関数呼び出しとは異なった見た目をしています。
+また、<code>!</code>によってパースが容易になり、サードパーティーツールを作るのが容易になります。</p>
+
+<p>ここでは、<code>x</code>を作るのに、<code>mut</code>を使いました。
+Rustにおける変数束縛はデフォルトでimmutableです。
+後の例で、このベクタに変更操作を加えるので、ここでは<code>mut</code>としました。</p>
+
+<p>ここで、いかなる型情報も記述していないというのは、注目に値するでしょう。
+Rustは静的型付け言語ですが、ここでは型を明示的に記述する必要はありませんでした。
+Rustは型推論を用いて、静的型付けの力と、型情報記述の煩雑さをバランスさせています。</p>
+
+<p>Rustはヒープアロケーションよりも、スタックアロケーションを好みます。
+上の例では<code>x</code>はスタックに置かれますが、<code>Vec&lt;T&gt;</code>型はベクタ要素のためのスペースをヒープにアロケートします。
+もし、この区別に慣れていなければ、今のところはこれを無視してかまいませんし、気になるなら<a href="the-stack-and-the-heap.html">&#39;The Stack and the Heap)</a>を確認して下さい。
+Rustは、メモリアロケーションを制御する能力を持っていますが、イントロダクションとしては重要ではありません。</p>
+
+<p>先ほど、&#39;ownership&#39;がRustでの重要なコンセプトだと述べました。
+Rustでは、<code>x</code>はベクタを&#39;所有(own)&#39;しているといいます。
+つまり、<code>x</code>がスコープを抜けると、ベクタのメモリはデアロケートされます。
+これは、Rustのコンパイラによる静的な解析に基づいて行われ、ガベージコレクションの様な機構は用いられません。
+つまり、Rustでは、<code>malloc</code>や<code>free</code>の様な関数を呼ぶ必要はありません。
+人間は失敗をする物ですが、コンパイラは失敗しません。</p>
+
+<p>先ほどの例に次の行を足しましょう。</p>
+<span class='rusttest'>fn main() {
+    let mut x = vec![&quot;Hello&quot;, &quot;world&quot;];
+
+    let y = &amp;x[0];
+}
+</span><pre class='rust rust-example-rendered'>
+<span class='kw'>fn</span> <span class='ident'>main</span>() {
+    <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>x</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[<span class='string'>&quot;Hello&quot;</span>, <span class='string'>&quot;world&quot;</span>];
+
+    <span class='kw'>let</span> <span class='ident'>y</span> <span class='op'>=</span> <span class='kw-2'>&amp;</span><span class='ident'>x</span>[<span class='number'>0</span>];
+}</pre>
+
+<p>新たな変数束縛、<code>y</code>を導入しました。
+この場合、<code>y</code>はベクタ<code>x</code>の最初の要素<code>x[0]</code>に対する&#39;参照(reference)&#39;です。
+Rustの参照は他の言語のポインタに似ていますが、コンパイル時の安全性チェックが追加されています。
+参照は、参照している変数を所有するのではなく、<a href="referencees-and-borrowing.html">&#39;借用(borrow)&#39;</a>します。
+参照がスコープの外に出ても、この参照が借用している変数はデアロケートされません。
+もしそうでなければ、二重デアロケートが起きる可能性があります。</p>
+
+<p>三行目を足しましょう。
+一見問題無い様に見えますが、コンパイルエラーになります。</p>
+<span class='rusttest'>fn main() {
+    let mut x = vec![&quot;Hello&quot;, &quot;world&quot;];
+
+    let y = &amp;x[0];
+
+    x.push(&quot;foo&quot;);
+}
+</span><pre class='rust rust-example-rendered'>
+<span class='kw'>fn</span> <span class='ident'>main</span>() {
+    <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>x</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[<span class='string'>&quot;Hello&quot;</span>, <span class='string'>&quot;world&quot;</span>];
+
+    <span class='kw'>let</span> <span class='ident'>y</span> <span class='op'>=</span> <span class='kw-2'>&amp;</span><span class='ident'>x</span>[<span class='number'>0</span>];
+
+    <span class='ident'>x</span>.<span class='ident'>push</span>(<span class='string'>&quot;foo&quot;</span>);
+}</pre>
+
+<p><code>push</code>はベクタの最後尾に要素を追加するメソッドです。
+このプログラムをコンパイルしようとすると、次のエラーを得ます。</p>
+
+<pre><code class="language-text">error: cannot borrow `x` as mutable because it is also borrowed as immutable
+    x.push(&quot;foo&quot;);
+    ^
+note: previous borrow of `x` occurs here; the immutable borrow prevents
+subsequent moves or mutable borrows of `x` until the borrow ends
+    let y = &amp;x[0];
+             ^
+note: previous borrow ends here
+fn main() {
+
+}
+^
+</code></pre>
+
+<p>Rustコンパイラは、様々な詳細なエラーを出力します。
+このエラーが説明している通り、先ほどの例では、mutableな変数束縛を作りましたが、それだけでは<code>push</code>できません。
+なぜなら、すでにベクタの要素に対する参照<code>y</code>が作られているからです。
+他の参照が存在しているときに、変更操作を加えるのは危険です。
+たとえばこの例では、ベクタは2つの要素分のスペースしか最初にアロケートしません。
+3つ目の要素のスペースをアロケートしようとすると、2つの要素の後ろに3つ目の要素分のスペースがあるとは限らないので、3つの要素分のスペースを新たにアロケートし、要素をコピーするかもしれません。
+この場合、参照<code>y</code>は、古いスペースの要素を指したままですので、これは&#39;dangling pointer&#39;となります。
+この<code>y</code>に対するいかなる操作も不正ですので、コンパイラはこれを検出します。</p>
+
+<p>それでは、どの様にして解決するのでしょうか。
+これには、主に2つの方法があります。
+1つ目は、参照を作るのではなく、コピーを作ります。</p>
+<span class='rusttest'>fn main() {
+    let mut x = vec![&quot;Hello&quot;, &quot;world&quot;];
+
+    let y = x[0].clone();
+
+    x.push(&quot;foo&quot;);
+}
+</span><pre class='rust rust-example-rendered'>
+<span class='kw'>fn</span> <span class='ident'>main</span>() {
+    <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>x</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[<span class='string'>&quot;Hello&quot;</span>, <span class='string'>&quot;world&quot;</span>];
+
+    <span class='kw'>let</span> <span class='ident'>y</span> <span class='op'>=</span> <span class='ident'>x</span>[<span class='number'>0</span>].<span class='ident'>clone</span>();
+
+    <span class='ident'>x</span>.<span class='ident'>push</span>(<span class='string'>&quot;foo&quot;</span>);
+}</pre>
+
+<p>Rustでは、デフォルトで<a href="ownership.html#move-semantics">move semantics</a>を用います。
+ですので、ムーブではなくコピーするためには、<code>clone()</code>メソッドを呼び出します。
+この例では、<code>y</code>は参照ではなく、コピーされた値、<code>&quot;Hello&quot;</code>です。
+ベクタの要素に対する参照を持っていないので、<code>push()</code>する事が出来ます。</p>
+
+<p>もし、参照をどうしても持ちたいのならば、変更操作を加える前に、参照がスコープを抜けるようにします。</p>
+<span class='rusttest'>fn main() {
+    let mut x = vec![&quot;Hello&quot;, &quot;world&quot;];
+
+    {
+      let y = &amp;x[0];
+    }
+
+    x.push(&quot;foo&quot;);
+}
+</span><pre class='rust rust-example-rendered'>
+<span class='kw'>fn</span> <span class='ident'>main</span>() {
+    <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>x</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[<span class='string'>&quot;Hello&quot;</span>, <span class='string'>&quot;world&quot;</span>];
+
+    {
+      <span class='kw'>let</span> <span class='ident'>y</span> <span class='op'>=</span> <span class='kw-2'>&amp;</span><span class='ident'>x</span>[<span class='number'>0</span>];
+    }
+
+    <span class='ident'>x</span>.<span class='ident'>push</span>(<span class='string'>&quot;foo&quot;</span>);
+}</pre>
+
+<p>ここでは内部スコープを作り、<code>y</code>を内部スコープ内に閉じ込めました。</p>
+
+<p>ownershipのコンセプトはダングリングポイントを防ぐだけでなく、不正なイテレータや平行性の問題等にも有効です。</p>
+
+    <script type="text/javascript">
+        window.playgroundUrl = "https://play.rust-lang.org";
+    </script>
+    <script src='rustbook.js'></script>
+<script src='playpen.js'></script>
+</div></div>
+
+
+</body>
+</html>

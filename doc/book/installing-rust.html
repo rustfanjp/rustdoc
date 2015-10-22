@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <title>Installing Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="rustbook.css">
+
+    
+                <div id="nav">
+                    <button id="toggle-nav">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                    </button>
+                </div>
+<div id='toc' class='mobile-hidden'>
+<ul class='chapter'>
+<li><a  href='README.html'><b>1.</b> Introduction</a>
+</li>
+<li><a  href='getting-started.html'><b>2.</b> Getting Started</a>
+</li>
+<li><a class='active' href='installing-rust.html'><b>3.</b> Installing Rust</a>
+</li>
+</ul>
+</div>
+<div id='page-wrapper'>
+<div id='page'>
+
+
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+                <div id="nav">
+                    <button id="toggle-nav">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                    </button>
+                </div>
+<div id='toc' class='mobile-hidden'>
+<ul class='chapter'>
+<li><a  href='README.html'><b>1.</b> Introduction</a>
+</li>
+<li><a  href='getting-started.html'><b>2.</b> Getting Started</a>
+</li>
+<li><a class='active' href='installing-rust.html'><b>3.</b> Installing Rust</a>
+</li>
+</ul>
+</div>
+<div id='page-wrapper'>
+<div id='page'>
+
+
+    <h1 class="title">Installing Rust</h1>
+    <p>Rustを使う最初の一歩は、Rustをインストールする事です。
+Rustをインストールする方法をいくつかありますが、最も簡単なのは<code>rustup</code>スクリプトを用いる事です。
+もし、LinuxかMacを使っているなら、ただ次のコマンドを実行するだけです。</p>
+
+<blockquote>
+<p>ノート: 行頭の<code>$</code>、<code>#</code>をタイプする必要はありません。<code>#</code>は管理者権限が必要な事を表します。</p>
+</blockquote>
+
+<pre><code class="language-bash">$curl -sf -L https://static.rust-lang.org/rustup.sh | sh
+</code></pre>
+
+<p>もし、<code>curl | sh</code>の<a href="http://curlpipesh.tumblr.com">潜在的な危険性</a>を懸念する、2ステップのインストール方法を使い、インストールスクリプトを思うままに検査して下さい。
+また、後述する&quot;disclaimer&quot;を確認して下さい。</p>
+
+<pre><code class="language-bash">$ curl -f -L https://static.rust-lang.org/rustup.sh -0
+$ sh rustup.sh
+</code></pre>
+
+<p>もし、Windowsを使用していれば、<a href="https://www.rust-lang.org/install.html">インストーラー</a>を使用してください。</p>
+
+<blockquote>
+<p>ノート: デフォルトではWindowsインストーラーはRustを%PATH%システム変数に追加しません。</p>
+</blockquote>
+
+<h2 id="uninstalling" class='section-header'><a
+                           href="#uninstalling">Uninstalling</a></h2>
+<p>悲しい事ですが、もしRustを使わないと決めたのならば、アンインストールスクリプトを実行してください。</p>
+
+<pre><code class="language-bash">$ sudo /usr/local/lib/rustlib/uninstall.sh
+</code></pre>
+
+<p>もし、Windowsインストーラーを使用したのなら、再度<code>.msi</code>を実行し、アンインストールオプションを選択して下さい。</p>
+
+<h2 id="disclaimer" class='section-header'><a
+                           href="#disclaimer">disclaimer</a></h2>
+<p>正当な指摘ですが、<code>curl | sh</code>するよう促す事を危険だと思う人もいます。
+基本的にこのコマンドを実行すという事は、Rustの開発・メンテナンスを行っている人々がハッキング等を行わないと信じている事になります。
+それは良い勘だと思いますがね！
+もし、<code>curl | sh</code>を危険だと思うならば、<a href="https://github.com/rust-lang/rust#building-from-source">building Rust from Source</a>や<a href="https://www.rust-lang.org/install.html">the official binary downloads</a>を確認して下さい。</p>
+
+<h2 id="プラットフォームサポート" class='section-header'><a
+                           href="#プラットフォームサポート">プラットフォームサポート</a></h2>
+<p>Rustコンパイラーは多くのプラットフォーム上で走り、また多くのプラットフォーム向けのプログラムをコンパイルできます。
+ただし、全てのプラットフォームで同等の機能がサポートされている分けではありません。
+Rustのサポートレベルは3つの&quot;Tier&quot;に分けられ、それぞれ異なった保証があります。</p>
+
+<p>プラットフォームは&quot;target triple&quot;と呼ばれる文字列によって識別されます。
+下で現れる表の各列は、対応する機能がそれぞれのプラットフォームでサポートされているかを表します。</p>
+
+<h3 id="tier-1" class='section-header'><a
+                           href="#tier-1">Tier 1</a></h3>
+<p>Tier 1のプラットフォームは、&quot;ビルド/動作保証&quot;されています。
+次の各要求を満たします。</p>
+
+<ul>
+<li>そのプラットフォーム向けの自動テストのセットアップとテスト実行</li>
+<li><code>rust-lang/rust</code>のmasterブランチへの変更の、そのプラットフォーム向けの動作テスト成功</li>
+<li>過去の公式リリースパッケージの提供</li>
+<li>そのプラットフォーム上でのビルド/使用方法の文書の整備</li>
+</ul>
+
+<table><thead>
+<tr>
+<th>Target</th>
+<th>std</th>
+<th>rustc</th>
+<th>cargo</th>
+<th>notes</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>x86_64-pc-windows-msvc</code></td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>64-bit MSVC (Windows 7+)</td>
+</tr>
+<tr>
+<td><code>i686-pc-windows-gnu</code></td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>32-bit MinGW (Windows 7+)</td>
+</tr>
+<tr>
+<td><code>x86_64-pc-windows-gnu</code></td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>64-bit MinGW (Windows 7+)</td>
+</tr>
+<tr>
+<td><code>i686-apple-darwin</code></td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>32-bit OSX (10.7+, Lion+)</td>
+</tr>
+<tr>
+<td><code>x86_64-apple-darwin</code></td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>64-bit OSX (10.7+, Lion+)</td>
+</tr>
+<tr>
+<td><code>i686-unknown-linux-gnu</code></td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>32-bit Linux (2.6.18+)</td>
+</tr>
+<tr>
+<td><code>x86_64-unknown-linux-gnu</code></td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>64-bit Linux (2.6.18+)</td>
+</tr>
+</tbody></table>
+
+<h3 id="tier-2" class='section-header'><a
+                           href="#tier-2">Tier 2</a></h3>
+<p>Tier 2のプラットフォームは&quot;ビルド保証&quot;されています。
+自動テストは行われないので、動作保証はされません。
+しかしながら、大抵は良く動作しますし、パッチは常に歓迎です！
+次の各要求を満たします。</p>
+
+<ul>
+<li>自動ビルド環境がセットアップされている(ビルド保証)。ただし、実行テストは行われない。</li>
+<li><code>rust-lang/rust</code>のmasterブランチへの変更の、そのプラットフォーム向けのビルドテスト成功</li>
+<li>過去の公式リリースパッケージの提供</li>
+</ul>
+
+<table><thead>
+<tr>
+<th>Target</th>
+<th>std</th>
+<th>rustc</th>
+<th>cargo</th>
+<th>notes</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>i686-pc-windows-msvc</code></td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>32-bit MSVC (Windows 7+)</td>
+</tr>
+</tbody></table>
+
+<h3 id="tier-3" class='section-header'><a
+                           href="#tier-3">Tier 3</a></h3>
+<p>Tier 3のプラットフォームは、サポートはされますが、ビルド・動作テストは行われません。
+それぞれのプラットフォームにおける動作可能なビルドの信頼性は、それぞれのコミュニティの貢献に依存してムラがあります。
+また、リリースパッケージやインストーラーは提供されません。
+しかしながら、コミュニティによっては、非公式なパッケージを提供しているかもしれません。</p>
+
+<table><thead>
+<tr>
+<th>Target</th>
+<th>std</th>
+<th>rustc</th>
+<th>cargo</th>
+<th>notes</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>x86_64-unknown-linux-musl</code></td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td>64-bit Linux with MUSL</td>
+</tr>
+<tr>
+<td><code>arm-linux-androideabi</code></td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td>ARM Android</td>
+</tr>
+<tr>
+<td><code>i686-linux-android</code></td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td>32-bit x86 Android</td>
+</tr>
+<tr>
+<td><code>aarch64-linux-android</code></td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td>ARM64 Android</td>
+</tr>
+<tr>
+<td><code>arm-unknown-linux-gnueabi</code></td>
+<td>✓</td>
+<td>✓</td>
+<td></td>
+<td>ARM Linux (2.6.18+)</td>
+</tr>
+<tr>
+<td><code>arm-unknown-linux-gnueabihf</code></td>
+<td>✓</td>
+<td>✓</td>
+<td></td>
+<td>ARM Linux (2.6.18+)</td>
+</tr>
+<tr>
+<td><code>aarch64-unknown-linux-gnu</code></td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td>ARM64 Linux (2.6.18+)</td>
+</tr>
+<tr>
+<td><code>mips-unknown-linux-gnu</code></td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td>MIPS Linux (2.6.18+)</td>
+</tr>
+<tr>
+<td><code>mipsel-unknown-linux-gnu</code></td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td>MIPS (LE) Linux (2.6.18+)</td>
+</tr>
+<tr>
+<td><code>powerpc-unknown-linux-gnu</code></td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td>PowerPC Linux (2.6.18+)</td>
+</tr>
+<tr>
+<td><code>i386-apple-ios</code></td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td>32-bit x86 iOS</td>
+</tr>
+<tr>
+<td><code>x86_64-apple-ios</code></td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td>64-bit x86 iOS</td>
+</tr>
+<tr>
+<td><code>armv7-apple-ios</code></td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td>ARM iOS</td>
+</tr>
+<tr>
+<td><code>armv7s-apple-ios</code></td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td>ARM iOS</td>
+</tr>
+<tr>
+<td><code>aarch64-apple-ios</code></td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td>ARM64 iOS</td>
+</tr>
+<tr>
+<td><code>i686-unknown-freebsd</code></td>
+<td>✓</td>
+<td>✓</td>
+<td></td>
+<td>32-bit FreeBSD</td>
+</tr>
+<tr>
+<td><code>x86_64-unknown-freebsd</code></td>
+<td>✓</td>
+<td>✓</td>
+<td></td>
+<td>64-bit FreeBSD</td>
+</tr>
+<tr>
+<td><code>x86_64-unknown-openbsd</code></td>
+<td>✓</td>
+<td>✓</td>
+<td></td>
+<td>64-bit OpenBSD</td>
+</tr>
+<tr>
+<td><code>x86_64-unknown-netbsd</code></td>
+<td>✓</td>
+<td>✓</td>
+<td></td>
+<td>64-bit NetBSD</td>
+</tr>
+<tr>
+<td><code>x86_64-unknown-bitrig</code></td>
+<td>✓</td>
+<td>✓</td>
+<td></td>
+<td>64-bit Bitrig</td>
+</tr>
+<tr>
+<td><code>x86_64-unknown-dragonfly</code></td>
+<td>✓</td>
+<td>✓</td>
+<td></td>
+<td>64-bit DragonFlyBSD</td>
+</tr>
+<tr>
+<td><code>x86_64-rumprun-netbsd</code></td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td>64-bit NetBSD Rump Kernel</td>
+</tr>
+<tr>
+<td><code>i686-pc-windows-msvc</code> (XP)</td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td>Windows XP support</td>
+</tr>
+<tr>
+<td><code>x86_64-pc-windows-msvc</code> (XP)</td>
+<td>✓</td>
+<td></td>
+<td></td>
+<td>Windows XP support</td>
+</tr>
+</tbody></table>
+
+<p>Tier 3のプラットフォームはここに上げられた物に限るだけでなく、今後も拡張されるでしょう。</p>
+
+<h2 id="after-instllation" class='section-header'><a
+                           href="#after-instllation">After instllation</a></h2>
+<p>Rustをインストールしたら、シェルを開き、次の様にタイプして下さい。</p>
+
+<pre><code class="language-bash">$ rustc --version
+</code></pre>
+
+<p>これによって、バーションやコミットハッシュ、コミットデータを確認できます。</p>
+
+<p>もし実行できたら、Rustのインストールは成功です！
+おめでとう！</p>
+
+<p>もし、Windowsで実行できなかったら、Rustが%PATH%システム変数にある事を確認して下さい。
+もしなければ、インストーラーを再実行し、&quot;Change, repair, or remove instllation&quot;の&quot;Change&quot;を選択し、&quot;Add to PATH&quot;がローカルハードディスクにインストールされる様にして下さい。</p>
+
+<p>このインストーラーは、この文書をローカル環境にコピーします。
+従って、オフラインで、この文書を読めます。
+UNIXシステムは<code>/usr/local/share/doc/rust</code>に有り、WindowsではRustをインストールしたディレクトリの<code>share/doc</code>ディレクトリに有ります。</p>
+
+<p>また、何か困った事があれば、いくつかの助けを求められる場所があります。
+最も簡単なのは<a href="irc://irc.mozilla.org/#rust">the #rust IRC channel on irc.mozilla.org</a>で、<a href="http://chat.mibbit.com/?server=irc.mozilla.org&amp;channel=%23rust">Mibbit</a>からアクセスできます。
+このリンク先では、Rustacean達とチャットできます。
+他のリソースとしては、[the user&#39;s forum][usrs]と、<a href="http://stackoverflow.com/questions/tagged/rust">Stack Overflow</a>が有ります。</p>
+
+    <script type="text/javascript">
+        window.playgroundUrl = "https://play.rust-lang.org";
+    </script>
+    <script src='rustbook.js'></script>
+<script src='playpen.js'></script>
+</div></div>
+
+
+</body>
+</html>
