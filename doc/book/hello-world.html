@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <title>Hello, world!</title>
+
+    <link rel="stylesheet" type="text/css" href="rustbook.css">
+
+    
+  <script type="text/javascript" src="../share/jquery-2.1.0.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="../share/rust.css">
+
+
+
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+  <div id="nav">
+    <button id="toggle-nav">
+    <span class="sr-only">Toggle navigation</span>
+    <span class="bar"></span>
+    <span class="bar"></span>
+    <span class="bar"></span>
+  </button>
+</div>
+
+<div id='toc' class='mobile-hidden'>
+<ul class='chapter'>
+<li><a  href='README.html'><b>1.</b> Introduction</a>
+</li>
+<li><a  href='getting-started.html'><b>2.</b> 始めに</a>
+<ul class='section'>
+<li><a  href='installing-rust.html'><b>2.1.</b> インストール</a>
+<ul class='section'>
+<li><a class='active' href='hello-world.html'><b>2.1.1.</b> Hello, world!</a>
+</li>
+<li><a  href='hello-cargo.html'><b>2.1.2.</b> Hello, cargo!</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div id='page-wrapper'>
+<div id='page'>
+
+
+    <h1 class="title">Hello, world!</h1>
+    <p>これまでで、Rustのインストールが完了しました。
+早速、初めてのプログラムを書いてみましょう。
+どの様なプログラミング言語でも、最初のプログラムでは画面に&quot;Hello, world!&quot;と表示するのが伝統的な流儀です。
+コンパイラのインストールを確認するだけでなく、正しく動作する事を確認するために、この様な簡単なプログラムから始めましょう。
+また、画面に何かを表示するというのは良くある仕事です。</p>
+
+<p>まず最初に、コードを記述するファイルを作成するします。
+<code>project</code>ディレクトリの様な物を作成し、プロジェクトに関連するファイルは全てそのディレクトリに入れておくのが好ましい方法ですが、Rust自身は、どこにでもソースファイルを置けます。</p>
+
+<p>ここで、1つ忠告して置きます。
+このガイドは、コマンドラインの基本的な操作に慣れている事を要求します。
+Rust自身は、どの様な編集ツールを使おうが構いません。
+もし、IDEを好むなら、<a href="solidoak">SolidOak</a>を使っても良いですし、好みのIDEにプラグインを導入するのも良いでしょう。
+それぞれのコミュニティ毎に、様々な拡張機能があるでしょう。
+また、Rustチームは様々なエディタ向けの<a href="plugins">プラグイン</a>も提供しています。
+エディタやIDEの設定は、このチュートリアルの範囲外です。</p>
+
+<p>それではプロジェクトディレクトリを作ってみましょう。</p>
+
+<pre><code class="language-bash">$ mkdir ~/projects
+$ cd ~/projects
+$ mkdir hello_world
+$ cd hello_world
+</code></pre>
+
+<p>もし、WindowsでPowerShellを使っていないのならば、<code>~</code>は正しく動作しないでしょう。
+それぞれのシェルの仕様に従ってください。</p>
+
+<p>それでは、新しいソースファイルを作ります。
+まずは<code>main.rs</code>と名付けましょう。
+Rustのソースファイル名はいつも<code>.rs</code>拡張子で終わります。
+ファイル名が複数の単語を含む場合は<code>hello_world.rs</code>の様に<code>_</code>で連結するのが良いでしょう。</p>
+
+<p>ファイルを開き、この様にタイプして下さい。</p>
+<span class='rusttest'>fn main() {
+    println!(&quot;Hello, world!&quot;);
+}
+</span><pre class='rust rust-example-rendered'>
+<span class='kw'>fn</span> <span class='ident'>main</span>() {
+    <span class='macro'>println</span><span class='macro'>!</span>(<span class='string'>&quot;Hello, world!&quot;</span>);
+}</pre>
+
+<p>ファイルを保存し、この様にターミナルにタイプして下さい。</p>
+
+<pre><code class="language-bash">$ rustc main.rs
+$ ./main # or main.exe on Windows
+Hello, world!
+</code></pre>
+
+<p>成功です！
+それでは何が起きたのか詳しく見てみましょう。</p>
+<span class='rusttest'>fn main() {
+
+}
+</span><pre class='rust rust-example-rendered'>
+<span class='kw'>fn</span> <span class='ident'>main</span>() {
+
+}</pre>
+
+<p>これらの行は、Rustの*関数(function)}*を定義しています。
+<code>main</code>関数は特別です。
+全てのRustプログラムは<code>main</code>関数から始まります。
+最初の行は、「<code>main</code>という名前で、引数も返値も無い関数を宣言する」という意味です。
+もし引数があるならば、括弧(<code>(</code>と<code>))</code>の間に記述します。
+この関数からリターンする事は無いので、返値は省略できます。</p>
+
+<p>Rustでは関数の本体(body)は波括弧(<code>{</code>と<code>}</code>)の中に記述されます。
+また、関数宣言の後にスペースを一つ置いてから、同じ行に最初の波括弧を置くのが良い記述法だと考えられています。</p>
+
+<p>次はこの行です。</p>
+<span class='rusttest'>fn main() {
+        println!(&quot;Hello, world!&quot;);
+    
+}</span><pre class='rust rust-example-rendered'>
+    <span class='macro'>println</span><span class='macro'>!</span>(<span class='string'>&quot;Hello, world!&quot;</span>);</pre>
+
+<p>この行が、この小さなプログラムの全てです。
+ここにはいくつも重要な事があります。
+まず、タブでは無く4つの空白によってインデントされています。
+インデントにはタブ文字では無く、空白を使用する方が好ましい作法です。
+タブキーの打鍵によって、空白が挿入される様に、エディタの設定を行う事をお勧めします。
+様々なエディタでの<a href="configs">設定方法</a>も提供しています。</p>
+
+<p>次は<code>println!()</code>の部分です。
+これはRustの<a href="macros.html">マクロ(macro)</a>であり、Rustにおけるメタプログラミングの手段です。
+もしれこれが、関数であったのなら、<code>println()</code>の様に書かれるはずです。
+今の所は、マクロと関数の違いについては詳しく知る必要はありません。
+ここでは<code>!</code>を見たら、それは関数では無く、マクロの呼び出しである事を覚えておいてください。
+ここで、1つ注意して欲しいのは、RustのマクロはC言語のマクロとは全く異なります。
+ですので、マクロを使う事を恐れないで下さい。</p>
+
+<p>次に、<code>&quot;Hello, world!&quot;</code>は、&#39;文字列(string)&#39;です。
+システムプログラミング言語において、文字列は非常にやっかいです。
+ここでの文字列は、&#39;静的アロケート&#39;された文字列です。
+アロケーションについての詳細は<a href="allocation">スタックとヒープ</a>のページに有ります。
+差し当たりは、興味がなければ読む必要は有りません。
+この文字列を<code>println!</code>の引数として渡し、このマクロが文字列を画面に表示します。
+簡単ですね！</p>
+
+<p>行はセミコロン(<code>;</code>)で終わります。
+Rustは、<a href="glossary,html#expression-oriented-language">式(expression)指向言語</a>であり、ほとんどの構文要素は式で、文(statement)ではありません。
+<code>;</code>は、式が終わった事を示します。
+Rustのほとんどの行は<code>;</code>で終わります。</p>
+
+<p>最後に、実際にプログラムをコンパイルし、実行します。
+<code>rustc</code>にソースファイルの名前を渡す事で、コンパイルできます。</p>
+
+<pre><code class="language-bash">$ rustc main.rs
+</code></pre>
+
+<p>CやC++の知識があれば、これは<code>gcc</code>や<code>clang</code>に似ています。
+Rustは実行可能なバイナリを出力します。</p>
+
+<pre><code class="language-bash">$ ls
+main main.rs
+</code></pre>
+
+<p>Windowsでは</p>
+
+<pre><code class="language-bash">$ dir
+main.exe main.rs
+</code></pre>
+
+<p>ここには2つのファイルがあり、1つは<code>.rs</code>拡張子を持つソースファイルで、もう1つは、実行ファイルです。</p>
+
+<pre><code class="language-bash">$ ./main # or main.exe on Windows
+</code></pre>
+
+<p>このプログラムはターミナルに<code>Hello, world!</code>と表示します。</p>
+
+<p>もし、あなたがRuby、Python、Javascriptの様な動的プログラミング言語から来たのなら、コンパイルと実行が2ステップに分かれているのに慣れていないかもしれません。
+Rustは&#39;事前コンパイル言語&#39;であり、プログラムをコンパイルする事ができます。
+プログラムのユーザーは、Rustをインストールする必要は有りません。
+Ruby、Python、Javascriptの様な動的プログラミング言語では、配布されたソースファイルを実行するには、ソースファイルを実行する実装を持っている必要がありますが、コンパイルと実行を同時に行えます。
+プログラミング言語のデザインにおいて、全てにはトレードオフがあり、RustにはRustの選択があるのです。</p>
+
+<p>おめでとう！
+あなたは、公式に、Rustプログラムを書きました。
+つまり、あなたはすでにRustプログラマーです！
+ようこそ、Rustの世界へ！</p>
+
+<p>次に、もう一つのツール、Cargoを導入します。
+Cargoは、実際のRustプログラミングの現場で使われています。
+<code>rustc</code>だけで簡単なプログラムは書けますが、プロジェクトが成長するにつれ、プロジェクト管理やプロジェクトを共有するための手段が欲しくなってきます。</p>
+
+    <script type="text/javascript">
+        window.playgroundUrl = "https://play.rust-lang.org";
+    </script>
+    <script src='rustbook.js'></script>
+<script src='playpen.js'></script>
+</div></div>
+
+
+</body>
+</html>

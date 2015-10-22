@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <title>Getting Started</title>
+    <title>Hello, Cargo!</title>
 
     <link rel="stylesheet" type="text/css" href="rustbook.css">
 
@@ -37,13 +37,13 @@
 <ul class='chapter'>
 <li><a  href='README.html'><b>1.</b> Introduction</a>
 </li>
-<li><a class='active' href='getting-started.html'><b>2.</b> 始めに</a>
+<li><a  href='getting-started.html'><b>2.</b> 始めに</a>
 <ul class='section'>
 <li><a  href='installing-rust.html'><b>2.1.</b> インストール</a>
 <ul class='section'>
 <li><a  href='hello-world.html'><b>2.1.1.</b> Hello, world!</a>
 </li>
-<li><a  href='hello-cargo.html'><b>2.1.2.</b> Hello, cargo!</a>
+<li><a class='active' href='hello-cargo.html'><b>2.1.2.</b> Hello, cargo!</a>
 </li>
 </ul>
 </li>
@@ -55,11 +55,21 @@
 <div id='page'>
 
 
-    <h1 class="title">Getting Started</h1>
-    <p>このセクションでは、Rustと関連したツールの立ち上げを行います。
-まず、Rustをインストールし、&quot;Hello World&quot;プログラムを試します。
-最後はRustのビルドシステム/パッケージマネージャであるCargoについてです。</p>
+    <h1 class="title">Hello, Cargo!</h1>
+    <p><a href="http://doc.crates.io">Cargo</a>は、RustaceansがRustプロジェクトを管理するために使うツールです。
+Cargoは今の所、バージョン1.0未満で、まだまだ開発中の状態です。
+しかしながら、多くのRustプロジェクトを管理するためには、すでにほぼ十分ですので、Rustプロジェクトは最初からCargoを使う事を想定されています。</p>
 
+<p>Cargoは3つの事を行います。
+コードのビルド、依存パッケージのダウンロード、依存パッケージのビルドです。
+まずは、依存性を持たないプログラムを扱い、後から依存性を追加します。
+Cargoでは、後から依存性を追加するのも非常に容易です。</p>
+
+<p>もし、Rustを公式のインストーラから導入した場合、Cargoも導入されています。
+他の方法でRustを導入した場合、<a href="https://github.com/rust-lang/cargo#installing-cargo-from-nightlies">Cargo README</a>を確認して下さい。</p>
+
+<h2 id="cargoへの変換" class='section-header'><a
+                           href="#cargoへの変換">Cargoへの変換</a></h2>
     <script type="text/javascript">
         window.playgroundUrl = "https://play.rust-lang.org";
     </script>
