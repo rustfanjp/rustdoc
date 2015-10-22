@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <title>Tokens</title>
+
+    <link rel="stylesheet" type="text/css" href="rustbook.css">
+
+    
+  <script type="text/javascript" src="../share/jquery-2.1.0.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="../share/rust.css">
+
+
+
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+  <div id="nav">
+    <button id="toggle-nav">
+    <span class="sr-only">Toggle navigation</span>
+    <span class="bar"></span>
+    <span class="bar"></span>
+    <span class="bar"></span>
+  </button>
+</div>
+
+<div id='toc' class='mobile-hidden'>
+<ul class='chapter'>
+<li><a  href='README.html'><b>1.</b> Introduction</a>
+</li>
+<li><a  href='introduction.html'><b>2.</b> Introduction</a>
+</li>
+<li><a  href='notation.html'><b>3.</b> Notation</a>
+<ul class='section'>
+<li><a  href='unicode-productions.html'><b>3.1.</b> Unicode productions</a>
+</li>
+<li><a  href='string-table-productions.html'><b>3.2.</b> String table productions</a>
+</li>
+</ul>
+</li>
+<li><a  href='lexical-structure.html'><b>4.</b> Lexical structure</a>
+<ul class='section'>
+<li><a  href='input-format.html'><b>4.1.</b> Input format</a>
+</li>
+<li><a  href='identifiers.html'><b>4.2.</b> Identifiers</a>
+</li>
+<li><a  href='comments.html'><b>4.3.</b> Comments</a>
+</li>
+<li><a  href='whitespace.html'><b>4.4.</b> Whitespace</a>
+</li>
+<li><a class='active' href='tokens.html'><b>4.5.</b> Tokens</a>
+<ul class='section'>
+<li><a  href='literals.html'><b>4.5.1.</b> Literals</a>
+<ul class='section'>
+<li><a  href='examples.html'><b>4.5.1.1.</b> Examples</a>
+<ul class='section'>
+<li><a  href='characters-and-strings.html'><b>4.5.1.1.1.</b> Characters and strings</a>
+</li>
+<li><a  href='byte-escapes.html'><b>4.5.1.1.2.</b> Byte escapes</a>
+</li>
+<li><a  href='unicode-escapes.html'><b>4.5.1.1.3.</b> Unicode escapes</a>
+</li>
+<li><a  href='numbers.html'><b>4.5.1.1.4.</b> Numbers</a>
+</li>
+<li><a  href='suffixes.html'><b>4.5.1.1.5.</b> Suffixes</a>
+</li>
+</ul>
+</li>
+<li><a  href='character-and-string-literals.html'><b>4.5.1.2.</b> Character and string literals</a>
+<ul class='section'>
+<li><a  href='character-literals.html'><b>4.5.1.2.1.</b> Character literals</a>
+</li>
+<li><a  href='string-literals.html'><b>4.5.1.2.2.</b> String literals</a>
+</li>
+<li><a  href='character-escapes.html'><b>4.5.1.2.3.</b> Character escapes</a>
+</li>
+<li><a  href='raw-string-literals.html'><b>4.5.1.2.4.</b> Raw string literals</a>
+</li>
+</ul>
+</li>
+<li><a  href='byte-and-byte-string-literals.html'><b>4.5.1.3.</b> Byte and byte string literals</a>
+<ul class='section'>
+<li><a  href='byte-literals.html'><b>4.5.1.3.1.</b> Byte literals</a>
+</li>
+<li><a  href='byte-string-literals.html'><b>4.5.1.3.2.</b> Byte string literals</a>
+</li>
+<li><a  href='raw-byte-string-literals.html'><b>4.5.1.3.3.</b> Raw byte string literals</a>
+</li>
+</ul>
+</li>
+<li><a  href='number-literals.html'><b>4.5.1.4.</b> Number literals</a>
+<ul class='section'>
+<li><a  href='integer-literals.html'><b>4.5.1.4.1.</b> Integer literals</a>
+</li>
+<li><a  href='floating-point-literals.html'><b>4.5.1.4.2.</b> Floating-point literals</a>
+</li>
+</ul>
+</li>
+<li><a  href='boolean-literals.html'><b>4.5.1.5.</b> Boolean literals</a>
+</li>
+</ul>
+</li>
+<li><a  href='symbols.html'><b>4.5.2.</b> Symbols</a>
+</li>
+</ul>
+</li>
+<li><a  href='paths.html'><b>4.6.</b> Paths</a>
+</li>
+</ul>
+</li>
+<li><a  href='syntax-extensions.html'><b>5.</b> Syntax extensions</a>
+<ul class='section'>
+<li><a  href='macros.html'><b>5.1.</b> Macros</a>
+<ul class='section'>
+<li><a  href='macro-by-example.html'><b>5.1.1.</b> Macro By Example</a>
+</li>
+<li><a  href='parsing-limitations.html'><b>5.1.2.</b> Parsing limitations</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a  href='crates-and-source-files.html'><b>6.</b> Crates and source files</a>
+</li>
+<li><a  href='items-and-attributes.html'><b>7.</b> Items and attributes</a>
+<ul class='section'>
+<li><a  href='items.html'><b>7.1.</b> Items</a>
+<ul class='section'>
+<li><a  href='type-parameters.html'><b>7.1.1.</b> Type Parameters</a>
+</li>
+<li><a  href='modules.html'><b>7.1.2.</b> Modules</a>
+<ul class='section'>
+<li><a  href='extern-crate-declarations.html'><b>7.1.2.1.</b> Extern crate declarations</a>
+</li>
+<li><a  href='use-declarations.html'><b>7.1.2.2.</b> Use declarations</a>
+</li>
+</ul>
+</li>
+<li><a  href='functions.html'><b>7.1.3.</b> Functions</a>
+<ul class='section'>
+<li><a  href='generic-functions.html'><b>7.1.3.1.</b> Generic functions</a>
+</li>
+<li><a  href='unsafety.html'><b>7.1.3.2.</b> Unsafety</a>
+<ul class='section'>
+<li><a  href='unsafe-functions.html'><b>7.1.3.2.1.</b> Unsafe functions</a>
+</li>
+<li><a  href='unsafe-blocks.html'><b>7.1.3.2.2.</b> Unsafe blocks</a>
+</li>
+<li><a  href='behavior-considered-undefined.html'><b>7.1.3.2.3.</b> Behavior considered undefined</a>
+</li>
+<li><a  href='behavior-not-considered-unsafe.html'><b>7.1.3.2.4.</b> Behavior not considered unsafe</a>
+</li>
+</ul>
+</li>
+<li><a  href='diverging-functions.html'><b>7.1.3.3.</b> Diverging functions</a>
+</li>
+<li><a  href='extern-functions.html'><b>7.1.3.4.</b> Extern functions</a>
+</li>
+</ul>
+</li>
+<li><a  href='type-aliases.html'><b>7.1.4.</b> Type aliases</a>
+</li>
+<li><a  href='structures.html'><b>7.1.5.</b> Structures</a>
+</li>
+<li><a  href='enumerations.html'><b>7.1.6.</b> Enumerations</a>
+</li>
+<li><a  href='constant-items.html'><b>7.1.7.</b> Constant items</a>
+</li>
+<li><a  href='static-items.html'><b>7.1.8.</b> Static items</a>
+<ul class='section'>
+<li><a  href='mutable-statics.html'><b>7.1.8.1.</b> Mutable statics</a>
+</li>
+</ul>
+</li>
+<li><a  href='traits.html'><b>7.1.9.</b> Traits</a>
+</li>
+<li><a  href='implementations.html'><b>7.1.10.</b> Implementations</a>
+</li>
+<li><a  href='external-blocks.html'><b>7.1.11.</b> External blocks</a>
+</li>
+</ul>
+</li>
+<li><a  href='visibility-and-privacy.html'><b>7.2.</b> Visibility and Privacy</a>
+<ul class='section'>
+<li><a  href='re-exporting-and-visibility.html'><b>7.2.1.</b> Re-exporting and Visibility</a>
+</li>
+</ul>
+</li>
+<li><a  href='attributes.html'><b>7.3.</b> Attributes</a>
+<ul class='section'>
+<li><a  href='crate-only-attributes.html'><b>7.3.1.</b> Crate-only attributes</a>
+</li>
+<li><a  href='module-only-attributes.html'><b>7.3.2.</b> Module-only attributes</a>
+</li>
+<li><a  href='function-only-attributes.html'><b>7.3.3.</b> Function-only attributes</a>
+</li>
+<li><a  href='static-only-attributes.html'><b>7.3.4.</b> Static-only attributes</a>
+</li>
+<li><a  href='ffi-attributes.html'><b>7.3.5.</b> FFI attributes</a>
+</li>
+<li><a  href='macro-related-attributes.html'><b>7.3.6.</b> Macro-related attributes</a>
+</li>
+<li><a  href='miscellaneous-attributes.html'><b>7.3.7.</b> Miscellaneous attributes</a>
+</li>
+<li><a  href='conditional-compilation.html'><b>7.3.8.</b> Conditional compilation</a>
+</li>
+<li><a  href='lint-check-attributes.html'><b>7.3.9.</b> Lint check attributes</a>
+</li>
+<li><a  href='language-items.html'><b>7.3.10.</b> Language items</a>
+</li>
+<li><a  href='inline-attributes.html'><b>7.3.11.</b> Inline attributes</a>
+</li>
+<li><a  href='derive.html'><b>7.3.12.</b> `derive`</a>
+</li>
+<li><a  href='compiler-features.html'><b>7.3.13.</b> Compiler Features</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a  href='statements-and-expressions.html'><b>8.</b> Statements and expressions</a>
+<ul class='section'>
+<li><a  href='statements.html'><b>8.1.</b> Statements</a>
+<ul class='section'>
+<li><a  href='declaration-statements.html'><b>8.1.1.</b> Declaration statements</a>
+<ul class='section'>
+<li><a  href='item-declarations.html'><b>8.1.1.1.</b> Item declarations</a>
+</li>
+<li><a  href='variable-declarations.html'><b>8.1.1.2.</b> Variable declarations</a>
+</li>
+</ul>
+</li>
+<li><a  href='expression-statements.html'><b>8.1.2.</b> Expression statements</a>
+</li>
+</ul>
+</li>
+<li><a  href='expressions.html'><b>8.2.</b> Expressions</a>
+<ul class='section'>
+<li><a  href='lvalues-rvalues-and-temporaries.html'><b>8.2.1.</b> Lvalues, rvalues and temporaries</a>
+</li>
+<li><a  href='temporary-lifetimes.html'><b>8.2.2.</b> Temporary lifetimes</a>
+</li>
+<li><a  href='moved-and-copied-types.html'><b>8.2.3.</b> Moved and copied types</a>
+</li>
+<li><a  href='literal-expressions.html'><b>8.2.4.</b> Literal expressions</a>
+</li>
+<li><a  href='path-expressions.html'><b>8.2.5.</b> Path expressions</a>
+</li>
+<li><a  href='tuple-expressions.html'><b>8.2.6.</b> Tuple expressions</a>
+</li>
+<li><a  href='structure-expressions.html'><b>8.2.7.</b> Structure expressions</a>
+</li>
+<li><a  href='block-expressions.html'><b>8.2.8.</b> Block expressions</a>
+</li>
+<li><a  href='method-call-expressions.html'><b>8.2.9.</b> Method-call expressions</a>
+</li>
+<li><a  href='field-expressions.html'><b>8.2.10.</b> Field expressions</a>
+</li>
+<li><a  href='array-expressions.html'><b>8.2.11.</b> Array expressions</a>
+</li>
+<li><a  href='index-expressions.html'><b>8.2.12.</b> Index expressions</a>
+</li>
+<li><a  href='range-expressions.html'><b>8.2.13.</b> Range expressions</a>
+</li>
+<li><a  href='unary-operator-expressions.html'><b>8.2.14.</b> Unary operator expressions</a>
+</li>
+<li><a  href='binary-operator-expressions.html'><b>8.2.15.</b> Binary operator expressions</a>
+<ul class='section'>
+<li><a  href='arithmetic-operators.html'><b>8.2.15.1.</b> Arithmetic operators</a>
+</li>
+<li><a  href='bitwise-operators.html'><b>8.2.15.2.</b> Bitwise operators</a>
+</li>
+<li><a  href='lazy-boolean-operators.html'><b>8.2.15.3.</b> Lazy boolean operators</a>
+</li>
+<li><a  href='comparison-operators.html'><b>8.2.15.4.</b> Comparison operators</a>
+</li>
+<li><a  href='type-cast-expressions.html'><b>8.2.15.5.</b> Type cast expressions</a>
+</li>
+<li><a  href='assignment-expressions.html'><b>8.2.15.6.</b> Assignment expressions</a>
+</li>
+<li><a  href='compound-assignment-expressions.html'><b>8.2.15.7.</b> Compound assignment expressions</a>
+</li>
+<li><a  href='operator-precedence.html'><b>8.2.15.8.</b> Operator precedence</a>
+</li>
+</ul>
+</li>
+<li><a  href='grouped-expressions.html'><b>8.2.16.</b> Grouped expressions</a>
+</li>
+<li><a  href='call-expressions.html'><b>8.2.17.</b> Call expressions</a>
+</li>
+<li><a  href='lambda-expressions.html'><b>8.2.18.</b> Lambda expressions</a>
+</li>
+<li><a  href='infinite-loops.html'><b>8.2.19.</b> Infinite loops</a>
+</li>
+<li><a  href='break-expressions.html'><b>8.2.20.</b> Break expressions</a>
+</li>
+<li><a  href='continue-expressions.html'><b>8.2.21.</b> Continue expressions</a>
+</li>
+<li><a  href='while-loops.html'><b>8.2.22.</b> While loops</a>
+</li>
+<li><a  href='for-expressions.html'><b>8.2.23.</b> For expressions</a>
+</li>
+<li><a  href='if-expressions.html'><b>8.2.24.</b> If expressions</a>
+</li>
+<li><a  href='match-expressions.html'><b>8.2.25.</b> Match expressions</a>
+</li>
+<li><a  href='if-let-expressions.html'><b>8.2.26.</b> If let expressions</a>
+</li>
+<li><a  href='while-let-loops.html'><b>8.2.27.</b> While let loops</a>
+</li>
+<li><a  href='return-expressions.html'><b>8.2.28.</b> Return expressions</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a  href='type-system.html'><b>9.</b> Type system</a>
+<ul class='section'>
+<li><a  href='types.html'><b>9.1.</b> Types</a>
+<ul class='section'>
+<li><a  href='primitive-types.html'><b>9.1.1.</b> Primitive types</a>
+<ul class='section'>
+<li><a  href='machine-types.html'><b>9.1.1.1.</b> Machine types</a>
+</li>
+<li><a  href='machine-dependent-integer-types.html'><b>9.1.1.2.</b> Machine-dependent integer types</a>
+</li>
+</ul>
+</li>
+<li><a  href='textual-types.html'><b>9.1.2.</b> Textual types</a>
+</li>
+<li><a  href='tuple-types.html'><b>9.1.3.</b> Tuple types</a>
+</li>
+<li><a  href='array-and-slice-types.html'><b>9.1.4.</b> Array, and Slice types</a>
+</li>
+<li><a  href='structure-types.html'><b>9.1.5.</b> Structure types</a>
+</li>
+<li><a  href='enumerated-types.html'><b>9.1.6.</b> Enumerated types</a>
+</li>
+<li><a  href='recursive-types.html'><b>9.1.7.</b> Recursive types</a>
+</li>
+<li><a  href='pointer-types.html'><b>9.1.8.</b> Pointer types</a>
+</li>
+<li><a  href='function-types.html'><b>9.1.9.</b> Function types</a>
+<ul class='section'>
+<li><a  href='function-types-for-specific-items.html'><b>9.1.9.1.</b> Function types for specific items</a>
+</li>
+</ul>
+</li>
+<li><a  href='closure-types.html'><b>9.1.10.</b> Closure types</a>
+</li>
+<li><a  href='trait-objects.html'><b>9.1.11.</b> Trait objects</a>
+</li>
+<li><a  href='type-parameters.html'><b>9.1.12.</b> Type parameters</a>
+</li>
+<li><a  href='self-types.html'><b>9.1.13.</b> Self types</a>
+</li>
+</ul>
+</li>
+<li><a  href='subtyping.html'><b>9.2.</b> Subtyping</a>
+</li>
+<li><a  href='type-coercions.html'><b>9.3.</b> Type coercions</a>
+<ul class='section'>
+<li><a  href='coercion-sites.html'><b>9.3.1.</b> Coercion sites</a>
+</li>
+<li><a  href='coercion-types.html'><b>9.3.2.</b> Coercion types</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a  href='special-traits.html'><b>10.</b> Special traits</a>
+<ul class='section'>
+<li><a  href='the-copy-trait.html'><b>10.1.</b> The `Copy` trait</a>
+</li>
+<li><a  href='the-sized-trait.html'><b>10.2.</b> The `Sized` trait</a>
+</li>
+<li><a  href='the-drop-trait.html'><b>10.3.</b> The `Drop` trait</a>
+</li>
+<li><a  href='the-deref-trait.html'><b>10.4.</b> The `Deref` trait</a>
+</li>
+</ul>
+</li>
+<li><a  href='memory-model.html'><b>11.</b> Memory model</a>
+<ul class='section'>
+<li><a  href='memory-allocation-and-lifetime.html'><b>11.1.</b> Memory allocation and lifetime</a>
+</li>
+<li><a  href='memory-ownership.html'><b>11.2.</b> Memory ownership</a>
+</li>
+<li><a  href='variables.html'><b>11.3.</b> Variables</a>
+</li>
+</ul>
+</li>
+<li><a  href='linkage.html'><b>12.</b> Linkage</a>
+</li>
+<li><a  href='appendix-rationales-and-design-trade-offs.html'><b>13.</b> Appendix: Rationales and design trade-offs</a>
+</li>
+<li><a  href='appendix-influences.html'><b>14.</b> Appendix: Influences</a>
+</li>
+</ul>
+</div>
+<div id='page-wrapper'>
+<div id='page'>
+
+
+    <h1 class="title">Tokens</h1>
+    
+<h2 id="tokens" class='section-header'><a
+                           href="#tokens">Tokens</a></h2>
+<p>Tokens are primitive productions in the grammar defined by regular
+(non-recursive) languages. &quot;Simple&quot; tokens are given in <a href="#string-table-productions">string table
+production</a> form, and occur in the rest of the
+grammar as double-quoted strings. Other tokens have exact rules given.</p>
+
+    <script type="text/javascript">
+        window.playgroundUrl = "https://play.rust-lang.org";
+    </script>
+    <script src='rustbook.js'></script>
+<script src='playpen.js'></script>
+</div></div>
+
+
+</body>
+</html>

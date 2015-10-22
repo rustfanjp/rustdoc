@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <title>Linkage</title>
+
+    <link rel="stylesheet" type="text/css" href="rustbook.css">
+
+    
+  <script type="text/javascript" src="../share/jquery-2.1.0.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="../share/rust.css">
+
+
+
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+  <div id="nav">
+    <button id="toggle-nav">
+    <span class="sr-only">Toggle navigation</span>
+    <span class="bar"></span>
+    <span class="bar"></span>
+    <span class="bar"></span>
+  </button>
+</div>
+
+<div id='toc' class='mobile-hidden'>
+<ul class='chapter'>
+<li><a  href='README.html'><b>1.</b> Introduction</a>
+</li>
+<li><a  href='introduction.html'><b>2.</b> Introduction</a>
+</li>
+<li><a  href='notation.html'><b>3.</b> Notation</a>
+<ul class='section'>
+<li><a  href='unicode-productions.html'><b>3.1.</b> Unicode productions</a>
+</li>
+<li><a  href='string-table-productions.html'><b>3.2.</b> String table productions</a>
+</li>
+</ul>
+</li>
+<li><a  href='lexical-structure.html'><b>4.</b> Lexical structure</a>
+<ul class='section'>
+<li><a  href='input-format.html'><b>4.1.</b> Input format</a>
+</li>
+<li><a  href='identifiers.html'><b>4.2.</b> Identifiers</a>
+</li>
+<li><a  href='comments.html'><b>4.3.</b> Comments</a>
+</li>
+<li><a  href='whitespace.html'><b>4.4.</b> Whitespace</a>
+</li>
+<li><a  href='tokens.html'><b>4.5.</b> Tokens</a>
+<ul class='section'>
+<li><a  href='literals.html'><b>4.5.1.</b> Literals</a>
+<ul class='section'>
+<li><a  href='examples.html'><b>4.5.1.1.</b> Examples</a>
+<ul class='section'>
+<li><a  href='characters-and-strings.html'><b>4.5.1.1.1.</b> Characters and strings</a>
+</li>
+<li><a  href='byte-escapes.html'><b>4.5.1.1.2.</b> Byte escapes</a>
+</li>
+<li><a  href='unicode-escapes.html'><b>4.5.1.1.3.</b> Unicode escapes</a>
+</li>
+<li><a  href='numbers.html'><b>4.5.1.1.4.</b> Numbers</a>
+</li>
+<li><a  href='suffixes.html'><b>4.5.1.1.5.</b> Suffixes</a>
+</li>
+</ul>
+</li>
+<li><a  href='character-and-string-literals.html'><b>4.5.1.2.</b> Character and string literals</a>
+<ul class='section'>
+<li><a  href='character-literals.html'><b>4.5.1.2.1.</b> Character literals</a>
+</li>
+<li><a  href='string-literals.html'><b>4.5.1.2.2.</b> String literals</a>
+</li>
+<li><a  href='character-escapes.html'><b>4.5.1.2.3.</b> Character escapes</a>
+</li>
+<li><a  href='raw-string-literals.html'><b>4.5.1.2.4.</b> Raw string literals</a>
+</li>
+</ul>
+</li>
+<li><a  href='byte-and-byte-string-literals.html'><b>4.5.1.3.</b> Byte and byte string literals</a>
+<ul class='section'>
+<li><a  href='byte-literals.html'><b>4.5.1.3.1.</b> Byte literals</a>
+</li>
+<li><a  href='byte-string-literals.html'><b>4.5.1.3.2.</b> Byte string literals</a>
+</li>
+<li><a  href='raw-byte-string-literals.html'><b>4.5.1.3.3.</b> Raw byte string literals</a>
+</li>
+</ul>
+</li>
+<li><a  href='number-literals.html'><b>4.5.1.4.</b> Number literals</a>
+<ul class='section'>
+<li><a  href='integer-literals.html'><b>4.5.1.4.1.</b> Integer literals</a>
+</li>
+<li><a  href='floating-point-literals.html'><b>4.5.1.4.2.</b> Floating-point literals</a>
+</li>
+</ul>
+</li>
+<li><a  href='boolean-literals.html'><b>4.5.1.5.</b> Boolean literals</a>
+</li>
+</ul>
+</li>
+<li><a  href='symbols.html'><b>4.5.2.</b> Symbols</a>
+</li>
+</ul>
+</li>
+<li><a  href='paths.html'><b>4.6.</b> Paths</a>
+</li>
+</ul>
+</li>
+<li><a  href='syntax-extensions.html'><b>5.</b> Syntax extensions</a>
+<ul class='section'>
+<li><a  href='macros.html'><b>5.1.</b> Macros</a>
+<ul class='section'>
+<li><a  href='macro-by-example.html'><b>5.1.1.</b> Macro By Example</a>
+</li>
+<li><a  href='parsing-limitations.html'><b>5.1.2.</b> Parsing limitations</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a  href='crates-and-source-files.html'><b>6.</b> Crates and source files</a>
+</li>
+<li><a  href='items-and-attributes.html'><b>7.</b> Items and attributes</a>
+<ul class='section'>
+<li><a  href='items.html'><b>7.1.</b> Items</a>
+<ul class='section'>
+<li><a  href='type-parameters.html'><b>7.1.1.</b> Type Parameters</a>
+</li>
+<li><a  href='modules.html'><b>7.1.2.</b> Modules</a>
+<ul class='section'>
+<li><a  href='extern-crate-declarations.html'><b>7.1.2.1.</b> Extern crate declarations</a>
+</li>
+<li><a  href='use-declarations.html'><b>7.1.2.2.</b> Use declarations</a>
+</li>
+</ul>
+</li>
+<li><a  href='functions.html'><b>7.1.3.</b> Functions</a>
+<ul class='section'>
+<li><a  href='generic-functions.html'><b>7.1.3.1.</b> Generic functions</a>
+</li>
+<li><a  href='unsafety.html'><b>7.1.3.2.</b> Unsafety</a>
+<ul class='section'>
+<li><a  href='unsafe-functions.html'><b>7.1.3.2.1.</b> Unsafe functions</a>
+</li>
+<li><a  href='unsafe-blocks.html'><b>7.1.3.2.2.</b> Unsafe blocks</a>
+</li>
+<li><a  href='behavior-considered-undefined.html'><b>7.1.3.2.3.</b> Behavior considered undefined</a>
+</li>
+<li><a  href='behavior-not-considered-unsafe.html'><b>7.1.3.2.4.</b> Behavior not considered unsafe</a>
+</li>
+</ul>
+</li>
+<li><a  href='diverging-functions.html'><b>7.1.3.3.</b> Diverging functions</a>
+</li>
+<li><a  href='extern-functions.html'><b>7.1.3.4.</b> Extern functions</a>
+</li>
+</ul>
+</li>
+<li><a  href='type-aliases.html'><b>7.1.4.</b> Type aliases</a>
+</li>
+<li><a  href='structures.html'><b>7.1.5.</b> Structures</a>
+</li>
+<li><a  href='enumerations.html'><b>7.1.6.</b> Enumerations</a>
+</li>
+<li><a  href='constant-items.html'><b>7.1.7.</b> Constant items</a>
+</li>
+<li><a  href='static-items.html'><b>7.1.8.</b> Static items</a>
+<ul class='section'>
+<li><a  href='mutable-statics.html'><b>7.1.8.1.</b> Mutable statics</a>
+</li>
+</ul>
+</li>
+<li><a  href='traits.html'><b>7.1.9.</b> Traits</a>
+</li>
+<li><a  href='implementations.html'><b>7.1.10.</b> Implementations</a>
+</li>
+<li><a  href='external-blocks.html'><b>7.1.11.</b> External blocks</a>
+</li>
+</ul>
+</li>
+<li><a  href='visibility-and-privacy.html'><b>7.2.</b> Visibility and Privacy</a>
+<ul class='section'>
+<li><a  href='re-exporting-and-visibility.html'><b>7.2.1.</b> Re-exporting and Visibility</a>
+</li>
+</ul>
+</li>
+<li><a  href='attributes.html'><b>7.3.</b> Attributes</a>
+<ul class='section'>
+<li><a  href='crate-only-attributes.html'><b>7.3.1.</b> Crate-only attributes</a>
+</li>
+<li><a  href='module-only-attributes.html'><b>7.3.2.</b> Module-only attributes</a>
+</li>
+<li><a  href='function-only-attributes.html'><b>7.3.3.</b> Function-only attributes</a>
+</li>
+<li><a  href='static-only-attributes.html'><b>7.3.4.</b> Static-only attributes</a>
+</li>
+<li><a  href='ffi-attributes.html'><b>7.3.5.</b> FFI attributes</a>
+</li>
+<li><a  href='macro-related-attributes.html'><b>7.3.6.</b> Macro-related attributes</a>
+</li>
+<li><a  href='miscellaneous-attributes.html'><b>7.3.7.</b> Miscellaneous attributes</a>
+</li>
+<li><a  href='conditional-compilation.html'><b>7.3.8.</b> Conditional compilation</a>
+</li>
+<li><a  href='lint-check-attributes.html'><b>7.3.9.</b> Lint check attributes</a>
+</li>
+<li><a  href='language-items.html'><b>7.3.10.</b> Language items</a>
+</li>
+<li><a  href='inline-attributes.html'><b>7.3.11.</b> Inline attributes</a>
+</li>
+<li><a  href='derive.html'><b>7.3.12.</b> `derive`</a>
+</li>
+<li><a  href='compiler-features.html'><b>7.3.13.</b> Compiler Features</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a  href='statements-and-expressions.html'><b>8.</b> Statements and expressions</a>
+<ul class='section'>
+<li><a  href='statements.html'><b>8.1.</b> Statements</a>
+<ul class='section'>
+<li><a  href='declaration-statements.html'><b>8.1.1.</b> Declaration statements</a>
+<ul class='section'>
+<li><a  href='item-declarations.html'><b>8.1.1.1.</b> Item declarations</a>
+</li>
+<li><a  href='variable-declarations.html'><b>8.1.1.2.</b> Variable declarations</a>
+</li>
+</ul>
+</li>
+<li><a  href='expression-statements.html'><b>8.1.2.</b> Expression statements</a>
+</li>
+</ul>
+</li>
+<li><a  href='expressions.html'><b>8.2.</b> Expressions</a>
+<ul class='section'>
+<li><a  href='lvalues-rvalues-and-temporaries.html'><b>8.2.1.</b> Lvalues, rvalues and temporaries</a>
+</li>
+<li><a  href='temporary-lifetimes.html'><b>8.2.2.</b> Temporary lifetimes</a>
+</li>
+<li><a  href='moved-and-copied-types.html'><b>8.2.3.</b> Moved and copied types</a>
+</li>
+<li><a  href='literal-expressions.html'><b>8.2.4.</b> Literal expressions</a>
+</li>
+<li><a  href='path-expressions.html'><b>8.2.5.</b> Path expressions</a>
+</li>
+<li><a  href='tuple-expressions.html'><b>8.2.6.</b> Tuple expressions</a>
+</li>
+<li><a  href='structure-expressions.html'><b>8.2.7.</b> Structure expressions</a>
+</li>
+<li><a  href='block-expressions.html'><b>8.2.8.</b> Block expressions</a>
+</li>
+<li><a  href='method-call-expressions.html'><b>8.2.9.</b> Method-call expressions</a>
+</li>
+<li><a  href='field-expressions.html'><b>8.2.10.</b> Field expressions</a>
+</li>
+<li><a  href='array-expressions.html'><b>8.2.11.</b> Array expressions</a>
+</li>
+<li><a  href='index-expressions.html'><b>8.2.12.</b> Index expressions</a>
+</li>
+<li><a  href='range-expressions.html'><b>8.2.13.</b> Range expressions</a>
+</li>
+<li><a  href='unary-operator-expressions.html'><b>8.2.14.</b> Unary operator expressions</a>
+</li>
+<li><a  href='binary-operator-expressions.html'><b>8.2.15.</b> Binary operator expressions</a>
+<ul class='section'>
+<li><a  href='arithmetic-operators.html'><b>8.2.15.1.</b> Arithmetic operators</a>
+</li>
+<li><a  href='bitwise-operators.html'><b>8.2.15.2.</b> Bitwise operators</a>
+</li>
+<li><a  href='lazy-boolean-operators.html'><b>8.2.15.3.</b> Lazy boolean operators</a>
+</li>
+<li><a  href='comparison-operators.html'><b>8.2.15.4.</b> Comparison operators</a>
+</li>
+<li><a  href='type-cast-expressions.html'><b>8.2.15.5.</b> Type cast expressions</a>
+</li>
+<li><a  href='assignment-expressions.html'><b>8.2.15.6.</b> Assignment expressions</a>
+</li>
+<li><a  href='compound-assignment-expressions.html'><b>8.2.15.7.</b> Compound assignment expressions</a>
+</li>
+<li><a  href='operator-precedence.html'><b>8.2.15.8.</b> Operator precedence</a>
+</li>
+</ul>
+</li>
+<li><a  href='grouped-expressions.html'><b>8.2.16.</b> Grouped expressions</a>
+</li>
+<li><a  href='call-expressions.html'><b>8.2.17.</b> Call expressions</a>
+</li>
+<li><a  href='lambda-expressions.html'><b>8.2.18.</b> Lambda expressions</a>
+</li>
+<li><a  href='infinite-loops.html'><b>8.2.19.</b> Infinite loops</a>
+</li>
+<li><a  href='break-expressions.html'><b>8.2.20.</b> Break expressions</a>
+</li>
+<li><a  href='continue-expressions.html'><b>8.2.21.</b> Continue expressions</a>
+</li>
+<li><a  href='while-loops.html'><b>8.2.22.</b> While loops</a>
+</li>
+<li><a  href='for-expressions.html'><b>8.2.23.</b> For expressions</a>
+</li>
+<li><a  href='if-expressions.html'><b>8.2.24.</b> If expressions</a>
+</li>
+<li><a  href='match-expressions.html'><b>8.2.25.</b> Match expressions</a>
+</li>
+<li><a  href='if-let-expressions.html'><b>8.2.26.</b> If let expressions</a>
+</li>
+<li><a  href='while-let-loops.html'><b>8.2.27.</b> While let loops</a>
+</li>
+<li><a  href='return-expressions.html'><b>8.2.28.</b> Return expressions</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a  href='type-system.html'><b>9.</b> Type system</a>
+<ul class='section'>
+<li><a  href='types.html'><b>9.1.</b> Types</a>
+<ul class='section'>
+<li><a  href='primitive-types.html'><b>9.1.1.</b> Primitive types</a>
+<ul class='section'>
+<li><a  href='machine-types.html'><b>9.1.1.1.</b> Machine types</a>
+</li>
+<li><a  href='machine-dependent-integer-types.html'><b>9.1.1.2.</b> Machine-dependent integer types</a>
+</li>
+</ul>
+</li>
+<li><a  href='textual-types.html'><b>9.1.2.</b> Textual types</a>
+</li>
+<li><a  href='tuple-types.html'><b>9.1.3.</b> Tuple types</a>
+</li>
+<li><a  href='array-and-slice-types.html'><b>9.1.4.</b> Array, and Slice types</a>
+</li>
+<li><a  href='structure-types.html'><b>9.1.5.</b> Structure types</a>
+</li>
+<li><a  href='enumerated-types.html'><b>9.1.6.</b> Enumerated types</a>
+</li>
+<li><a  href='recursive-types.html'><b>9.1.7.</b> Recursive types</a>
+</li>
+<li><a  href='pointer-types.html'><b>9.1.8.</b> Pointer types</a>
+</li>
+<li><a  href='function-types.html'><b>9.1.9.</b> Function types</a>
+<ul class='section'>
+<li><a  href='function-types-for-specific-items.html'><b>9.1.9.1.</b> Function types for specific items</a>
+</li>
+</ul>
+</li>
+<li><a  href='closure-types.html'><b>9.1.10.</b> Closure types</a>
+</li>
+<li><a  href='trait-objects.html'><b>9.1.11.</b> Trait objects</a>
+</li>
+<li><a  href='type-parameters.html'><b>9.1.12.</b> Type parameters</a>
+</li>
+<li><a  href='self-types.html'><b>9.1.13.</b> Self types</a>
+</li>
+</ul>
+</li>
+<li><a  href='subtyping.html'><b>9.2.</b> Subtyping</a>
+</li>
+<li><a  href='type-coercions.html'><b>9.3.</b> Type coercions</a>
+<ul class='section'>
+<li><a  href='coercion-sites.html'><b>9.3.1.</b> Coercion sites</a>
+</li>
+<li><a  href='coercion-types.html'><b>9.3.2.</b> Coercion types</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a  href='special-traits.html'><b>10.</b> Special traits</a>
+<ul class='section'>
+<li><a  href='the-copy-trait.html'><b>10.1.</b> The `Copy` trait</a>
+</li>
+<li><a  href='the-sized-trait.html'><b>10.2.</b> The `Sized` trait</a>
+</li>
+<li><a  href='the-drop-trait.html'><b>10.3.</b> The `Drop` trait</a>
+</li>
+<li><a  href='the-deref-trait.html'><b>10.4.</b> The `Deref` trait</a>
+</li>
+</ul>
+</li>
+<li><a  href='memory-model.html'><b>11.</b> Memory model</a>
+<ul class='section'>
+<li><a  href='memory-allocation-and-lifetime.html'><b>11.1.</b> Memory allocation and lifetime</a>
+</li>
+<li><a  href='memory-ownership.html'><b>11.2.</b> Memory ownership</a>
+</li>
+<li><a  href='variables.html'><b>11.3.</b> Variables</a>
+</li>
+</ul>
+</li>
+<li><a class='active' href='linkage.html'><b>12.</b> Linkage</a>
+</li>
+<li><a  href='appendix-rationales-and-design-trade-offs.html'><b>13.</b> Appendix: Rationales and design trade-offs</a>
+</li>
+<li><a  href='appendix-influences.html'><b>14.</b> Appendix: Influences</a>
+</li>
+</ul>
+</div>
+<div id='page-wrapper'>
+<div id='page'>
+
+
+    <h1 class="title">Linkage</h1>
+    
+<h1 id="linkage" class='section-header'><a
+                           href="#linkage">Linkage</a></h1>
+<p>The Rust compiler supports various methods to link crates together both
+statically and dynamically. This section will explore the various methods to
+link Rust crates together, and more information about native libraries can be
+found in the [ffi section of the book][ffi].</p>
+
+<p>In one session of compilation, the compiler can generate multiple artifacts
+through the usage of either command line flags or the <code>crate_type</code> attribute.
+If one or more command line flag is specified, all <code>crate_type</code> attributes will
+be ignored in favor of only building the artifacts specified by command line.</p>
+
+<ul>
+<li><p><code>--crate-type=bin</code>, <code>#[crate_type = &quot;bin&quot;]</code> - A runnable executable will be
+produced. This requires that there is a <code>main</code> function in the crate which
+will be run when the program begins executing. This will link in all Rust and
+native dependencies, producing a distributable binary.</p></li>
+<li><p><code>--crate-type=lib</code>, <code>#[crate_type = &quot;lib&quot;]</code> - A Rust library will be produced.
+This is an ambiguous concept as to what exactly is produced because a library
+can manifest itself in several forms. The purpose of this generic <code>lib</code> option
+is to generate the &quot;compiler recommended&quot; style of library. The output library
+will always be usable by rustc, but the actual type of library may change from
+time-to-time. The remaining output types are all different flavors of
+libraries, and the <code>lib</code> type can be seen as an alias for one of them (but the
+actual one is compiler-defined).</p></li>
+<li><p><code>--crate-type=dylib</code>, <code>#[crate_type = &quot;dylib&quot;]</code> - A dynamic Rust library will
+be produced. This is different from the <code>lib</code> output type in that this forces
+dynamic library generation. The resulting dynamic library can be used as a
+dependency for other libraries and/or executables. This output type will
+create <code>*.so</code> files on linux, <code>*.dylib</code> files on osx, and <code>*.dll</code> files on
+windows.</p></li>
+<li><p><code>--crate-type=staticlib</code>, <code>#[crate_type = &quot;staticlib&quot;]</code> - A static system
+library will be produced. This is different from other library outputs in that
+the Rust compiler will never attempt to link to <code>staticlib</code> outputs. The
+purpose of this output type is to create a static library containing all of
+the local crate&#39;s code along with all upstream dependencies. The static
+library is actually a <code>*.a</code> archive on linux and osx and a <code>*.lib</code> file on
+windows. This format is recommended for use in situations such as linking
+Rust code into an existing non-Rust application because it will not have
+dynamic dependencies on other Rust code.</p></li>
+<li><p><code>--crate-type=rlib</code>, <code>#[crate_type = &quot;rlib&quot;]</code> - A &quot;Rust library&quot; file will be
+produced. This is used as an intermediate artifact and can be thought of as a
+&quot;static Rust library&quot;. These <code>rlib</code> files, unlike <code>staticlib</code> files, are
+interpreted by the Rust compiler in future linkage. This essentially means
+that <code>rustc</code> will look for metadata in <code>rlib</code> files like it looks for metadata
+in dynamic libraries. This form of output is used to produce statically linked
+executables as well as <code>staticlib</code> outputs.</p></li>
+</ul>
+
+<p>Note that these outputs are stackable in the sense that if multiple are
+specified, then the compiler will produce each form of output at once without
+having to recompile. However, this only applies for outputs specified by the
+same method. If only <code>crate_type</code> attributes are specified, then they will all
+be built, but if one or more <code>--crate-type</code> command line flag is specified,
+then only those outputs will be built.</p>
+
+<p>With all these different kinds of outputs, if crate A depends on crate B, then
+the compiler could find B in various different forms throughout the system. The
+only forms looked for by the compiler, however, are the <code>rlib</code> format and the
+dynamic library format. With these two options for a dependent library, the
+compiler must at some point make a choice between these two formats. With this
+in mind, the compiler follows these rules when determining what format of
+dependencies will be used:</p>
+
+<ol>
+<li><p>If a static library is being produced, all upstream dependencies are
+required to be available in <code>rlib</code> formats. This requirement stems from the
+reason that a dynamic library cannot be converted into a static format.</p>
+
+<p>Note that it is impossible to link in native dynamic dependencies to a static
+library, and in this case warnings will be printed about all unlinked native
+dynamic dependencies.</p></li>
+<li><p>If an <code>rlib</code> file is being produced, then there are no restrictions on what
+format the upstream dependencies are available in. It is simply required that
+all upstream dependencies be available for reading metadata from.</p>
+
+<p>The reason for this is that <code>rlib</code> files do not contain any of their upstream
+dependencies. It wouldn&#39;t be very efficient for all <code>rlib</code> files to contain a
+copy of <code>libstd.rlib</code>!</p></li>
+<li><p>If an executable is being produced and the <code>-C prefer-dynamic</code> flag is not
+specified, then dependencies are first attempted to be found in the <code>rlib</code>
+format. If some dependencies are not available in an rlib format, then
+dynamic linking is attempted (see below).</p></li>
+<li><p>If a dynamic library or an executable that is being dynamically linked is
+being produced, then the compiler will attempt to reconcile the available
+dependencies in either the rlib or dylib format to create a final product.</p>
+
+<p>A major goal of the compiler is to ensure that a library never appears more
+than once in any artifact. For example, if dynamic libraries B and C were
+each statically linked to library A, then a crate could not link to B and C
+together because there would be two copies of A. The compiler allows mixing
+the rlib and dylib formats, but this restriction must be satisfied.</p>
+
+<p>The compiler currently implements no method of hinting what format a library
+should be linked with. When dynamically linking, the compiler will attempt to
+maximize dynamic dependencies while still allowing some dependencies to be
+linked in via an rlib.</p>
+
+<p>For most situations, having all libraries available as a dylib is recommended
+if dynamically linking. For other situations, the compiler will emit a
+warning if it is unable to determine which formats to link each library with.</p></li>
+</ol>
+
+<p>In general, <code>--crate-type=bin</code> or <code>--crate-type=lib</code> should be sufficient for
+all compilation needs, and the other options are just available if more
+fine-grained control is desired over the output format of a Rust crate.</p>
+
+    <script type="text/javascript">
+        window.playgroundUrl = "https://play.rust-lang.org";
+    </script>
+    <script src='rustbook.js'></script>
+<script src='playpen.js'></script>
+</div></div>
+
+
+</body>
+</html>

@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <title>Compiler Features</title>
+
+    <link rel="stylesheet" type="text/css" href="rustbook.css">
+
+    
+  <script type="text/javascript" src="../share/jquery-2.1.0.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="../share/rust.css">
+
+
+
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+  <div id="nav">
+    <button id="toggle-nav">
+    <span class="sr-only">Toggle navigation</span>
+    <span class="bar"></span>
+    <span class="bar"></span>
+    <span class="bar"></span>
+  </button>
+</div>
+
+<div id='toc' class='mobile-hidden'>
+<ul class='chapter'>
+<li><a  href='README.html'><b>1.</b> Introduction</a>
+</li>
+<li><a  href='introduction.html'><b>2.</b> Introduction</a>
+</li>
+<li><a  href='notation.html'><b>3.</b> Notation</a>
+<ul class='section'>
+<li><a  href='unicode-productions.html'><b>3.1.</b> Unicode productions</a>
+</li>
+<li><a  href='string-table-productions.html'><b>3.2.</b> String table productions</a>
+</li>
+</ul>
+</li>
+<li><a  href='lexical-structure.html'><b>4.</b> Lexical structure</a>
+<ul class='section'>
+<li><a  href='input-format.html'><b>4.1.</b> Input format</a>
+</li>
+<li><a  href='identifiers.html'><b>4.2.</b> Identifiers</a>
+</li>
+<li><a  href='comments.html'><b>4.3.</b> Comments</a>
+</li>
+<li><a  href='whitespace.html'><b>4.4.</b> Whitespace</a>
+</li>
+<li><a  href='tokens.html'><b>4.5.</b> Tokens</a>
+<ul class='section'>
+<li><a  href='literals.html'><b>4.5.1.</b> Literals</a>
+<ul class='section'>
+<li><a  href='examples.html'><b>4.5.1.1.</b> Examples</a>
+<ul class='section'>
+<li><a  href='characters-and-strings.html'><b>4.5.1.1.1.</b> Characters and strings</a>
+</li>
+<li><a  href='byte-escapes.html'><b>4.5.1.1.2.</b> Byte escapes</a>
+</li>
+<li><a  href='unicode-escapes.html'><b>4.5.1.1.3.</b> Unicode escapes</a>
+</li>
+<li><a  href='numbers.html'><b>4.5.1.1.4.</b> Numbers</a>
+</li>
+<li><a  href='suffixes.html'><b>4.5.1.1.5.</b> Suffixes</a>
+</li>
+</ul>
+</li>
+<li><a  href='character-and-string-literals.html'><b>4.5.1.2.</b> Character and string literals</a>
+<ul class='section'>
+<li><a  href='character-literals.html'><b>4.5.1.2.1.</b> Character literals</a>
+</li>
+<li><a  href='string-literals.html'><b>4.5.1.2.2.</b> String literals</a>
+</li>
+<li><a  href='character-escapes.html'><b>4.5.1.2.3.</b> Character escapes</a>
+</li>
+<li><a  href='raw-string-literals.html'><b>4.5.1.2.4.</b> Raw string literals</a>
+</li>
+</ul>
+</li>
+<li><a  href='byte-and-byte-string-literals.html'><b>4.5.1.3.</b> Byte and byte string literals</a>
+<ul class='section'>
+<li><a  href='byte-literals.html'><b>4.5.1.3.1.</b> Byte literals</a>
+</li>
+<li><a  href='byte-string-literals.html'><b>4.5.1.3.2.</b> Byte string literals</a>
+</li>
+<li><a  href='raw-byte-string-literals.html'><b>4.5.1.3.3.</b> Raw byte string literals</a>
+</li>
+</ul>
+</li>
+<li><a  href='number-literals.html'><b>4.5.1.4.</b> Number literals</a>
+<ul class='section'>
+<li><a  href='integer-literals.html'><b>4.5.1.4.1.</b> Integer literals</a>
+</li>
+<li><a  href='floating-point-literals.html'><b>4.5.1.4.2.</b> Floating-point literals</a>
+</li>
+</ul>
+</li>
+<li><a  href='boolean-literals.html'><b>4.5.1.5.</b> Boolean literals</a>
+</li>
+</ul>
+</li>
+<li><a  href='symbols.html'><b>4.5.2.</b> Symbols</a>
+</li>
+</ul>
+</li>
+<li><a  href='paths.html'><b>4.6.</b> Paths</a>
+</li>
+</ul>
+</li>
+<li><a  href='syntax-extensions.html'><b>5.</b> Syntax extensions</a>
+<ul class='section'>
+<li><a  href='macros.html'><b>5.1.</b> Macros</a>
+<ul class='section'>
+<li><a  href='macro-by-example.html'><b>5.1.1.</b> Macro By Example</a>
+</li>
+<li><a  href='parsing-limitations.html'><b>5.1.2.</b> Parsing limitations</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a  href='crates-and-source-files.html'><b>6.</b> Crates and source files</a>
+</li>
+<li><a  href='items-and-attributes.html'><b>7.</b> Items and attributes</a>
+<ul class='section'>
+<li><a  href='items.html'><b>7.1.</b> Items</a>
+<ul class='section'>
+<li><a  href='type-parameters.html'><b>7.1.1.</b> Type Parameters</a>
+</li>
+<li><a  href='modules.html'><b>7.1.2.</b> Modules</a>
+<ul class='section'>
+<li><a  href='extern-crate-declarations.html'><b>7.1.2.1.</b> Extern crate declarations</a>
+</li>
+<li><a  href='use-declarations.html'><b>7.1.2.2.</b> Use declarations</a>
+</li>
+</ul>
+</li>
+<li><a  href='functions.html'><b>7.1.3.</b> Functions</a>
+<ul class='section'>
+<li><a  href='generic-functions.html'><b>7.1.3.1.</b> Generic functions</a>
+</li>
+<li><a  href='unsafety.html'><b>7.1.3.2.</b> Unsafety</a>
+<ul class='section'>
+<li><a  href='unsafe-functions.html'><b>7.1.3.2.1.</b> Unsafe functions</a>
+</li>
+<li><a  href='unsafe-blocks.html'><b>7.1.3.2.2.</b> Unsafe blocks</a>
+</li>
+<li><a  href='behavior-considered-undefined.html'><b>7.1.3.2.3.</b> Behavior considered undefined</a>
+</li>
+<li><a  href='behavior-not-considered-unsafe.html'><b>7.1.3.2.4.</b> Behavior not considered unsafe</a>
+</li>
+</ul>
+</li>
+<li><a  href='diverging-functions.html'><b>7.1.3.3.</b> Diverging functions</a>
+</li>
+<li><a  href='extern-functions.html'><b>7.1.3.4.</b> Extern functions</a>
+</li>
+</ul>
+</li>
+<li><a  href='type-aliases.html'><b>7.1.4.</b> Type aliases</a>
+</li>
+<li><a  href='structures.html'><b>7.1.5.</b> Structures</a>
+</li>
+<li><a  href='enumerations.html'><b>7.1.6.</b> Enumerations</a>
+</li>
+<li><a  href='constant-items.html'><b>7.1.7.</b> Constant items</a>
+</li>
+<li><a  href='static-items.html'><b>7.1.8.</b> Static items</a>
+<ul class='section'>
+<li><a  href='mutable-statics.html'><b>7.1.8.1.</b> Mutable statics</a>
+</li>
+</ul>
+</li>
+<li><a  href='traits.html'><b>7.1.9.</b> Traits</a>
+</li>
+<li><a  href='implementations.html'><b>7.1.10.</b> Implementations</a>
+</li>
+<li><a  href='external-blocks.html'><b>7.1.11.</b> External blocks</a>
+</li>
+</ul>
+</li>
+<li><a  href='visibility-and-privacy.html'><b>7.2.</b> Visibility and Privacy</a>
+<ul class='section'>
+<li><a  href='re-exporting-and-visibility.html'><b>7.2.1.</b> Re-exporting and Visibility</a>
+</li>
+</ul>
+</li>
+<li><a  href='attributes.html'><b>7.3.</b> Attributes</a>
+<ul class='section'>
+<li><a  href='crate-only-attributes.html'><b>7.3.1.</b> Crate-only attributes</a>
+</li>
+<li><a  href='module-only-attributes.html'><b>7.3.2.</b> Module-only attributes</a>
+</li>
+<li><a  href='function-only-attributes.html'><b>7.3.3.</b> Function-only attributes</a>
+</li>
+<li><a  href='static-only-attributes.html'><b>7.3.4.</b> Static-only attributes</a>
+</li>
+<li><a  href='ffi-attributes.html'><b>7.3.5.</b> FFI attributes</a>
+</li>
+<li><a  href='macro-related-attributes.html'><b>7.3.6.</b> Macro-related attributes</a>
+</li>
+<li><a  href='miscellaneous-attributes.html'><b>7.3.7.</b> Miscellaneous attributes</a>
+</li>
+<li><a  href='conditional-compilation.html'><b>7.3.8.</b> Conditional compilation</a>
+</li>
+<li><a  href='lint-check-attributes.html'><b>7.3.9.</b> Lint check attributes</a>
+</li>
+<li><a  href='language-items.html'><b>7.3.10.</b> Language items</a>
+</li>
+<li><a  href='inline-attributes.html'><b>7.3.11.</b> Inline attributes</a>
+</li>
+<li><a  href='derive.html'><b>7.3.12.</b> `derive`</a>
+</li>
+<li><a class='active' href='compiler-features.html'><b>7.3.13.</b> Compiler Features</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a  href='statements-and-expressions.html'><b>8.</b> Statements and expressions</a>
+<ul class='section'>
+<li><a  href='statements.html'><b>8.1.</b> Statements</a>
+<ul class='section'>
+<li><a  href='declaration-statements.html'><b>8.1.1.</b> Declaration statements</a>
+<ul class='section'>
+<li><a  href='item-declarations.html'><b>8.1.1.1.</b> Item declarations</a>
+</li>
+<li><a  href='variable-declarations.html'><b>8.1.1.2.</b> Variable declarations</a>
+</li>
+</ul>
+</li>
+<li><a  href='expression-statements.html'><b>8.1.2.</b> Expression statements</a>
+</li>
+</ul>
+</li>
+<li><a  href='expressions.html'><b>8.2.</b> Expressions</a>
+<ul class='section'>
+<li><a  href='lvalues-rvalues-and-temporaries.html'><b>8.2.1.</b> Lvalues, rvalues and temporaries</a>
+</li>
+<li><a  href='temporary-lifetimes.html'><b>8.2.2.</b> Temporary lifetimes</a>
+</li>
+<li><a  href='moved-and-copied-types.html'><b>8.2.3.</b> Moved and copied types</a>
+</li>
+<li><a  href='literal-expressions.html'><b>8.2.4.</b> Literal expressions</a>
+</li>
+<li><a  href='path-expressions.html'><b>8.2.5.</b> Path expressions</a>
+</li>
+<li><a  href='tuple-expressions.html'><b>8.2.6.</b> Tuple expressions</a>
+</li>
+<li><a  href='structure-expressions.html'><b>8.2.7.</b> Structure expressions</a>
+</li>
+<li><a  href='block-expressions.html'><b>8.2.8.</b> Block expressions</a>
+</li>
+<li><a  href='method-call-expressions.html'><b>8.2.9.</b> Method-call expressions</a>
+</li>
+<li><a  href='field-expressions.html'><b>8.2.10.</b> Field expressions</a>
+</li>
+<li><a  href='array-expressions.html'><b>8.2.11.</b> Array expressions</a>
+</li>
+<li><a  href='index-expressions.html'><b>8.2.12.</b> Index expressions</a>
+</li>
+<li><a  href='range-expressions.html'><b>8.2.13.</b> Range expressions</a>
+</li>
+<li><a  href='unary-operator-expressions.html'><b>8.2.14.</b> Unary operator expressions</a>
+</li>
+<li><a  href='binary-operator-expressions.html'><b>8.2.15.</b> Binary operator expressions</a>
+<ul class='section'>
+<li><a  href='arithmetic-operators.html'><b>8.2.15.1.</b> Arithmetic operators</a>
+</li>
+<li><a  href='bitwise-operators.html'><b>8.2.15.2.</b> Bitwise operators</a>
+</li>
+<li><a  href='lazy-boolean-operators.html'><b>8.2.15.3.</b> Lazy boolean operators</a>
+</li>
+<li><a  href='comparison-operators.html'><b>8.2.15.4.</b> Comparison operators</a>
+</li>
+<li><a  href='type-cast-expressions.html'><b>8.2.15.5.</b> Type cast expressions</a>
+</li>
+<li><a  href='assignment-expressions.html'><b>8.2.15.6.</b> Assignment expressions</a>
+</li>
+<li><a  href='compound-assignment-expressions.html'><b>8.2.15.7.</b> Compound assignment expressions</a>
+</li>
+<li><a  href='operator-precedence.html'><b>8.2.15.8.</b> Operator precedence</a>
+</li>
+</ul>
+</li>
+<li><a  href='grouped-expressions.html'><b>8.2.16.</b> Grouped expressions</a>
+</li>
+<li><a  href='call-expressions.html'><b>8.2.17.</b> Call expressions</a>
+</li>
+<li><a  href='lambda-expressions.html'><b>8.2.18.</b> Lambda expressions</a>
+</li>
+<li><a  href='infinite-loops.html'><b>8.2.19.</b> Infinite loops</a>
+</li>
+<li><a  href='break-expressions.html'><b>8.2.20.</b> Break expressions</a>
+</li>
+<li><a  href='continue-expressions.html'><b>8.2.21.</b> Continue expressions</a>
+</li>
+<li><a  href='while-loops.html'><b>8.2.22.</b> While loops</a>
+</li>
+<li><a  href='for-expressions.html'><b>8.2.23.</b> For expressions</a>
+</li>
+<li><a  href='if-expressions.html'><b>8.2.24.</b> If expressions</a>
+</li>
+<li><a  href='match-expressions.html'><b>8.2.25.</b> Match expressions</a>
+</li>
+<li><a  href='if-let-expressions.html'><b>8.2.26.</b> If let expressions</a>
+</li>
+<li><a  href='while-let-loops.html'><b>8.2.27.</b> While let loops</a>
+</li>
+<li><a  href='return-expressions.html'><b>8.2.28.</b> Return expressions</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a  href='type-system.html'><b>9.</b> Type system</a>
+<ul class='section'>
+<li><a  href='types.html'><b>9.1.</b> Types</a>
+<ul class='section'>
+<li><a  href='primitive-types.html'><b>9.1.1.</b> Primitive types</a>
+<ul class='section'>
+<li><a  href='machine-types.html'><b>9.1.1.1.</b> Machine types</a>
+</li>
+<li><a  href='machine-dependent-integer-types.html'><b>9.1.1.2.</b> Machine-dependent integer types</a>
+</li>
+</ul>
+</li>
+<li><a  href='textual-types.html'><b>9.1.2.</b> Textual types</a>
+</li>
+<li><a  href='tuple-types.html'><b>9.1.3.</b> Tuple types</a>
+</li>
+<li><a  href='array-and-slice-types.html'><b>9.1.4.</b> Array, and Slice types</a>
+</li>
+<li><a  href='structure-types.html'><b>9.1.5.</b> Structure types</a>
+</li>
+<li><a  href='enumerated-types.html'><b>9.1.6.</b> Enumerated types</a>
+</li>
+<li><a  href='recursive-types.html'><b>9.1.7.</b> Recursive types</a>
+</li>
+<li><a  href='pointer-types.html'><b>9.1.8.</b> Pointer types</a>
+</li>
+<li><a  href='function-types.html'><b>9.1.9.</b> Function types</a>
+<ul class='section'>
+<li><a  href='function-types-for-specific-items.html'><b>9.1.9.1.</b> Function types for specific items</a>
+</li>
+</ul>
+</li>
+<li><a  href='closure-types.html'><b>9.1.10.</b> Closure types</a>
+</li>
+<li><a  href='trait-objects.html'><b>9.1.11.</b> Trait objects</a>
+</li>
+<li><a  href='type-parameters.html'><b>9.1.12.</b> Type parameters</a>
+</li>
+<li><a  href='self-types.html'><b>9.1.13.</b> Self types</a>
+</li>
+</ul>
+</li>
+<li><a  href='subtyping.html'><b>9.2.</b> Subtyping</a>
+</li>
+<li><a  href='type-coercions.html'><b>9.3.</b> Type coercions</a>
+<ul class='section'>
+<li><a  href='coercion-sites.html'><b>9.3.1.</b> Coercion sites</a>
+</li>
+<li><a  href='coercion-types.html'><b>9.3.2.</b> Coercion types</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a  href='special-traits.html'><b>10.</b> Special traits</a>
+<ul class='section'>
+<li><a  href='the-copy-trait.html'><b>10.1.</b> The `Copy` trait</a>
+</li>
+<li><a  href='the-sized-trait.html'><b>10.2.</b> The `Sized` trait</a>
+</li>
+<li><a  href='the-drop-trait.html'><b>10.3.</b> The `Drop` trait</a>
+</li>
+<li><a  href='the-deref-trait.html'><b>10.4.</b> The `Deref` trait</a>
+</li>
+</ul>
+</li>
+<li><a  href='memory-model.html'><b>11.</b> Memory model</a>
+<ul class='section'>
+<li><a  href='memory-allocation-and-lifetime.html'><b>11.1.</b> Memory allocation and lifetime</a>
+</li>
+<li><a  href='memory-ownership.html'><b>11.2.</b> Memory ownership</a>
+</li>
+<li><a  href='variables.html'><b>11.3.</b> Variables</a>
+</li>
+</ul>
+</li>
+<li><a  href='linkage.html'><b>12.</b> Linkage</a>
+</li>
+<li><a  href='appendix-rationales-and-design-trade-offs.html'><b>13.</b> Appendix: Rationales and design trade-offs</a>
+</li>
+<li><a  href='appendix-influences.html'><b>14.</b> Appendix: Influences</a>
+</li>
+</ul>
+</div>
+<div id='page-wrapper'>
+<div id='page'>
+
+
+    <h1 class="title">Compiler Features</h1>
+    
+<h3 id="compiler-features" class='section-header'><a
+                           href="#compiler-features">Compiler Features</a></h3>
+<p>Certain aspects of Rust may be implemented in the compiler, but they&#39;re not
+necessarily ready for every-day use. These features are often of &quot;prototype
+quality&quot; or &quot;almost production ready&quot;, but may not be stable enough to be
+considered a full-fledged language feature.</p>
+
+<p>For this reason, Rust recognizes a special crate-level attribute of the form:</p>
+<span class='rusttest'>#![feature(feature1, feature2, feature3)]
+fn main() {
+    
+}</span><pre class='rust rust-example-rendered'>
+<span class='attribute'>#<span class='op'>!</span>[<span class='ident'>feature</span>(<span class='ident'>feature1</span>, <span class='ident'>feature2</span>, <span class='ident'>feature3</span>)]</span></pre>
+
+<p>This directive informs the compiler that the feature list: <code>feature1</code>,
+<code>feature2</code>, and <code>feature3</code> should all be enabled. This is only recognized at a
+crate-level, not at a module-level. Without this directive, all features are
+considered off, and using the features will result in a compiler error.</p>
+
+<p>The currently implemented features of the reference compiler are:</p>
+
+<ul>
+<li><p><code>advanced_slice_patterns</code> - See the <a href="#match-expressions">match expressions</a>
+                          section for discussion; the exact semantics of
+                          slice patterns are subject to change, so some types
+              are still unstable.</p></li>
+<li><p><code>slice_patterns</code> - OK, actually, slice patterns are just scary and
+                 completely unstable.</p></li>
+<li><p><code>asm</code> - The <code>asm!</code> macro provides a means for inline assembly. This is often
+      useful, but the exact syntax for this feature along with its
+      semantics are likely to change, so this macro usage must be opted
+      into.</p></li>
+<li><p><code>associated_consts</code> - Allows constants to be defined in <code>impl</code> and <code>trait</code>
+                    blocks, so that they can be associated with a type or
+                    trait in a similar manner to methods and associated
+                    types.</p></li>
+<li><p><code>box_patterns</code> - Allows <code>box</code> patterns, the exact semantics of which
+               is subject to change.</p></li>
+<li><p><code>box_syntax</code> - Allows use of <code>box</code> expressions, the exact semantics of which
+             is subject to change.</p></li>
+<li><p><code>concat_idents</code> - Allows use of the <code>concat_idents</code> macro, which is in many
+                ways insufficient for concatenating identifiers, and may be
+                removed entirely for something more wholesome.</p></li>
+<li><p><code>custom_attribute</code> - Allows the usage of attributes unknown to the compiler
+                   so that new attributes can be added in a backwards compatible
+                   manner (RFC 572).</p></li>
+<li><p><code>custom_derive</code> - Allows the use of <code>#[derive(Foo,Bar)]</code> as sugar for
+                <code>#[derive_Foo] #[derive_Bar]</code>, which can be user-defined syntax
+                extensions.</p></li>
+<li><p><code>intrinsics</code> - Allows use of the &quot;rust-intrinsics&quot; ABI. Compiler intrinsics
+             are inherently unstable and no promise about them is made.</p></li>
+<li><p><code>lang_items</code> - Allows use of the <code>#[lang]</code> attribute. Like <code>intrinsics</code>,
+             lang items are inherently unstable and no promise about them
+             is made.</p></li>
+<li><p><code>link_args</code> - This attribute is used to specify custom flags to the linker,
+            but usage is strongly discouraged. The compiler&#39;s usage of the
+            system linker is not guaranteed to continue in the future, and
+            if the system linker is not used then specifying custom flags
+            doesn&#39;t have much meaning.</p></li>
+<li><p><code>link_llvm_intrinsics</code> – Allows linking to LLVM intrinsics via
+                       <code>#[link_name=&quot;llvm.*&quot;]</code>.</p></li>
+<li><p><code>linkage</code> - Allows use of the <code>linkage</code> attribute, which is not portable.</p></li>
+<li><p><code>log_syntax</code> - Allows use of the <code>log_syntax</code> macro attribute, which is a
+             nasty hack that will certainly be removed.</p></li>
+<li><p><code>main</code> - Allows use of the <code>#[main]</code> attribute, which changes the entry point
+       into a Rust program. This capability is subject to change.</p></li>
+<li><p><code>macro_reexport</code> - Allows macros to be re-exported from one crate after being imported
+                 from another. This feature was originally designed with the sole
+                 use case of the Rust standard library in mind, and is subject to
+                 change.</p></li>
+<li><p><code>non_ascii_idents</code> - The compiler supports the use of non-ascii identifiers,
+                   but the implementation is a little rough around the
+                   edges, so this can be seen as an experimental feature
+                   for now until the specification of identifiers is fully
+                   fleshed out.</p></li>
+<li><p><code>no_std</code> - Allows the <code>#![no_std]</code> crate attribute, which disables the implicit
+         <code>extern crate std</code>. This typically requires use of the unstable APIs
+         behind the libstd &quot;facade&quot;, such as libcore and libcollections. It
+         may also cause problems when using syntax extensions, including
+         <code>#[derive]</code>.</p></li>
+<li><p><code>on_unimplemented</code> - Allows the <code>#[rustc_on_unimplemented]</code> attribute, which allows
+                   trait definitions to add specialized notes to error messages
+                   when an implementation was expected but not found.</p></li>
+<li><p><code>optin_builtin_traits</code> - Allows the definition of default and negative trait
+                       implementations. Experimental.</p></li>
+<li><p><code>plugin</code> - Usage of [compiler plugins][plugin] for custom lints or syntax extensions.
+         These depend on compiler internals and are subject to change.</p></li>
+<li><p><code>plugin_registrar</code> - Indicates that a crate provides [compiler plugins][plugin].</p></li>
+<li><p><code>quote</code> - Allows use of the <code>quote_*!</code> family of macros, which are
+        implemented very poorly and will likely change significantly
+        with a proper implementation.</p></li>
+<li><p><code>rustc_attrs</code> - Gates internal <code>#[rustc_*]</code> attributes which may be
+              for internal use only or have meaning added to them in the future.</p></li>
+<li><p><code>rustc_diagnostic_macros</code>- A mysterious feature, used in the implementation
+                         of rustc, not meant for mortals.</p></li>
+<li><p><code>simd</code> - Allows use of the <code>#[simd]</code> attribute, which is overly simple and
+       not the SIMD interface we want to expose in the long term.</p></li>
+<li><p><code>simd_ffi</code> - Allows use of SIMD vectors in signatures for foreign functions.
+           The SIMD interface is subject to change.</p></li>
+<li><p><code>staged_api</code> - Allows usage of stability markers and <code>#![staged_api]</code> in a
+             crate. Stability markers are also attributes: <code>#[stable]</code>,
+             <code>#[unstable]</code>, and <code>#[deprecated]</code> are the three levels.</p></li>
+<li><p><code>start</code> - Allows use of the <code>#[start]</code> attribute, which changes the entry point
+        into a Rust program. This capability, especially the signature for the
+        annotated function, is subject to change.</p></li>
+<li><p><code>struct_inherit</code> - Allows using struct inheritance, which is barely
+                 implemented and will probably be removed. Don&#39;t use this.</p></li>
+<li><p><code>struct_variant</code> - Structural enum variants (those with named fields). It is
+                 currently unknown whether this style of enum variant is as
+                 fully supported as the tuple-forms, and it&#39;s not certain
+                 that this style of variant should remain in the language.
+                 For now this style of variant is hidden behind a feature
+                 flag.</p></li>
+<li><p><code>thread_local</code> - The usage of the <code>#[thread_local]</code> attribute is experimental
+               and should be seen as unstable. This attribute is used to
+               declare a <code>static</code> as being unique per-thread leveraging
+               LLVM&#39;s implementation which works in concert with the kernel
+               loader and dynamic linker. This is not necessarily available
+               on all platforms, and usage of it is discouraged.</p></li>
+<li><p><code>trace_macros</code> - Allows use of the <code>trace_macros</code> macro, which is a nasty
+               hack that will certainly be removed.</p></li>
+<li><p><code>unboxed_closures</code> - Rust&#39;s new closure design, which is currently a work in
+                   progress feature with many known bugs.</p></li>
+<li><p><code>unsafe_no_drop_flag</code> - Allows use of the <code>#[unsafe_no_drop_flag]</code> attribute,
+                      which removes hidden flag added to a type that
+                      implements the <code>Drop</code> trait. The design for the
+                      <code>Drop</code> flag is subject to change, and this feature
+                      may be removed in the future.</p></li>
+<li><p><code>unmarked_api</code> - Allows use of items within a <code>#![staged_api]</code> crate
+               which have not been marked with a stability marker.
+               Such items should not be allowed by the compiler to exist,
+               so if you need this there probably is a compiler bug.</p></li>
+<li><p><code>visible_private_types</code> - Allows public APIs to expose otherwise private
+                        types, e.g. as the return type of a public function.
+                        This capability may be removed in the future.</p></li>
+<li><p><code>allow_internal_unstable</code> - Allows <code>macro_rules!</code> macros to be tagged with the
+                          <code>#[allow_internal_unstable]</code> attribute, designed
+                          to allow <code>std</code> macros to call
+                          <code>#[unstable]</code>/feature-gated functionality
+                          internally without imposing on callers
+                          (i.e. making them behave like function calls in
+                          terms of encapsulation).</p></li>
+<li><ul>
+<li><code>default_type_parameter_fallback</code> - Allows type parameter defaults to
+                                influence type inference.</li>
+</ul></li>
+</ul>
+
+<p>If a feature is promoted to a language feature, then all existing programs will
+start to receive compilation warnings about <code>#![feature]</code> directives which enabled
+the new feature (because the directive is no longer necessary). However, if a
+feature is decided to be removed from the language, errors will be issued (if
+there isn&#39;t a parser error first). The directive in this case is no longer
+necessary, and it&#39;s likely that existing code will break if the feature isn&#39;t
+removed.</p>
+
+<p>If an unknown feature is found in a directive, it results in a compiler error.
+An unknown feature is one which has never been recognized by the compiler.</p>
+
+    <script type="text/javascript">
+        window.playgroundUrl = "https://play.rust-lang.org";
+    </script>
+    <script src='rustbook.js'></script>
+<script src='playpen.js'></script>
+</div></div>
+
+
+</body>
+</html>
