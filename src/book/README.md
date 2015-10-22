@@ -9,14 +9,14 @@ Rustは、コンパイル時の安全性チェックにより実行時オーバ�
 Rustは、他の高レベルプログラミング言語にありがちな抽象化をゼロコストで行う、'ゼロコスト抽象化'を目標としています。
 一方で、Rustは、低レベルプログラミング言語の様な、プログラムの細かな制御を可能にします。
 
-[rust]: https://www.rust-lang.org
+[rust]: https://www.rust-lang.org/
 
 "The Rust Programming Language"は次の8つのセクションに分かれます。
 このイントロダクションは最初の1つであり、残りは以下の通りです。
 
 * [Getting started][gs] - Rust開発環境の立ち上げ
-* [Learn Rust][lr] - Rustのチュートリアル
-* [Effective Rust][er] - TODO
+* [Learn Rust][lr] - Rustチュートリアル
+* [Effective Rust][er] - Rustマニュアル
 * [Syntax and Semantics][ss] - Rustの文法と意味論
 * [Nightly Rust][nr] - 開発中のRustの新機能
 * [Glossary][gl] - この本における単語の用法
@@ -31,15 +31,14 @@ Rustは、他の高レベルプログラミング言語にありがちな抽象�
 [bi]: bibliograpy.html
 
 このイントロダクションを読み終えた後、'Learn Rust'か、'Syntax and Semantics'に行くのが良いでしょう。
-TODO
 
 ### Contributing
 
 この本を生成するソースファイルはGithubにあります。
 [github.com/rust-lang/rust/tree/master/src/doc/trpl](https://github.com/rust-lang/rust/tree/master/src/doc/trpl)
 
-(訳注) 日本語訳を生成するソースファイルは以下にあります。
-TODO
+(訳注) この日本語訳を生成するソースファイルもGithubにあります。
+[github.com/rustfanjp/rustdoc/doc/book/](https://github.com/rustfanjp/rustdoc/doc/book)
 
 ### Rust イントロダクション
 
@@ -54,7 +53,7 @@ fn main() {
     let mut x = vec!["Hello", "world"];
 }
 ```
-このプログラムは`x`名付けられた[変数束縛(variable binding)][var]を作ります。
+このプログラムは`x`と名付けられた[変数束縛(variable binding)][var]を作ります。
 この変数束縛の値は`Vec<T>`型の'ベクタ'ですが、これは、標準ライブラリで定義された[マクロ(macro)][macro]を用いて作られています。
 このマクロは`vec`と名付けられていて、`!`を伴って呼び出されています。
 これは、「make things explicit」というRustの一般原則に従っています。
@@ -95,7 +94,7 @@ fn main() {
 }
 ```
 
-新たな変数束縛、`y`を導入しました。
+新たな変数束縛`y`を導入しました。
 この場合、`y`はベクタ`x`の最初の要素`x[0]`に対する'参照(reference)'です。
 Rustの参照は他の言語のポインタに似ていますが、コンパイル時の安全性チェックが追加されています。
 参照は、参照している変数を所有するのではなく、['借用(borrow)'][borrowing]します。
