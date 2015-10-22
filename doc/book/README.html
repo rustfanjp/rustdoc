@@ -9,26 +9,9 @@
     <link rel="stylesheet" type="text/css" href="rustbook.css">
 
     
-                <div id="nav">
-                    <button id="toggle-nav">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="bar"></span>
-                        <span class="bar"></span>
-                        <span class="bar"></span>
-                    </button>
-                </div>
-<div id='toc' class='mobile-hidden'>
-<ul class='chapter'>
-<li><a class='active' href='README.html'><b>1.</b> Introduction</a>
-</li>
-<li><a  href='getting-started.html'><b>2.</b> Getting Started</a>
-</li>
-<li><a  href='installing-rust.html'><b>3.</b> Installing Rust</a>
-</li>
-</ul>
-</div>
-<div id='page-wrapper'>
-<div id='page'>
+  <script type="text/javascript" src="../share/jquery-2.1.0.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="../share/rust.css">
+
 
 
 </head>
@@ -41,14 +24,15 @@
     <![endif]-->
 
     
-                <div id="nav">
-                    <button id="toggle-nav">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="bar"></span>
-                        <span class="bar"></span>
-                        <span class="bar"></span>
-                    </button>
-                </div>
+  <div id="nav">
+    <button id="toggle-nav">
+    <span class="sr-only">Toggle navigation</span>
+    <span class="bar"></span>
+    <span class="bar"></span>
+    <span class="bar"></span>
+  </button>
+</div>
+
 <div id='toc' class='mobile-hidden'>
 <ul class='chapter'>
 <li><a class='active' href='README.html'><b>1.</b> Introduction</a>
@@ -65,7 +49,7 @@
 
     <h1 class="title">The Rust Programming Language</h1>
     <p>ようこそ！
-この本は<a href="https://www.rust-lang.org">Rust Programming Language</a>の解説本です。
+この本は<a href="https://www.rust-lang.org/">Rust Programming Language</a>の解説本です。
 Rustはシステムプログラミング言語であり、安全性、速度、平行性の両立を目標としています。
 Rustはガベージコレクタ無しでこれらの目標を追及し、他のプログラミング言語では上手に出来ない事が出来ます。
 例えば、多言語への埋め込みや、ワークスペース・実行時間の制限、ドライバーやオペレーティングシステムの様な低レベルコードの記述等です。
@@ -78,24 +62,23 @@ Rustは、他の高レベルプログラミング言語にありがちな抽象�
 
 <ul>
 <li><a href="getting-started.html">Getting started</a> - Rust開発環境の立ち上げ</li>
-<li><a href="learn-rust.html">Learn Rust</a> - Rustのチュートリアル</li>
-<li><a href="effective-rust.html">Effective Rust</a> - TODO</li>
+<li><a href="learn-rust.html">Learn Rust</a> - Rustチュートリアル</li>
+<li><a href="effective-rust.html">Effective Rust</a> - Rustマニュアル</li>
 <li><a href="syntax-and-semantics.html">Syntax and Semantics</a> - Rustの文法と意味論</li>
 <li><a href="nightly-rust.html">Nightly Rust</a> - 開発中のRustの新機能</li>
 <li><a href="glossary.html">Glossary</a> - この本における単語の用法</li>
 <li><a href="bibliograpy.html">Bibliography</a> - 参考文献</li>
 </ul>
 
-<p>このイントロダクションを読み終えた後、&#39;Learn Rust&#39;か、&#39;Syntax and Semantics&#39;に行くのが良いでしょう。
-TODO</p>
+<p>このイントロダクションを読み終えた後、&#39;Learn Rust&#39;か、&#39;Syntax and Semantics&#39;に行くのが良いでしょう。</p>
 
 <h3 id="contributing" class='section-header'><a
                            href="#contributing">Contributing</a></h3>
 <p>この本を生成するソースファイルはGithubにあります。
 <a href="https://github.com/rust-lang/rust/tree/master/src/doc/trpl">github.com/rust-lang/rust/tree/master/src/doc/trpl</a></p>
 
-<p>(訳注) 日本語訳を生成するソースファイルは以下にあります。
-TODO</p>
+<p>(訳注) この日本語訳を生成するソースファイルもGithubにあります。
+<a href="https://github.com/rustfanjp/rustdoc/doc/book">github.com/rustfanjp/rustdoc/doc/book/</a></p>
 
 <h3 id="rust-イントロダクション" class='section-header'><a
                            href="#rust-イントロダクション">Rust イントロダクション</a></h3>
@@ -112,7 +95,7 @@ TODO</p>
     <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>x</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[<span class='string'>&quot;Hello&quot;</span>, <span class='string'>&quot;world&quot;</span>];
 }</pre>
 
-<p>このプログラムは<code>x</code>名付けられた<a href="variable-bindings.html">変数束縛(variable binding)</a>を作ります。
+<p>このプログラムは<code>x</code>と名付けられた<a href="variable-bindings.html">変数束縛(variable binding)</a>を作ります。
 この変数束縛の値は<code>Vec&lt;T&gt;</code>型の&#39;ベクタ&#39;ですが、これは、標準ライブラリで定義された<a href="macros.html">マクロ(macro)</a>を用いて作られています。
 このマクロは<code>vec</code>と名付けられていて、<code>!</code>を伴って呼び出されています。
 これは、「make things explicit」というRustの一般原則に従っています。
@@ -152,7 +135,7 @@ Rustでは、<code>x</code>はベクタを&#39;所有(own)&#39;していると�
     <span class='kw'>let</span> <span class='ident'>y</span> <span class='op'>=</span> <span class='kw-2'>&amp;</span><span class='ident'>x</span>[<span class='number'>0</span>];
 }</pre>
 
-<p>新たな変数束縛、<code>y</code>を導入しました。
+<p>新たな変数束縛<code>y</code>を導入しました。
 この場合、<code>y</code>はベクタ<code>x</code>の最初の要素<code>x[0]</code>に対する&#39;参照(reference)&#39;です。
 Rustの参照は他の言語のポインタに似ていますが、コンパイル時の安全性チェックが追加されています。
 参照は、参照している変数を所有するのではなく、<a href="referencees-and-borrowing.html">&#39;借用(borrow)&#39;</a>します。
