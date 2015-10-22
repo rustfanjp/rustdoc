@@ -1,8 +1,8 @@
 % Rust関連文書翻訳プロジェクト
 
-# HTML
+# 文書
 
-[github.io](http://rustfanjp.github.io/rustdoc/doc/book/index.html)
+[rust book](http://rustfanjp.github.io/rustdoc/doc/book/index.html)
 
 # デプロイ
 
