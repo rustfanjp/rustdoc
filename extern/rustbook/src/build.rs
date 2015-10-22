@@ -112,7 +112,10 @@ fn render(book: &Book, tgt: &Path) -> CliResult<()> {
         {
             let mut buffer = BufWriter::new(try!(File::create(&header)));
             try!(writeln!(&mut buffer, 
-"<script type=\"text/javascript\" src=\"../share/jquery-2.1.0.min.js\"></script>"
+r#"
+  <script type="text/javascript" src="../share/jquery-2.1.0.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="../share/rust.css">
+"#
             ));
         }
 
