@@ -1,9 +1,9 @@
 % Learn Rust
 
-Welcome! This section has a few tutorials that teach you Rust through building
-projects. You’ll get a high-level overview, but we’ll skim over the details.
+ようこそ！
+このセクションでは、プロジェクトを作る事によって、Rustについてのいくつかのチュートリアルを行います。
+これによって、Rustを俯瞰できますが、いくつかの詳細についてもざっと見ていきます。
 
-If you’d prefer a more ‘from the ground up’-style experience, check
-out [Syntax and Semantics][ss].
+あなたが、もし'基礎からこつこつ'スタイルを好むなら、[Syntax and Semantics][ss]を参照して下さい。
 
 [ss]: syntax-and-semantics.html
