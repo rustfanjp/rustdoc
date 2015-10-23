@@ -195,7 +195,7 @@
     <h1 class="title">Hello, Cargo!</h1>
     <p><a href="http://doc.crates.io">Cargo</a>は、RustaceansがRustプロジェクトを管理するために使うツールです。
 Cargoは今の所、バージョン1.0未満で、まだまだ開発中の状態です。
-しかしながら、多くのRustプロジェクトを管理するためには、すでにほぼ十分ですので、Rustプロジェクトは最初からCargoを使う事を想定されています。</p>
+しかしながら、多くのRustプロジェクトを管理するためにはすでに十分ですので、Rustプロジェクトは最初からCargoを使う事を想定されています。</p>
 
 <p>Cargoは3つの事を行います。
 コードのビルド、依存パッケージのダウンロード、依存パッケージのビルドです。
@@ -207,6 +207,178 @@ Cargoでは、後から依存性を追加するのも非常に容易です。</p
 
 <h2 id="cargoへの変換" class='section-header'><a
                            href="#cargoへの変換">Cargoへの変換</a></h2>
+<p>それでは、Hello WorldプログラムをCargoへと変換しましょう。</p>
+
+<p>私たちのプロジェクトをCargo化するには3つの事が必要です。
+1、<code>Cargo.toml</code>設定ファイルを作る。
+2、ソースファイルを適切に配置する。
+3、古い実行ファイルを除去する(ここでは<code>main</code>や<code>main.exe</code>の事です）。</p>
+
+<pre><code class="language-bash">$ mkdir src
+$ mv main.rs src/main.rs
+$ rm main # or &#39;rm main.exe&#39; on Windows
+</code></pre>
+
+<blockquote>
+<p>ノート: ここでは実行ファイルを作るので、ソースファイル名を<code>main.rs</code>としました。
+もし、ライブラリを作るならば、<code>lib.rs</code>の方が好ましいです。
+この様な命名規則はCargoによっても使用されますが、TOMLファイルの[<code>[lib]</code>か<code>[bin]</code>][crates-cutom]キーを設定する事で規則をオーバーライドできます。</p>
+</blockquote>
+
+<p>Cargoは、ソースファイルが<code>src</code>ディレクトリ内にあると想定しています。
+そのため、トップレベルディレクトリはREADMEやライセンスの配置の様な、他の用途のために使えます。
+Cargoはプロジェクトを整然と保ちます。
+何事にもそれ相応の置くべき場所があるものです。</p>
+
+<p>次は、設定ファイルです。</p>
+
+<pre><code class="language-bash">$ editor Cargo.toml # or &#39;notepad Cargo.toml&#39; on Windows
+</code></pre>
+
+<p>設定ファイル名はまさにこの通りにして下さい。
+つまり、先頭は大文字の<code>C</code>です!</p>
+
+<p>次の様に記述して下さい。</p>
+
+<pre><code class="language-toml">[package]
+
+name = &quot;hello_world&quot;
+version = &quot;0.0.1&quot;
+authors = [ &quot;Your name &lt;you@example.com&gt;&quot;]
+</code></pre>
+
+<p>このファイルは<a href="toml">TOML</a>形式です。
+TOMLファイルはINIファイルに似ていますが、いくつかの点でより優れています。
+TOMLのドキュメントには以下の様に有ります。</p>
+
+<blockquote>
+<p>TOMLは、意味論的に明らかで可読性の高い、コンパクトな設定ファイル形式である事を目標としています。
+TOMLは、曖昧さ無く、ハッシュテーブルへとマップできる様、デザインされています。
+TOMLは、様々な言語の中で使われているデータ構造に簡単にパースできます。</p>
+</blockquote>
+
+<p>(訳注): TOMLはRustやCargoとは独立した、設定ファイルのための一般的なフォーマットです。
+日本語で<a href="https://github.com/toml-lang/toml/blob/master/versions/ja/toml-v0.4.0.html">仕様</a>を読む事も出来ます。</p>
+
+<p>この設定ファイルをプロジェクトのルートディレクトリに置きさえすれば、ビルドの準備はできました。
+次のコマンドを実行して下さい。</p>
+
+<pre><code class="language-bash">$ cargo build
+   Compiling hello_world v0.0.1 (file:///home/yourname/projects/hello_world)
+$ ./target/debug/hello_world
+Hello, world!
+</code></pre>
+
+<p>やりました！
+ここで、<code>cargo build</code>でプロジェクトをビルドし、<code>./target/debug/hello_world</code>でプログラムを実行しました。
+<code>cargo run</code>する事で、これらを同時に行えます。</p>
+
+<pre><code class="language-bash">$ cargo run
+     Running `target/debug/hello_world`
+Hello, world!
+</code></pre>
+
+<p>今回は、プロジェクトを再ビルドしなかった事に注意してください。
+Cargoはソースファイルに変更が加えられていない事を看破したので、再ビルドせずに、すでに存在するバイナリを実行しました。
+もし、なんらかの変更をソースファイルに加えていた場合は次の様になります。</p>
+
+<pre><code class="language-bash">$ cargo run
+   Compiling hello_world v0.0.1 (file:///home/yourname/projects/hello_world)
+     Running `target/debug/hello_world`
+Hello, world!
+</code></pre>
+
+<p>今回の例では、これは<code>rustc</code>よりも大きく優れている事はありませんが、将来の事を考えてみてください。
+プロジェクトが複雑になってくると、コンパイルを正しく行うためにより多くの事をやる必要が有ります。
+Cargoが有れば、たとえプロジェクトが成長しても、<code>cargo build</code>だけで全てを行えます。</p>
+
+<p>プロジェクトのリリースの準備が整ったら、<code>cargo build --release</code>によって、最適化を伴ったコンパイルを行えます。</p>
+
+<p>また、Cargoが<code>Cargo.lock</code>という新しいファイルを作成している事にも気付くでしょう。</p>
+
+<pre><code class="language-toml">[root]
+name = &quot;hello_world&quot;
+version = &quot;0.0.1&quot;
+</code></pre>
+
+<p><code>Cargo.lock</code>は、Cargoがアプリケーションの依存性を追跡するために用います。
+今のところは依存性が全く無いため、ファイルはスカスカです。
+私たちはこのファイルを操作する必要は有りません。
+Cargoにまかせておきましょう。</p>
+
+<p>以上で終わりです！
+私たちは<code>Cargo</code>によって、<code>hello_world</code>プロジェクトのビルドに成功しました。
+このプログラムはシンプルですが、このやり方は、残りのRust人生の間中役に立つでしょう。
+どんなRustプロジェクトでもこのやり方は通用すると思って良いでしょう。</p>
+
+<pre><code class="language-bash">$ git clone someurl.com/someproject
+$ cd someproject
+$ cargo build
+</code></pre>
+
+<h2 id="a-new-project" class='section-header'><a
+                           href="#a-new-project">A New Project</a></h2>
+<p>新しいプロジェクトを作るたびに、同じ操作をする必要はありません！
+Cargoは、ベアボーンなプロジェクトディレクトリを作り、すぐに開発を始められます。</p>
+
+<p>プロジェクトをはじめるには、<code>cargo new</code>を使います。</p>
+
+<pre><code class="language-bash">$ cargo new hello_world --bin
+</code></pre>
+
+<p><code>--bin</code>を渡す事で、ライブラリではなくアプリケーションを作ります。
+実行可能なアプリケーションは&#39;バイナリ&#39;とも呼ばれます。</p>
+
+<p>Cargoが何を生成したか見てみましょう。</p>
+
+<pre><code class="language-bash">$ cd hello_world
+$ tree .
+.
+├── Cargo.toml
+└── src
+    └── main.rs
+
+1 directory, 2 files
+</code></pre>
+
+<p>もし、<code>tree</code>コマンドがなければ、ディストリビューションのパッケージマネージャから入手して下さい。
+必ずしも必要では有りませんが、絶対に役に立ちます。</p>
+
+<p>これが、プロジェクトを始めるのに必要な全てです。
+<code>Cargo.toml</code>を見てみましょう。</p>
+
+<pre><code class="language-toml">[package]
+
+name = &quot;hello_world&quot;
+version = &quot;0.1.0&quot;
+authors = [&quot;Your Name &lt;you@example.com&gt;&quot;]
+</code></pre>
+
+<p>Cargoは、<code>git</code>のグローバル設定から、プロジェクトのデフォルト設定を推定します。
+Cargoは、<code>hello_world</code>ディレクトリを<code>git</code>レポジトリとしても初期化しています。</p>
+
+<p><code>src/main.rs</code>ファイルを見てみます。</p>
+<span class='rusttest'>fn main() {
+    println!(&quot;Hello, world!&quot;);
+}
+</span><pre class='rust rust-example-rendered'>
+<span class='kw'>fn</span> <span class='ident'>main</span>() {
+    <span class='macro'>println</span><span class='macro'>!</span>(<span class='string'>&quot;Hello, world!&quot;</span>);
+}</pre>
+
+<p>Cargoは、&quot;Hello World!&quot;プログラムを初期生成するので、直ぐにコーディングを開始できます。
+Cargoのより深い理解にはCargoの<a href="http://doc.crates.io/guide.html">ガイド</a>を参照してください。</p>
+
+<p>ツールについては以上です。
+次に、プログラミング言語Rust自身について学びましょう。</p>
+
+<p>ここから先は、2つの道があります。
+1、&#39;<a href="learn-rust.html">Learn Rust</a>&#39;でプロジェクトを開始する(トップダウン)。
+2、&#39;<a href="syntax-and-semantics.html">Syntax andSsemantics</a>&#39;で、言語そのものについて詳細に学ぶ(ボトムアップ)。
+システムプログラミングについて経験がある人は1から始めるのが良いかもしれません。
+動的言語から来た人は、どちらから始めても楽しめるでしょう。
+学び方は人それぞれです！</p>
+
     <script type="text/javascript">
         window.playgroundUrl = "https://play.rust-lang.org";
     </script>

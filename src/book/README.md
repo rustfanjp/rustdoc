@@ -34,11 +34,9 @@ Rustは、他の高レベルプログラミング言語にありがちな抽象�
 
 ### Contributing
 
-この本を生成するソースファイルはGithubにあります。
-[github.com/rust-lang/rust/tree/master/src/doc/trpl](https://github.com/rust-lang/rust/tree/master/src/doc/trpl)
+この本を生成するソースファイルは[Github](https://github.com/rust-lang/rust/tree/master/src/doc/trpl)に有ります。
 
-(訳注) この日本語訳を生成するソースファイルもGithubにあります。
-[github.com/rustfanjp/rustdoc/doc/book/](https://github.com/rustfanjp/rustdoc/doc/book)
+(訳注) この日本語訳を生成するソースファイルも[Github](https://github.com/rustfanjp/rustdoc/doc/book)に有ります。
 
 ### Rust イントロダクション
 
@@ -106,7 +104,7 @@ Rustの参照は他の言語のポインタに似ていますが、コンパイ�
 三行目を足しましょう。
 一見問題無い様に見えますが、コンパイルエラーになります。
 
-```rust,ignore
+```rust
 fn main() {
     let mut x = vec!["Hello", "world"];
 
