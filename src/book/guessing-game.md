@@ -1,16 +1,18 @@
 % Guessing Game
 
-For our first project, we’ll implement a classic beginner programming problem:
-the guessing game. Here’s how it works: Our program will generate a random
-integer between one and a hundred. It will then prompt us to enter a guess.
-Upon entering our guess, it will tell us if we’re too low or too high. Once we
-guess correctly, it will congratulate us. Sounds good?
+これから始めるプロジェクトでは、古典的な'数当てゲーム'を実装します。
+このプログラムでは、1から100までの乱数を生成し、ユーザーに推測値を入力させます。
+ユーザーが入力したら、その数が小さすぎるか大きすぎるかを伝えます。
+もし、正しく推測できていた場合は、勝利画面を表示します。
+面白そうですよね？
 
 # Set up
 
-Let’s set up a new project. Go to your projects directory. Remember how we had
-to create our directory structure and a `Cargo.toml` for `hello_world`? Cargo
-has a command that does that for us. Let’s give it a shot:
+それでは新しいプロジェクトを始めます。
+プロジェクトディレクトリに移動して下さい。
+どの様にディレクトリ構造を作り、どの様に`hello_world`のための`Cargo.toml`を作ったか覚えていますか？
+Cargoはそのためのコマンドを持っているのでした。
+次の様に入力して下さい。
 
 ```bash
 $ cd ~/projects
@@ -18,10 +20,10 @@ $ cargo new guessing_game --bin
 $ cd guessing_game
 ```
 
-We pass the name of our project to `cargo new`, and then the `--bin` flag,
-since we’re making a binary, rather than a library.
+ここでは、プロジェクトの名前を`cargo new`に渡し、`--bin`フラグを付けました。
+今はライブラリではなくバイナリを作ろうとしているのです。
 
-Check out the generated `Cargo.toml`:
+生成された`Cargo.toml`を見てみましょう。
 
 ```toml
 [package]
@@ -31,10 +33,11 @@ version = "0.1.0"
 authors = ["Your Name <you@example.com>"]
 ```
 
-Cargo gets this information from your environment. If it’s not correct, go ahead
-and fix that.
+Cargoはあなたの環境からこれらの情報を推定しています。
+もしこれが正しくなければ、修正して下さい。
 
-Finally, Cargo generated a ‘Hello, world!’ for us. Check out `src/main.rs`:
+最後に、Cargoは'Hello, world!'を生成しました。
+`src/main.rs`を見てみましょう。
 
 ```rust
 fn main() {
@@ -42,19 +45,20 @@ fn main() {
 }
 ```
 
-Let’s try compiling what Cargo gave us:
+Cargoが生成した物をコンパイルしてみましょう。
 
-```{bash}
+```bash
 $ cargo build
    Compiling guessing_game v0.1.0 (file:///home/you/projects/guessing_game)
 ```
 
-Excellent! Open up your `src/main.rs` again. We’ll be writing all of
-our code in this file.
+エクセレント！
+もう一度、`src/main.rs`を開いてください。
+全てのコードはこのファイルに記述します。
 
-Before we move on, let me show you one more Cargo command: `run`. `cargo run`
-is kind of like `cargo build`, but it also then runs the produced executable.
-Try it out:
+コードに移る前に、もう一つのCargoコマンドを確認しておきましょう。
+`cargo run`は、`cargo build`に似ていますが、生成されたバイナリを自動的に実行します。
+やってみましょう。
 
 ```bash
 $ cargo run
@@ -63,16 +67,17 @@ $ cargo run
 Hello, world!
 ```
 
-Great! The `run` command comes in handy when you need to rapidly iterate on a
-project. Our game is just such a project, we need to quickly test each
-iteration before moving on to the next one.
+グレート！
+`cargo run`コマンドは、何度もプロジェクトを実行しなければならない時に便利です。
+このゲームも正にその様なプロジェクトで、次のステップへ、次のステップへと素早く確認する必要があります。
 
 # Processing a Guess
 
-Let’s get to it! The first thing we need to do for our guessing game is
-allow our player to input a guess. Put this in your `src/main.rs`:
+それでは始めましょう！
+最初にやらなければならないのは、プレイヤーに数を入力させる事です。
+次の様に`src/main.rs`に記述して下さい。
 
-```rust,no_run
+```rust
 use std::io;
 
 fn main() {
@@ -90,28 +95,28 @@ fn main() {
 }
 ```
 
-There’s a lot here! Let’s go over it, bit by bit.
+なんだか色々ありますね！
+少しずつ見ていきましょう。
 
-```rust,ignore
+```rust
 use std::io;
 ```
 
-We’ll need to take user input, and then print the result as output. As such, we
-need the `io` library from the standard library. Rust only imports a few things
-by default into every program, [the ‘prelude’][prelude]. If it’s not in the
-prelude, you’ll have to `use` it directly.
+このプログラムでは、ユーザーの入力や結果の出力を扱う必要があります。
+そのために、標準ライブラリの`io`ライブラリを使う必要があります。
+Rustはデフォルトではほんの少しの物しかインポートしません([the 'prelude'][prelude])。
+もし、preludeの中に必要な物が無ければ、直接`use`する必要があります。
 
 [prelude]: ../std/prelude/index.html
 
-```rust,ignore
+```rust
 fn main() {
 ```
 
-As you’ve seen before, the `main()` function is the entry point into your
-program. The `fn` syntax declares a new function, the `()`s indicate that
-there are no arguments, and `{` starts the body of the function. Because
-we didn’t include a return type, it’s assumed to be `()`, an empty
-[tuple][tuples].
+以前見たように、`main()`関数はプログラムが始まる地点（エントリーポイント)です。
+`fn`という文法は、新しい関数を宣言します。
+`()`は、引数が無い事を表し、`{`と共に関数の本体が始まります。
+返値の型を指定していないので、Rustは返値の型は`()`という空の[tuple][tuples]だと推定します。
 
 [tuples]: primitive-types.html#tuples
 
