@@ -159,7 +159,7 @@ r#"
             format!("--html-before-content={}", prelude.display()),
             format!("--html-after-content={}", postlude.display()),
             format!("--markdown-playground-url=https://play.rust-lang.org"),
-            format!("--markdown-css={}", item.path_to_root.join("rustbook.css").display()),
+            /* format!("--markdown-css={}", item.path_to_root.join("rustbook.css").display()), */
             "--markdown-no-toc".to_string(),
         ];
         let output_result = rustdoc::main_args(rustdoc_args);

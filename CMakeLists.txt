@@ -22,7 +22,7 @@ function (make_doc TARGET_NAME DIR_NAME)
     COMMAND "mkdir" "${PROJECT_BINARY_DIR}/doc/${DIR_NAME}" "-p"
     COMMAND "cp" "${CMAKE_CURRENT_BINARY_DIR}/_book/*.html" "${PROJECT_BINARY_DIR}/doc/${DIR_NAME}/" "-r"
     COMMAND "cp" "${CMAKE_CURRENT_BINARY_DIR}/_book/*.js" "${PROJECT_BINARY_DIR}/doc/${DIR_NAME}/" "-r"
-    COMMAND "cp" "${CMAKE_CURRENT_BINARY_DIR}/_book/*.css" "${PROJECT_BINARY_DIR}/doc/${DIR_NAME}/" "-r"
+#     COMMAND "cp" "${CMAKE_CURRENT_BINARY_DIR}/_book/*.css" "${PROJECT_BINARY_DIR}/doc/${DIR_NAME}/" "-r"
     DEPENDS "${TARGET_NAME}_FORMAT"
   )
 endfunction (make_doc)
