@@ -20,4 +20,4 @@ Rustについてのある程度の慣れが想定されています。
 
 [book]: book/index.html
 [standard]: std/index.html
-[grammar]: grammar.html
+[grammer]: grammar.html
