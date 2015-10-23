@@ -412,16 +412,16 @@
     
 <h2 id="paths" class='section-header'><a
                            href="#paths">Paths</a></h2>
-<p>A <em>path</em> is a sequence of one or more path components <em>logically</em> separated by
-a namespace qualifier (<code>::</code>). If a path consists of only one component, it may
-refer to either an <a href="#items">item</a> or a <a href="#variables">variable</a> in a local control
-scope. If a path has multiple components, it refers to an item.</p>
+<p><em>パス(path)</em>は、1つ以上の名前修飾子(namespace qualifier)、<code>::</code>、によって_論理的_に分割されています。
+パスが1つの要素を持つ場合、そのスコープの<a href="items.html">アイテム(item)</a>か、<a href="variables.html">変数(variable)</a>を指します。
+パスが複数の要素を持つ場合、アイテムを指しています。</p>
 
-<p>Every item has a <em>canonical path</em> within its crate, but the path naming an item
-is only meaningful within a given crate. There is no global namespace across
-crates; an item&#39;s canonical path merely identifies it within the crate.</p>
+<p>全てのアイテムはそのクレート(carte)内の_標準パス(canonical path)_を持ちます。
+あるアイテムを指すパスは、そのクレート内でのみ意味を持ちます。
+クレートを跨ぐグローバルな名前空間は有りません。
+アイテムの標準パスはそのクレート内で、アイテムを他のアイテムと識別します。</p>
 
-<p>Two examples of simple paths consisting of only identifier components:</p>
+<p>識別子(identifier)だけから成る単純なパスの例です。</p>
 <span class='rusttest'>fn main() {
     x;
     x::y::z;
@@ -430,14 +430,12 @@ crates; an item&#39;s canonical path merely identifies it within the crate.</p>
 <span class='ident'>x</span>;
 <span class='ident'>x</span>::<span class='ident'>y</span>::<span class='ident'>z</span>;</pre>
 
-<p>Path components are usually <a href="#identifiers">identifiers</a>, but they may
-also include angle-bracket-enclosed lists of type arguments. In
-<a href="#expressions">expression</a> context, the type argument list is given
-after a <code>::</code> namespace qualifier in order to disambiguate it from a
-relational expression involving the less-than symbol (<code>&lt;</code>). In type
-expression context, the final namespace qualifier is omitted.</p>
+<p>パスの要素は通常、<a href="identifieres.html">識別子</a>ですが、角括弧で囲まれた型引数(type argument)のリストを含んでいるかもしれません。
+<a href="expressions.html">式(expression)</a>の文脈では、型引数リストは、名前修飾子(<code>::</code>)の後に来ます。
+これは、(<code>&lt;</code>)にまつわる曖昧さを除去するための規則です。
+型式(type expression)の文脈では、最後の名前修飾子は省略されます。</p>
 
-<p>Two examples of paths with type arguments:</p>
+<p>型引数を含む例です。</p>
 <span class='rusttest'>fn main() {
     struct HashMap&lt;K, V&gt;(K,V);
     fn f() {
@@ -450,13 +448,10 @@ expression context, the final namespace qualifier is omitted.</p>
 <span class='kw'>type</span> <span class='ident'>T</span> <span class='op'>=</span> <span class='ident'>HashMap</span><span class='op'>&lt;</span><span class='ident'>i32</span>,<span class='ident'>String</span><span class='op'>&gt;</span>; <span class='comment'>// Type arguments used in a type expression</span>
 <span class='kw'>let</span> <span class='ident'>x</span>  <span class='op'>=</span> <span class='ident'>id</span>::<span class='op'>&lt;</span><span class='ident'>i32</span><span class='op'>&gt;</span>(<span class='number'>10</span>);       <span class='comment'>// Type arguments used in a call expression</span></pre>
 
-<p>Paths can be denoted with various leading qualifiers to change the meaning of
-how it is resolved:</p>
+<p>パスは、パスの名前解決の意味論を変える修飾子を先頭に伴うかもしれません。</p>
 
 <ul>
-<li>Paths starting with <code>::</code> are considered to be global paths where the
-components of the path start being resolved from the crate root. Each
-identifier in the path must resolve to an item.</li>
+<li><code>::</code>で始まるパスは、グローバルパスだと見なされ、クレートの直下から名前解決されます。</li>
 </ul>
 <span class='rusttest'>mod a {
     pub fn foo() {}
@@ -478,8 +473,7 @@ fn main() {}
 }</pre>
 
 <ul>
-<li>Paths starting with the keyword <code>super</code> begin resolution relative to the
-parent module. Each further identifier must resolve to an item.</li>
+<li><code>super</code>キーワードで始まるパスは、親モジュールから名前解決されます。</li>
 </ul>
 <span class='rusttest'>mod a {
     pub fn foo() {}
@@ -487,6 +481,7 @@ parent module. Each further identifier must resolve to an item.</li>
 mod b {
     pub fn foo() {
         super::a::foo(); // call a&#39;s foo function
+                         // (訳注) クレートは無名モジュールを直下に持ちます。
     }
 }
 fn main() {}
@@ -497,12 +492,12 @@ fn main() {}
 <span class='kw'>mod</span> <span class='ident'>b</span> {
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>foo</span>() {
         <span class='ident'>super</span>::<span class='ident'>a</span>::<span class='ident'>foo</span>(); <span class='comment'>// call a&#39;s foo function</span>
+                         <span class='comment'>// (訳注) クレートは無名モジュールを直下に持ちます。</span>
     }
 }</pre>
 
 <ul>
-<li>Paths starting with the keyword <code>self</code> begin resolution relative to the
-current module. Each further identifier must resolve to an item.</li>
+<li><code>self</code>キーワードで始まるパスは、今のモジュールから名前解決されます。</li>
 </ul>
 <span class='rusttest'>fn foo() {}
 fn bar() {

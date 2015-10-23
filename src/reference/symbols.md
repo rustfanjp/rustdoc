@@ -2,10 +2,10 @@
 
 ### Symbols
 
-Symbols are a general class of printable [token](#tokens) that play structural
-roles in a variety of grammar productions. They are catalogued here for
-completeness as the set of remaining miscellaneous printable tokens that do not
-otherwise appear as [unary operators](#unary-operator-expressions), [binary
-operators](#binary-operator-expressions), or [keywords][keywords].
+シンボル(symbol)は、表示可能な[トークン(token)][tokens]の一般的な分類で、文法上重要な意味が有ります。
+シンボルは、[単項演算子(unary operator)][unary-operator-expressions]、[二項演算子(binary operator)][binary-operator-expressions]、[キーワード(keyword)][keywords]以外の表示可能なトークンの集合です。
 
-
+[tokens]: tokens.html
+[keywords]: keywords.html
+[unary-operator-expressions]: unary-operator-expressions.html
+[binary-operator-expressions]: binary-operator-expressions.html

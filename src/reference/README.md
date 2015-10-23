@@ -1,25 +1,22 @@
 % The Rust Reference
 
-This document is the primary reference for the Rust programming language. It
-provides three kinds of material:
+この文書は、プログラミング言語Rustの主要なリファレンスです。
+この文書は次の3つの事柄を提供します。
 
-  - Chapters that informally describe each language construct and their use.
-  - Chapters that informally describe the memory model, concurrency model,
-    runtime services, linkage model and debugging facilities.
-  - Appendix chapters providing rationale and references to languages that
-    influenced the design.
+  - 言語構成と使い方についての章
+  - メモリモデル、平行性も出る、実行時サービス、リンクモデル、デバッグ機能についての章
+  - 言語のデザインに影響を与えた文献の参照や補遺についての章
 
-This document does not serve as an introduction to the language. Background
-familiarity with the language is assumed. A separate [book] is available to
-help acquire such background familiarity.
+この文書はRustのイントロダクションではありません。
+Rustについてのある程度の慣れが想定されています。
+[Rust book][book]は、Rustについての背景知識を得る手助けになります。
 
-This document also does not serve as a reference to the [standard] library
-included in the language distribution. Those libraries are documented
-separately by extracting documentation attributes from their source code. Many
-of the features that one might expect to be language features are library
-features in Rust, so what you're looking for may be there, not here.
+この文書は、[標準ライブラリ][standard]についての文書では有りません。
+標準ライブラリについてのドキュメントは、ソースコード中のアトリビュートに基づいて生成されたドキュメントが有ります。
+言語機能だと思われている事の多くは、実際にはライブラリの機能です。
+その場合は、標準ライブラリについて調べてください。
 
-You may also be interested in the [grammar].
+また、[文法][grammer]も確認してみて下さい。
 
 [book]: book/index.html
 [standard]: std/index.html
