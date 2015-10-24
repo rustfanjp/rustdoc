@@ -2,22 +2,19 @@
 
 ### Static items
 
-A *static item* is similar to a *constant*, except that it represents a precise
-memory location in the program. A static is never "inlined" at the usage site,
-and all references to it refer to the same memory location. Static items have
-the `static` lifetime, which outlives all other lifetimes in a Rust program.
-Static items may be placed in read-only memory if they do not contain any
-interior mutability.
+*静的アイテム(static item)* は *定数アイテム(constant item)* に似ています。
+唯一の違いは、静的アイテムは、プログラム中のメモリ配置が定まっている点です。
+静的アイテムはインライン化されません。
+また、同じ静的アイテムに対する全ての参照(reference)は、同じメモリ位置を指します。
+静的アイテムは`static`寿命(lifetime)を持ち、Rustプログラムで最も寿命が長いです。
+ミュータブル性を持たない限り、静的アイテムはリードオンリメモリに配置されるかもしれません。
 
-Statics may contain interior mutability through the `UnsafeCell` language item.
-All access to a static is safe, but there are a number of restrictions on
-statics:
+静的アイテムは`UnsafeCell`機能によって、内部的にミュータブル性を持つかもしれません。
+静的アイテムに対する全てのアクセスは安全ですが、以下の制限があります。
 
-* Statics may not contain any destructors.
-* The types of static values must ascribe to `Sync` to allow thread-safe access.
-* Statics may not refer to other statics by value, only by reference.
-* Constants cannot refer to statics.
+* 静的アイテムはデストラクタを持たない。
+* 静的アイテムの型は`Sync`を満たし、スレッドセーフなアクセスを許さなければならない。
+* 静的アイテムは他の静的アイテムをコピーはできず、参照するしかない。
+* 定数アイテムは、静的アイテムを参照できない。
 
-Constants should in general be preferred over statics, unless large amounts of
-data are being stored, or single-address and mutability properties are required.
-
+データが大きかったり、アドレスの単一性やミュータブル性が重要でない場合は、定数アイテムの方が好ましいです。

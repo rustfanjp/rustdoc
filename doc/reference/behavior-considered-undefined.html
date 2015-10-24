@@ -412,45 +412,35 @@
     
 <h5 id="behavior-considered-undefined" class='section-header'><a
                            href="#behavior-considered-undefined">Behavior considered undefined</a></h5>
-<p>The following is a list of behavior which is forbidden in all Rust code,
-including within <code>unsafe</code> blocks and <code>unsafe</code> functions. Type checking provides
-the guarantee that these issues are never caused by safe code.</p>
+<p>これは、<code>unsafe</code>ブロック(block)や<code>unsafe</code>関数(function)も含めて、全てのRustコードで禁止されている動作のリストです。
+型チェックによって、安全なコードでは、これらの動作を起こさない事が保証されています。</p>
 
 <ul>
-<li>Data races</li>
-<li>Dereferencing a null/dangling raw pointer</li>
-<li>Reads of <a href="http://llvm.org/docs/LangRef.html#undefined-values">undef</a>
-(uninitialized) memory</li>
-<li>Breaking the <a href="http://llvm.org/docs/LangRef.html#pointer-aliasing-rules">pointer aliasing
-rules</a>
-with raw pointers (a subset of the rules used by C)</li>
-<li><code>&amp;mut</code> and <code>&amp;</code> follow LLVM’s scoped <a href="http://llvm.org/docs/LangRef.html#noalias">noalias</a> model, except if the <code>&amp;T</code>
-contains an <code>UnsafeCell&lt;U&gt;</code>. Unsafe code must not violate these aliasing
-guarantees.</li>
-<li>Mutating non-mutable data (that is, data reached through a shared reference or
-data owned by a <code>let</code> binding), unless that data is contained within an <code>UnsafeCell&lt;U&gt;</code>.</li>
-<li>Invoking undefined behavior via compiler intrinsics:
+<li>データ競合。</li>
+<li>null生ポインタ、ダングリング生ポインタのデリファレンス。</li>
+<li><a href="http://llvm.org/docs/LangRef.html#undefined-values">undef</a>(未初期化)メモリの読み出し。</li>
+<li><a href="http://llvm.org/docs/LangRef.html#pointer-aliasing-rules">ポインタエイリアシング規則</a>違反。</li>
+<li><code>&amp;mut</code>と<code>&amp;</code>の、noaliasルール違反。ただし、<code>&amp;T</code>が<code>UnsafeCell&lt;U&gt;</code>を含んでいた場合は、良い。</li>
+<li>mutableでないデータを変更する事。ただし、<code>UnsafeCell&lt;UL</code>を含んでいた場合は、良い。</li>
+<li>コンパイラ組み込み機能による未定義動作呼び出し。
 
 <ul>
-<li>Indexing outside of the bounds of an object with <code>std::ptr::offset</code>
-(<code>offset</code> intrinsic), with
-the exception of one byte past the end which is permitted.</li>
-<li>Using <code>std::ptr::copy_nonoverlapping_memory</code> (<code>memcpy32</code>/<code>memcpy64</code>
-intrinsics) on overlapping buffers</li>
+<li><code>std::ptr::offset</code>(<code>offset</code>組み込み)によって、オブジェクトの領域の外側の指定する。ただし、1バイト外側は許される。</li>
+<li><code>std::ptr::copy_nonoverlapping_memory</code>(<code>memcpy32</code>/<code>memcpy64</code>組み込み)をオーバーラップした領域に対して呼び出す。</li>
 </ul></li>
-<li>Invalid values in primitive types, even in private fields/locals:
+<li>プリミティブ(primitive)型に対する不正な値。
 
 <ul>
-<li>Dangling/null references or boxes</li>
-<li>A value other than <code>false</code> (0) or <code>true</code> (1) in a <code>bool</code></li>
-<li>A discriminant in an <code>enum</code> not included in the type definition</li>
-<li>A value in a <code>char</code> which is a surrogate or above <code>char::MAX</code></li>
-<li>Non-UTF-8 byte sequences in a <code>str</code></li>
+<li>参照(reference)かボックス(box)に対するダングリング/ヌル値の設定。</li>
+<li><code>bool</code>にたいして<code>false</code>(0)と<code>true</code>(1)以外の値の設定。</li>
+<li><code>enum</code>型に対する定義されていない値の設定。</li>
+<li><code>char</code>型に対する、サロゲートや<code>char::MAX</code>を超える値の設定。</li>
+<li><code>str</code>型に対する、非UTF8バイト列の設定。</li>
 </ul></li>
-<li>Unwinding into Rust from foreign code or unwinding from Rust into foreign
-code. Rust&#39;s failure system is not compatible with exception handling in
-other languages. Unwinding must be caught and handled at FFI boundaries.</li>
+<li>Rustプログラムと外部プログラムの間のアンワインド(unwind)。特に、Rustのエラー処理システムは他の言語での例外ハンドリング機構と互換性が無い。unwindはFFI境界を通して管理される。</li>
 </ul>
+
+<p>(訳注) noaliasルールとは、引数に渡されたポインタの指している領域に、引数に渡されていない静的変数などを通してアクセスする事。</p>
 
     <script type="text/javascript">
         window.playgroundUrl = "https://play.rust-lang.org";

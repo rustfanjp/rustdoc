@@ -2,8 +2,8 @@
 
 #### Diverging functions
 
-A special kind of function can be declared with a `!` character where the
-output type would normally be. For example:
+関数宣言において、本来、返値型が現れる場所に`!`が現れた場合、これは特別な関数です。
+以下の様な物です。
 
 ```
 fn my_err(s: &str) -> ! {
@@ -12,16 +12,13 @@ fn my_err(s: &str) -> ! {
 }
 ```
 
-We call such functions "diverging" because they never return a value to the
-caller. Every control path in a diverging function must end with a `panic!()` or
-a call to another diverging function on every control path. The `!` annotation
-does *not* denote a type.
+この様な関数を"分岐(diverging)"と呼び、分岐関数は呼び出し元に値を返しません。
 
-It might be necessary to declare a diverging function because as mentioned
-previously, the typechecker checks that every control path in a function ends
-with a [`return`](#return-expressions) or diverging expression. So, if `my_err`
-were declared without the `!` annotation, the following code would not
-typecheck:
+分岐関数のコードパスは`panic!()`か他の分岐関数呼び出しで終わります。
+`!`は型情報を示している分けでは有りません。
+
+全ての関数呼び出しのコードパスは[リターン式(return expression)][return-expression]か、分岐式で終わる必要があるので、分岐関数がしばしば必要になります。
+例えば、次の例を見てください。
 
 ```
 # fn my_err(s: &str) -> ! { panic!() }
@@ -36,11 +33,9 @@ fn f(i: i32) -> i32 {
 }
 ```
 
-This will not compile without the `!` annotation on `my_err`, since the `else`
-branch of the conditional in `f` does not return an `i32`, as required by the
-signature of `f`. Adding the `!` annotation to `my_err` informs the
-typechecker that, should control ever enter `my_err`, no further type judgments
-about `f` need to hold, since control will never resume in any context that
-relies on those judgments. Thus the return type on `f` only needs to reflect
-the `if` branch of the conditional.
+この例において、もし、`my_err`分岐関数に`!`が無く通常の関数であったとします。
+この時、`f(i32) -> i32`関数の`else`分岐では、`i32`型の値を返さないコードパスが存在します。
+これは、`f`の返値型`i32`と矛盾するので、型チェックに失敗します。
+一方、分岐関数は最終的には`panic!()`に辿り着いて、通常とは異なるコードパスに飛ぶので、値を返す必要は有りません。
 
+[reutrn-expression]: return-expression.html

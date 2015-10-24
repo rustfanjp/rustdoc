@@ -2,16 +2,13 @@
 
 ### Type aliases
 
-A _type alias_ defines a new name for an existing [type](#types). Type
-aliases are declared with the keyword `type`. Every value has a single,
-specific type, but may implement several different traits, or be compatible with
-several different type constraints.
+_型エイリアス(type alias)_ はすでに存在する[型(type)][types]の新しい名前を定義します。
+型エイリアスは`type`キーワードと共に宣言されます。
+全ての値は、特定の1つの型を持ちますが、異なるトレイト(trait)や、複数の異なった型制約(type constraint)と互換性があるかもしれません。
 
-For example, the following defines the type `Point` as a synonym for the type
-`(u8, u8)`, the type of pairs of unsigned 8 bit integers:
+例えば、次の定義は、`Point`を`(u8, u8)`型、符号無8ビット整数のペアのシノニムとして定義しています。
 
 ```
 type Point = (u8, u8);
 let p: Point = (41, 68);
 ```
-

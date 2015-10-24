@@ -412,12 +412,11 @@
     
 <h4 id="extern-functions" class='section-header'><a
                            href="#extern-functions">Extern functions</a></h4>
-<p>Extern functions are part of Rust&#39;s foreign function interface, providing the
-opposite functionality to <a href="#external-blocks">external blocks</a>. Whereas
-external blocks allow Rust code to call foreign code, extern functions with
-bodies defined in Rust code <em>can be called by foreign code</em>. They are defined
-in the same way as any other Rust function, except that they have the <code>extern</code>
-modifier.</p>
+<p>extern関数(extern function)は、Rustの外部関数インターフェース(Foregin Function Interface, FFI)の一部です。
+externalブロックは、外部のコードを呼び*出す*事を許しますが、extern関数は、外部のコードから呼び*出される*事を許します。
+<code>extern</code>キーワードによる修飾子がある以外、その他の意味論は普通の関数と同様です。</p>
+
+<p>(訳注) C/C++で言う外部リンケージを指定します。</p>
 <span class='rusttest'>fn main() {
     // Declares an extern fn, the ABI defaults to &quot;C&quot;
     extern fn new_i32() -&gt; i32 { 0 }
@@ -432,8 +431,8 @@ modifier.</p>
 <span class='comment'>// Declares an extern fn with &quot;stdcall&quot; ABI</span>
 <span class='kw'>extern</span> <span class='string'>&quot;stdcall&quot;</span> <span class='kw'>fn</span> <span class='ident'>new_i32_stdcall</span>() <span class='op'>-&gt;</span> <span class='ident'>i32</span> { <span class='number'>0</span> }</pre>
 
-<p>Unlike normal functions, extern fns have type <code>extern &quot;ABI&quot; fn()</code>. This is the
-same type as the functions declared in an extern block.</p>
+<p>通常の関数とは異なり、extern関数は<code>extern &quot;ABI&quot; fn()</code>という形式を取ります。
+<a href="external-blocks.html">externブロック</a>で次の様に宣言しても同様です。</p>
 <span class='rusttest'>fn main() {
     extern fn new_i32() -&gt; i32 { 0 }
     let fptr: extern &quot;C&quot; fn() -&gt; i32 = new_i32;
@@ -441,8 +440,9 @@ same type as the functions declared in an extern block.</p>
 }</span><pre class='rust rust-example-rendered'>
 <span class='kw'>let</span> <span class='ident'>fptr</span>: <span class='kw'>extern</span> <span class='string'>&quot;C&quot;</span> <span class='kw'>fn</span>() <span class='op'>-&gt;</span> <span class='ident'>i32</span> <span class='op'>=</span> <span class='ident'>new_i32</span>;</pre>
 
-<p>Extern functions may be called directly from Rust code as Rust uses large,
-contiguous stack segments like C.</p>
+<p>(訳注) この方法では、リンケージ指定と関数の本体を分離できるのが利点です。</p>
+
+<p>extern関数は、Rustコード内からも直接呼ばれるかもしれません。</p>
 
     <script type="text/javascript">
         window.playgroundUrl = "https://play.rust-lang.org";

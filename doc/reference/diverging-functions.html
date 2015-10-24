@@ -412,8 +412,8 @@
     
 <h4 id="diverging-functions" class='section-header'><a
                            href="#diverging-functions">Diverging functions</a></h4>
-<p>A special kind of function can be declared with a <code>!</code> character where the
-output type would normally be. For example:</p>
+<p>関数宣言において、本来、返値型が現れる場所に<code>!</code>が現れた場合、これは特別な関数です。
+以下の様な物です。</p>
 <span class='rusttest'>fn main() {
     fn my_err(s: &amp;str) -&gt; ! {
         println!(&quot;{}&quot;, s);
@@ -426,16 +426,13 @@ output type would normally be. For example:</p>
     <span class='macro'>panic</span><span class='macro'>!</span>();
 }</pre>
 
-<p>We call such functions &quot;diverging&quot; because they never return a value to the
-caller. Every control path in a diverging function must end with a <code>panic!()</code> or
-a call to another diverging function on every control path. The <code>!</code> annotation
-does <em>not</em> denote a type.</p>
+<p>この様な関数を&quot;分岐(diverging)&quot;と呼び、分岐関数は呼び出し元に値を返しません。</p>
 
-<p>It might be necessary to declare a diverging function because as mentioned
-previously, the typechecker checks that every control path in a function ends
-with a <a href="#return-expressions"><code>return</code></a> or diverging expression. So, if <code>my_err</code>
-were declared without the <code>!</code> annotation, the following code would not
-typecheck:</p>
+<p>分岐関数のコードパスは<code>panic!()</code>か他の分岐関数呼び出しで終わります。
+<code>!</code>は型情報を示している分けでは有りません。</p>
+
+<p>全ての関数呼び出しのコードパスは[リターン式(return expression)][return-expression]か、分岐式で終わる必要があるので、分岐関数がしばしば必要になります。
+例えば、次の例を見てください。</p>
 <span class='rusttest'>fn main() {
     fn my_err(s: &amp;str) -&gt; ! { panic!() }
     
@@ -459,13 +456,10 @@ typecheck:</p>
    }
 }</pre>
 
-<p>This will not compile without the <code>!</code> annotation on <code>my_err</code>, since the <code>else</code>
-branch of the conditional in <code>f</code> does not return an <code>i32</code>, as required by the
-signature of <code>f</code>. Adding the <code>!</code> annotation to <code>my_err</code> informs the
-typechecker that, should control ever enter <code>my_err</code>, no further type judgments
-about <code>f</code> need to hold, since control will never resume in any context that
-relies on those judgments. Thus the return type on <code>f</code> only needs to reflect
-the <code>if</code> branch of the conditional.</p>
+<p>この例において、もし、<code>my_err</code>分岐関数に<code>!</code>が無く通常の関数であったとします。
+この時、<code>f(i32) -&gt; i32</code>関数の<code>else</code>分岐では、<code>i32</code>型の値を返さないコードパスが存在します。
+これは、<code>f</code>の返値型<code>i32</code>と矛盾するので、型チェックに失敗します。
+一方、分岐関数は最終的には<code>panic!()</code>に辿り着いて、通常とは異なるコードパスに飛ぶので、値を返す必要は有りません。</p>
 
     <script type="text/javascript">
         window.playgroundUrl = "https://play.rust-lang.org";

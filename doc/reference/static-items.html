@@ -412,26 +412,24 @@
     
 <h3 id="static-items" class='section-header'><a
                            href="#static-items">Static items</a></h3>
-<p>A <em>static item</em> is similar to a <em>constant</em>, except that it represents a precise
-memory location in the program. A static is never &quot;inlined&quot; at the usage site,
-and all references to it refer to the same memory location. Static items have
-the <code>static</code> lifetime, which outlives all other lifetimes in a Rust program.
-Static items may be placed in read-only memory if they do not contain any
-interior mutability.</p>
+<p><em>静的アイテム(static item)</em> は <em>定数アイテム(constant item)</em> に似ています。
+唯一の違いは、静的アイテムは、プログラム中のメモリ配置が定まっている点です。
+静的アイテムはインライン化されません。
+また、同じ静的アイテムに対する全ての参照(reference)は、同じメモリ位置を指します。
+静的アイテムは<code>static</code>寿命(lifetime)を持ち、Rustプログラムで最も寿命が長いです。
+ミュータブル性を持たない限り、静的アイテムはリードオンリメモリに配置されるかもしれません。</p>
 
-<p>Statics may contain interior mutability through the <code>UnsafeCell</code> language item.
-All access to a static is safe, but there are a number of restrictions on
-statics:</p>
+<p>静的アイテムは<code>UnsafeCell</code>機能によって、内部的にミュータブル性を持つかもしれません。
+静的アイテムに対する全てのアクセスは安全ですが、以下の制限があります。</p>
 
 <ul>
-<li>Statics may not contain any destructors.</li>
-<li>The types of static values must ascribe to <code>Sync</code> to allow thread-safe access.</li>
-<li>Statics may not refer to other statics by value, only by reference.</li>
-<li>Constants cannot refer to statics.</li>
+<li>静的アイテムはデストラクタを持たない。</li>
+<li>静的アイテムの型は<code>Sync</code>を満たし、スレッドセーフなアクセスを許さなければならない。</li>
+<li>静的アイテムは他の静的アイテムをコピーはできず、参照するしかない。</li>
+<li>定数アイテムは、静的アイテムを参照できない。</li>
 </ul>
 
-<p>Constants should in general be preferred over statics, unless large amounts of
-data are being stored, or single-address and mutability properties are required.</p>
+<p>データが大きかったり、アドレスの単一性やミュータブル性が重要でない場合は、定数アイテムの方が好ましいです。</p>
 
     <script type="text/javascript">
         window.playgroundUrl = "https://play.rust-lang.org";

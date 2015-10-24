@@ -412,10 +412,8 @@
     
 <h3 id="structures" class='section-header'><a
                            href="#structures">Structures</a></h3>
-<p>A <em>structure</em> is a nominal <a href="#structure-types">structure type</a> defined with the
-keyword <code>struct</code>.</p>
-
-<p>An example of a <code>struct</code> item and its use:</p>
+<p><em>構造体(structure)</em> とは、<code>struct</code>キーワードと共に定義される<a href="structure-types.html">構造体型(structure type)</a>です。
+これが構造体の例です。</p>
 <span class='rusttest'>fn main() {
     struct Point {x: i32, y: i32}
     let p = Point {x: 10, y: 11};
@@ -426,8 +424,8 @@ keyword <code>struct</code>.</p>
 <span class='kw'>let</span> <span class='ident'>p</span> <span class='op'>=</span> <span class='ident'>Point</span> {<span class='ident'>x</span>: <span class='number'>10</span>, <span class='ident'>y</span>: <span class='number'>11</span>};
 <span class='kw'>let</span> <span class='ident'>px</span>: <span class='ident'>i32</span> <span class='op'>=</span> <span class='ident'>p</span>.<span class='ident'>x</span>;</pre>
 
-<p>A <em>tuple structure</em> is a nominal <a href="#tuple-types">tuple type</a>, also defined with
-the keyword <code>struct</code>. For example:</p>
+<p><em>タプル構造体(tuple structure)</em> とは、<code>struct</code>キーワードと共に定義される<a href="tuple-types.html">タプル型(tuple type)</a>です。
+これがタプル構造体の例です。</p>
 <span class='rusttest'>fn main() {
     struct Point(i32, i32);
     let p = Point(10, 11);
@@ -438,8 +436,9 @@ the keyword <code>struct</code>. For example:</p>
 <span class='kw'>let</span> <span class='ident'>p</span> <span class='op'>=</span> <span class='ident'>Point</span>(<span class='number'>10</span>, <span class='number'>11</span>);
 <span class='kw'>let</span> <span class='ident'>px</span>: <span class='ident'>i32</span> <span class='op'>=</span> <span class='kw'>match</span> <span class='ident'>p</span> { <span class='ident'>Point</span>(<span class='ident'>x</span>, _) <span class='op'>=&gt;</span> <span class='ident'>x</span> };</pre>
 
-<p>A <em>unit-like struct</em> is a structure without any fields, defined by leaving off
-the list of fields entirely. Such types will have a single value. For example:</p>
+<p><em>単体構造体(unit-like structure)</em>とは、いかなるフィールドも持たない構造体です。
+単体構造体は通常、単一の値しか持ちません。
+これが単体構造体の例です。</p>
 <span class='rusttest'>fn main() {
     struct Cookie;
     let c = [Cookie, Cookie, Cookie, Cookie];
@@ -448,8 +447,8 @@ the list of fields entirely. Such types will have a single value. For example:</
 <span class='kw'>struct</span> <span class='ident'>Cookie</span>;
 <span class='kw'>let</span> <span class='ident'>c</span> <span class='op'>=</span> [<span class='ident'>Cookie</span>, <span class='ident'>Cookie</span>, <span class='ident'>Cookie</span>, <span class='ident'>Cookie</span>];</pre>
 
-<p>The precise memory layout of a structure is not specified. One can specify a
-particular layout using the <a href="#ffi-attributes"><code>repr</code> attribute</a>.</p>
+<p>構造体のメモリレイアウトはデフォルトでは指定されません。
+指定するには、<a href="ffi-attributes.html"><code>repr</code>アトリビュート(attribute)</a>を用いてください。</p>
 
     <script type="text/javascript">
         window.playgroundUrl = "https://play.rust-lang.org";

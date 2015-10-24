@@ -2,16 +2,13 @@
 
 #### Mutable statics
 
-If a static item is declared with the `mut` keyword, then it is allowed to
-be modified by the program. One of Rust's goals is to make concurrency bugs
-hard to run into, and this is obviously a very large source of race conditions
-or other bugs. For this reason, an `unsafe` block is required when either
-reading or writing a mutable static variable. Care should be taken to ensure
-that modifications to a mutable static are safe with respect to other threads
-running in the same process.
+もし、静的アイテム(static item)が`mut`キーワードと共に宣言された場合、その静的アイテムはミュータブル(mutable)であり、その静的アイテムに対する変更操作を行えます。
+Rustの目標の1つに、平行性バグを起こしにくい事があります。
+そして、静的アイテムに対する変更操作は、競合条件の原因となりやすいです。
+このため、ミュータブル(mutable)な静的アイテムに対する読み書きは、`unsafe`ブロック(block)の中で行う必要が有ります。
+ユーザーは、同じプロセスの他のスレッドに対して、ミュータブル静的アイテムに対する変更操作が安全である事を保証する必要が有ります。
 
-Mutable statics are still very useful, however. They can be used with C
-libraries and can also be bound from C libraries (in an `extern` block).
+ミュータブル静的アイテムは非常に便利で、`extern`ブロックの中で、Cライブラリと共に使ったり、Cライブラリから持ってきたりする事ができます。
 
 ```
 # fn atomic_add(_: &mut u32, _: u32) -> u32 { 2 }
@@ -34,6 +31,4 @@ unsafe fn bump_levels_unsafe2() -> u32 {
 }
 ```
 
-Mutable statics have the same restrictions as normal statics, except that the
-type of the value is not required to ascribe to `Sync`.
-
+ミュータブル静的アイテムは、`Sync`で無くてよいという意外は通常の静的アイテムと同じ制限を持ちます。

@@ -412,20 +412,21 @@
     
 <h5 id="behavior-not-considered-unsafe" class='section-header'><a
                            href="#behavior-not-considered-unsafe">Behavior not considered unsafe</a></h5>
-<p>This is a list of behavior not considered <em>unsafe</em> in Rust terms, but that may
-be undesired.</p>
+<p>これは、Rustにおいて*安全では無い(unsafe)*とは、考えられてい*ない*(つまり安全)な事柄のリストです。
+特に、安全ではありますが、望ましくない事柄です。
+一見すると安全出ないと思われますが、実は安全なので、ここにまとめてあります。</p>
 
 <ul>
-<li>Deadlocks</li>
-<li>Leaks of memory and other resources</li>
-<li>Exiting without calling destructors</li>
-<li>Integer overflow
+<li>デッドロック</li>
+<li>メモリリーク</li>
+<li>終了時のデストラクタ(destructor)呼び出しの省略</li>
+<li>整数オーバーフロー
 
 <ul>
-<li>Overflow is considered &quot;unexpected&quot; behavior and is always user-error,
-unless the <code>wrapping</code> primitives are used. In non-optimized builds, the compiler
-will insert debug checks that panic on overflow, but in optimized builds overflow
-instead results in wrapped values. See <a href="https://github.com/rust-lang/rfcs/blob/master/text/0560-integer-overflow.md">RFC 560</a> for the rationale and more details.</li>
+<li>オーバーフローは、&quot;想定されていない&quot;振る舞いで、もし起きたらそれはユーザーの責任です。
+<code>wrapping</code>プリミティブ(primitive)が使われた場合は、その限りでは有りません。
+デバッグビルドでは、コンパイラはオーバーフローを検出しパニックを起こすコードを挿入しますが、リリースビルドでは、オーバーフローを起こすと丸められた値を返します。
+詳しくは、<a href="https://github.com/rust-lang/rfcs/blob/master/text/0560-integer-overflow.md">RFC 560</a>を参照して下さい。</li>
 </ul></li>
 </ul>
 
