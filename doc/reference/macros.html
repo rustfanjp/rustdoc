@@ -412,19 +412,19 @@
     
 <h2 id="macros" class='section-header'><a
                            href="#macros">Macros</a></h2>
-<p><code>macro_rules</code> allows users to define syntax extension in a declarative way.  We
-call such extensions &quot;macros by example&quot; or simply &quot;macros&quot; — to be distinguished
-from the &quot;procedural macros&quot; defined in [compiler plugins][plugin].</p>
+<p><code>macro_rules</code>によって、文法拡張を宣言的なやり方で定義出来ます。
+この様な拡張を&quot;macros by example&quot;や、単に&quot;マクロ(macro)&quot;と呼び、<a href="plugins.html">コンパイラプラグイン(compiler plugin)</a>における&quot;字句マクロ&quot;と区別します。</p>
 
-<p>Currently, macros can expand to expressions, statements, items, or patterns.</p>
+<p>現在の所、マクロは、式(expression)、文(statement)、アイテム(item)、パターン(pattern)に展開出来ます。</p>
 
-<p>(A <code>sep_token</code> is any token other than <code>*</code> and <code>+</code>. A <code>non_special_token</code> is
-any token other than a delimiter or <code>$</code>.)</p>
+<p>(<code>sep_token</code>は<code>*</code>と<code>+</code>以外の任意のトークンで、<code>non_special_token</code>はデリミタ(delimiter)と、<code>$</code>以外の任意のトークンです。)</p>
 
-<p>The macro expander looks up macro invocations by name, and tries each macro
-rule in turn. It transcribes the first successful match. Matching and
-transcription are closely related to each other, and we will describe them
-together.</p>
+<p>マクロ展開器は、マクロ呼び出しを見つけると、マクロ規則の適応を試みます。
+マクロ展開器は、最初に成功したマッチを翻訳(transcribe)します。
+マッチングと翻訳は非常に関連性が有るので、後ほど、一緒に説明します。</p>
+
+<p>(訳注) 原文においても、このページは著しく情報が不足しています。
+詳細は、Rust bookの<a href="../book/macros.html">マクロ</a>を参照するのが良いでしょう。</p>
 
     <script type="text/javascript">
         window.playgroundUrl = "https://play.rust-lang.org";

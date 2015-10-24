@@ -2,18 +2,19 @@
 
 ### Parsing limitations
 
-The parser used by the macro system is reasonably powerful, but the parsing of
-Rust syntax is restricted in two ways:
+マクロシステムのパーサーは十分協力だが、Rust文法のパースは次の2つの制約を持つ。
 
-1. Macro definitions are required to include suitable separators after parsing
-   expressions and other bits of the Rust grammar. This implies that
-   a macro definition like `$i:expr [ , ]` is not legal, because `[` could be part
-   of an expression. A macro definition like `$i:expr,` or `$i:expr;` would be legal,
-   however, because `,` and `;` are legal separators. See [RFC 550] for more information.
-2. The parser must have eliminated all ambiguity by the time it reaches a `$`
-   _name_ `:` _designator_. This requirement most often affects name-designator
-   pairs when they occur at the beginning of, or immediately after, a `$(...)*`;
-   requiring a distinctive token in front can solve the problem.
+1. マクロ(macro)の定義は、式(expression)やその他の文法要素をパースした後は、適切なセパレータ(separator)を含む必要がある。
+   つまり、`$i:expr [ , ]`の様な定義は不正である。
+   なぜなら、`[`は式のセパレータではない。
+   一方で、`$i:expr,`や`$i:expr;`は合法である。
+   なぜなら、`,`や`;`は式の合法はセパレータである。
+   詳細は[RFC 550]を参照。
+2. パーサーは、`$` _name_ `:` _designator_ を見つけた時に、曖昧さを残してはならない。
+   これは、繰り返し構文の始まりや直後にちょっとした影響を与える。
+   こういった場合は、目印となるトークンを配置する事で解決できる。
+
+(訳注) 2つ目の制約は、`$` _name_を繰り返しで挟んだりすると、どの非終端文字にマッチするのか分からなくなるのを防ぐためにあるのだと思われる。
 
 [RFC 550]: https://github.com/rust-lang/rfcs/blob/master/text/0550-macro-future-proofing.md
 

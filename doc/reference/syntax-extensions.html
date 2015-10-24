@@ -412,19 +412,18 @@
     
 <h1 id="syntax-extensions" class='section-header'><a
                            href="#syntax-extensions">Syntax extensions</a></h1>
-<p>A number of minor features of Rust are not central enough to have their own
-syntax, and yet are not implementable as functions. Instead, they are given
-names, and invoked through a consistent syntax: <code>some_extension!(...)</code>.</p>
+<p>Rustのいくつかのちょっとした機能は、それ専用の文法を与える程ではありませんが、関数として実装するのも難しい物もあります。
+そういった機能は、<code>some_extension!(...)</code>という相応の文法を利用して実装されています。</p>
 
-<p>Users of <code>rustc</code> can define new syntax extensions in two ways:</p>
+<p><code>rustc</code>では、2つの方法によって文法を拡張する事が出来ます。</p>
 
 <ul>
-<li><p>[Compiler plugins][plugin] can include arbitrary Rust code that
-manipulates syntax trees at compile time. Note that the interface
-for compiler plugins is considered highly unstable.</p></li>
-<li><p><a href="book/macros.html">Macros</a> define new syntax in a higher-level,
-declarative way.</p></li>
+<li><p><a href="plugins.html">コンパイラプラグイン(compiler plugin)</a> は、コンパイル時に構文木を操作する任意のRustコードを含める事が出来ます。
+コンパイラプラグインのためのインターフェースはstableではありません。</p></li>
+<li><p><a href="macros.html">マクロ(macro)</a>は、高レベルの宣言型の文法を定義します。</p></li>
 </ul>
+
+<p>/* TODO:  */</p>
 
     <script type="text/javascript">
         window.playgroundUrl = "https://play.rust-lang.org";

@@ -2,58 +2,49 @@
 
 # Crates and source files
 
-Although Rust, like any other language, can be implemented by an interpreter as
-well as a compiler, the only existing implementation is a compiler &mdash;
-from now on referred to as *the* Rust compiler &mdash; and the language has
-always been designed to be compiled. For these reasons, this section assumes a
-compiler.
+他の言語と同様に、Rustはインタプリタとして実装する事もできますが、今の所は唯一のコンパイラしか有りません。
+ですので、Rustコンパイラについて言及する時は、*the*を付けます。
+このセクションでは、コンパイラ実装を想定しています。
 
-Rust's semantics obey a *phase distinction* between compile-time and
-run-time.[^phase-distinction] Semantic rules that have a *static
-interpretation* govern the success or failure of compilation, while
-semantic rules
-that have a *dynamic interpretation* govern the behavior of the program at
-run-time.
+Rustの意味論では、コンパイル時と実行時は違うフェーズだと認識されます。[^phase-distinction]
+*静的解釈*を持つ意味論は、コンパイルが成功するか失敗するかを決めますが、*動的解釈*を持つ意味論は、プログラムの振舞を実行時に決定します。
 
-[^phase-distinction]: This distinction would also exist in an interpreter.
-    Static checks like syntactic analysis, type checking, and lints should
-    happen before the program is executed regardless of when it is executed.
+[^phase-distinction]: この区別は、インタプリタ実装でも存在し得ます。
+    構文解析、型チェック、詳細な検査(lint)を行ってからプログラムを実行するかもしれません。
 
-The compilation model centers on artifacts called _crates_. Each compilation
-processes a single crate in source form, and if successful, produces a single
-crate in binary form: either an executable or some sort of
-library.[^cratesourcefile]
+Rustのコンパイルモデルは、_クレート(crate)_を中心としています。
+それぞれのコンパイルでは、1つのソースコードから、1つのクレートを処理し、1つのバイナリを生成します。[^cratesourcefile]
 
-[^cratesourcefile]: A crate is somewhat analogous to an *assembly* in the
-    ECMA-335 CLI model, a *library* in the SML/NJ Compilation Manager, a *unit*
-    in the Owens and Flatt module system, or a *configuration* in Mesa.
 
-A _crate_ is a unit of compilation and linking, as well as versioning,
-distribution and runtime loading. A crate contains a _tree_ of nested
-[module](#modules) scopes. The top level of this tree is a module that is
-anonymous (from the point of view of paths within the module) and any item
-within a crate has a canonical [module path](#paths) denoting its location
-within the crate's module tree.
+[^cratesourcefile]: クレートは、ECMA-335 CLIモデルにおける*アセンブリ*、 SML/NJコンパイルマネージャにおける*ライブラリ*、フラットモジュールシステムにおける*ユニット*、Mesaにおける*コンフィギュレーション*等の類似物です。
 
-The Rust compiler is always invoked with a single source file as input, and
-always produces a single output crate. The processing of that source file may
-result in other source files being loaded as modules. Source files have the
-extension `.rs`.
+クレートは、コンパイル、リンク、バージョン管理、配布、実行時ロードの基本単位です。
+クレートは、ネストした[モジュール(module)][modules]スコープの木を持ちます。
+この木のトップレベルは、無名モジュールです。
+クレート内の任意のアイテムはこのモジュール木に基づいた[標準パス](paths)を持ちます。
 
-A Rust source file describes a module, the name and location of which &mdash;
-in the module tree of the current crate &mdash; are defined from outside the
-source file: either by an explicit `mod_item` in a referencing source file, or
-by the name of the crate itself. Every source file is a module, but not every
-module needs its own source file: [module definitions](#modules) can be nested
-within one file.
+[modules]: modules.html
+[paths]: paths.html
 
-Each source file contains a sequence of zero or more `item` definitions, and
-may optionally begin with any number of [attributes](#items-and-attributes)
-that apply to the containing module, most of which influence the behavior of
-the compiler. The anonymous crate module can have additional attributes that
-apply to the crate as a whole.
+Rustコンパイラは、必ず1つのソースコードと共に呼び出されます。
+そして、1つのクレートを出力します。
+ソースファイルの処理の過程で、他のソースファイルがモジュールとしてロードされる事も有ります。
+ソースファイルの拡張子は`.rs`です。
 
-```no_run
+Rustのソースファイルには、このソースファイルの外で定義されたモジュールの名前と今のクレート内での位置を記述する事が出来ます。
+そのモジュールは、`mod_item`によってか定義されているか、クレートその物です。
+全てのソースファイルは、モジュールですが、全てのモジュールがそれ専用のソースファイルを持っている訳では有りません。
+[モジュール定義(module definition)][modules]は、1つのファイルの中でネストできます。
+
+それぞれのソースファイルは、`item`定義を含んでいるかもしれません。
+また、それらの定義は、任意の数の[アトリビュート(attribute)][item-and-attributes]を伴っているかもしれません。
+それらのアトリビュートはコンパイラの動作に影響を与えます。
+クレート直下の無名モジュールは、クレート全体に適応される追加のアトリビュートを持っています。
+
+[modules]: modules.html
+[item-and-attributes]: item-and-attributes.html
+
+```rust
 // Specify the crate name.
 #![crate_name = "projx"]
 
@@ -65,7 +56,5 @@ apply to the crate as a whole.
 #![warn(non_camel_case_types)]
 ```
 
-A crate that contains a `main` function can be compiled to an executable. If a
-`main` function is present, its return type must be [`unit`](#tuple-types)
-and it must take no arguments.
-
+`main`関数を持っているクレートは実行可能形式にコンパイルできます。
+もし、`main`関数が存在するなら、その返値の型は、[`unit`][tuple-types]で、引数を取ってはいけません。

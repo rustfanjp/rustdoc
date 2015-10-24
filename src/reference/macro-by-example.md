@@ -2,37 +2,35 @@
 
 ### Macro By Example
 
-The macro expander matches and transcribes every token that does not begin with
-a `$` literally, including delimiters. For parsing reasons, delimiters must be
-balanced, but they are otherwise not special.
+マクロ展開器(macro expander)は、`$`以外で始まる全てのトークン(token)をマッチ(match)、翻訳(transcribe)します。
+これにはデリミタ(delimiter)も含まれます。
+パースの都合により、デリミタは"バランス"している必要がありますが、それ以外は特別な事は有りません。
 
-In the matcher, `$` _name_ `:` _designator_ matches the nonterminal in the Rust
-syntax named by _designator_. Valid designators are `item`, `block`, `stmt`,
-`pat`, `expr`, `ty` (type), `ident`, `path`, `tt` (either side of the `=>`
-in macro rules). In the transcriber, the designator is already known, and so
-only the name of a matched nonterminal comes after the dollar sign.
+マッチ部では、`$` _name_ `:` _designator_ は、_designator_という名前を持つ非終端記号にマッチします。
+有効な指示子(desinator)は、`item`、`block`、`stmt`、`pat`、`expr`、`ty`、`type`、`ident`、`path`、`tt`です。
+これらは、マクロ規則の`=>`の左辺、右辺どちらにでも適応されます。
+翻訳部では、指示子はマッチングによって分かっているはずなので、`$`に名前を続けて書く事で、マッチした非終端記号を示します。
 
-In both the matcher and transcriber, the Kleene star-like operator indicates
-repetition. The Kleene star operator consists of `$` and parentheses, optionally
-followed by a separator token, followed by `*` or `+`. `*` means zero or more
-repetitions, `+` means at least one repetition. The parentheses are not matched or
-transcribed. On the matcher side, a name is bound to _all_ of the names it
-matches, in a structure that mimics the structure of the repetition encountered
-on a successful match. The job of the transcriber is to sort that structure
-out.
+(訳注): マクロは`マッチ部 => 翻訳部`という形式で書かれ、マッチ部がどのような構文要素にマッチするかを示し、翻訳部がどのような構文要素に展開されるかを示す。
 
-The rules for transcription of these repetitions are called "Macro By Example".
-Essentially, one "layer" of repetition is discharged at a time, and all of them
-must be discharged by the time a name is transcribed. Therefore, `( $( $i:ident
-),* ) => ( $i )` is an invalid macro, but `( $( $i:ident ),* ) => ( $( $i:ident
-),*  )` is acceptable (if trivial).
+マッチ部と翻訳部のどちらにおいても、クリーネ(Kleene)演算子(`*`)が使われ、繰り返しを表す。
+クリーネ演算子は`$`と括弧を伴う。
+`*`は0回以上(zero or more)の繰り返しを意味する。
+また、`+`は1回以上(one or more)の繰り返しを意味する。
+括弧は、マッチせず、また、翻訳もされない。
+マッチ部では、繰り返しの構造を含むマッチに成功した場合、名前はマッチした_全て_の非終端記号の名前を持つ。
 
-When Macro By Example encounters a repetition, it examines all of the `$`
-_name_ s that occur in its body. At the "current layer", they all must repeat
-the same number of times, so ` ( $( $i:ident ),* ; $( $j:ident ),* ) => ( $(
-($i,$j) ),* )` is valid if given the argument `(a,b,c ; d,e,f)`, but not
-`(a,b,c ; d,e)`. The repetition walks through the choices at that layer in
-lockstep, so the former input transcribes to `(a,d), (b,e), (c,f)`.
+これらの繰り返しを翻訳する規則は、"Macro By Example"と呼ばれる。
+基本的に、1度に1つの繰り返し"レイヤー"が処理される。
+そして、名前が翻訳される時には、その名前が指す全ての非終端記号が処理される。
+例えば、`( $( $i:ident), *) => ( $i )`は不正である。
+一方で、 `( $( $i:ident), *) => ( $( $i:ident ),* )`は正しい(訳注: これは`(a, b, c)`を`(a, b, c)`に移すような自明なマクロ)(訳注: 右辺の`:ident`は冗長)。
 
-Nested repetitions are allowed.
+マクロでクリーネ演算子が表れた場合、この内部の全ての`$` _name_が検査される。
+"今のレイヤー"の中で、クリーネ演算子がマッチする繰り返しの数は全て等しくなければ、マッチしない。
+つまり、`( $( $i:ident ),* ; $( $j:ident ),* ) => ( $($i, $j),* )`は、`(a,b,c ; d,e,f)`にはマッチするが、`(a,b,c ; d,e)`にはマッチしない。
+また、前者は`(a,d), (b,e), (c,f)`に翻訳される。
 
+/* TODO */
+
+繰り返しのネストも許される。

@@ -2,16 +2,17 @@
 
 # Syntax extensions
 
-A number of minor features of Rust are not central enough to have their own
-syntax, and yet are not implementable as functions. Instead, they are given
-names, and invoked through a consistent syntax: `some_extension!(...)`.
+Rustのいくつかのちょっとした機能は、それ専用の文法を与える程ではありませんが、関数として実装するのも難しい物もあります。
+そういった機能は、`some_extension!(...)`という相応の文法を利用して実装されています。
 
-Users of `rustc` can define new syntax extensions in two ways:
+`rustc`では、2つの方法によって文法を拡張する事が出来ます。
 
-* [Compiler plugins][plugin] can include arbitrary Rust code that
-  manipulates syntax trees at compile time. Note that the interface
-  for compiler plugins is considered highly unstable.
+* [コンパイラプラグイン(compiler plugin)][plugins] は、コンパイル時に構文木を操作する任意のRustコードを含める事が出来ます。
+  コンパイラプラグインのためのインターフェースはstableではありません。
 
-* [Macros](book/macros.html) define new syntax in a higher-level,
-  declarative way.
+* [マクロ(macro)][macros]は、高レベルの宣言型の文法を定義します。
 
+
+/* TODO:  */
+[plugins]: plugins.html
+[macros]: macros.html

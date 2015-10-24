@@ -2,6 +2,8 @@
 
 # Items and attributes
 
-Crates contain [items](#items), each of which may have some number of
-[attributes](#attributes) attached to it.
+クレート(crate)は、[アイテム(item)][items]を含んでいます。
+また、それぞれのアイテムは、いくつかの[アトリビュート(attribute)][attributes]を持っているかもしれません。
 
+[items]: items.html
+[attributes]: attributes.html
