@@ -412,39 +412,35 @@
     
 <h2 id="items" class='section-header'><a
                            href="#items">Items</a></h2>
-<p>An <em>item</em> is a component of a crate. Items are organized within a crate by a
-nested set of <a href="#modules">modules</a>. Every crate has a single &quot;outermost&quot;
-anonymous module; all further items within the crate have <a href="#paths">paths</a>
-within the module tree of the crate.</p>
+<p><em>アイテム(item)</em>ﾊ､クレート(crate)の要素です。
+アイテムは、ネストした<a href="modules.html">モジュール(module)</a>によってクレート内に管理されています。
+全てのクレートは、&quot;一番外側&quot;の唯一の無名モジュールを持ちます。
+全てのアイテムは、クレートのモジュール木の中の<a href="paths.html">標準パス</a>を持ちます。</p>
 
-<p>Items are entirely determined at compile-time, generally remain fixed during
-execution, and may reside in read-only memory.</p>
+<p>アイテムはコンパイル時に、決定され実行中は不変です。
+通常はリードオンリメモリに配置されます。</p>
 
-<p>There are several kinds of item:</p>
+<p>いくつかの種類のアイテムが有ります。</p>
 
 <ul>
-<li><a href="#extern-crate-declarations"><code>extern crate</code> declarations</a></li>
-<li><a href="#use-declarations"><code>use</code> declarations</a></li>
-<li><a href="#modules">modules</a></li>
-<li><a href="#functions">functions</a></li>
-<li><a href="grammar.html#type-definitions">type definitions</a></li>
-<li><a href="#structures">structures</a></li>
-<li><a href="#enumerations">enumerations</a></li>
-<li><a href="#constant-items">constant items</a></li>
-<li><a href="#static-items">static items</a></li>
-<li><a href="#traits">traits</a></li>
-<li><a href="#implementations">implementations</a></li>
+<li><a href="extern-crate-declarations.html"><code>extern crate</code>宣言</a></li>
+<li><a href="use-declarations.html"><code>use</code>宣言</a></li>
+<li><a href="modules.html">モジュール(module)</a></li>
+<li><a href="functions.html">関数(function)</a></li>
+<li><a href="grammar.htmltype-definitions.html">型定義(type definition)</a></li>
+<li><a href="structures.html">構造体(structure)</a></li>
+<li><a href="enumerations.html">列挙型(enumeration)</a></li>
+<li><a href="constant-items.html">定数アイテム(constant item)</a></li>
+<li><a href="static-items.html">静的アイテム(static item)</a></li>
+<li><a href="traits.html">トレイト(trait)</a></li>
+<li><a href="implementations.html">実装(implement)</a></li>
 </ul>
 
-<p>Some items form an implicit scope for the declaration of sub-items. In other
-words, within a function or module, declarations of items can (in many cases)
-be mixed with the statements, control blocks, and similar artifacts that
-otherwise compose the item body. The meaning of these scoped items is the same
-as if the item was declared outside the scope &mdash; it is still a static item
-&mdash; except that the item&#39;s <em>path name</em> within the module namespace is
-qualified by the name of the enclosing item, or is private to the enclosing
-item (in the case of functions). The grammar specifies the exact locations in
-which sub-item declarations may appear.</p>
+<p>いくつかのアイテムは、サブアイテムを宣言するための暗黙のスコープを作ります。
+つまり、関数やモジュールの中に、アイテムの宣言と文(statement)、ブロック(block)等を混ぜる事が出来ます。
+これらのアイテムの意味は、そのスコープの外で宣言された時と同じです。
+つまり、静的で、*標準パス*は、モジュール木によってのみ決定されます。
+いくつかのアイテムは、定義可能な場所が文法によって制限されているかもしれません。</p>
 
     <script type="text/javascript">
         window.playgroundUrl = "https://play.rust-lang.org";
