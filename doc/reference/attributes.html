@@ -412,24 +412,20 @@
     
 <h2 id="attributes" class='section-header'><a
                            href="#attributes">Attributes</a></h2>
-<p>Any item declaration may have an <em>attribute</em> applied to it. Attributes in Rust
-are modeled on Attributes in ECMA-335, with the syntax coming from ECMA-334
-(C#). An attribute is a general, free-form metadatum that is interpreted
-according to name, convention, and language and compiler version. Attributes
-may appear as any of:</p>
+<p>いかなるアイテム(item)の宣言も <em>アトリビュート(attribute)</em>を持てます。
+RustのアトリビュートはECMA-335でモデル化され、文法は、ECMA-334(C#)から来ています。
+アトリビュートは一般的には、自由形式のメタデータです。
+アトリビュートは、名前、慣習、言語、コンパイラバージョン等として解釈されます。
+アトリビュートは次の様な形式を持ちます。</p>
 
 <ul>
-<li>A single identifier, the attribute name</li>
-<li>An identifier followed by the equals sign &#39;=&#39; and a literal, providing a
-key/value pair</li>
-<li>An identifier followed by a parenthesized list of sub-attribute arguments</li>
+<li>1つの識別子、アトリビュート名</li>
+<li>識別子 &#39;=&#39; リテラルの形式、キー/値ペア</li>
+<li>括弧で囲まれた識別子のリスト、サブアトリビュートに対する引数</li>
 </ul>
 
-<p>Attributes with a bang (&quot;!&quot;) after the hash (&quot;#&quot;) apply to the item that the
-attribute is declared within. Attributes that do not have a bang after the hash
-apply to the item that follows the attribute.</p>
-
-<p>An example of attributes:</p>
+<p>&quot;#!&quot;で始まるアトリビュートは、アトリビュートを囲んでいるアイテムに適応されます。
+&quot;#&quot;だけで始まるアトリビュートは、直後に続くアイテムに適応されます。</p>
 <span class='rusttest'>fn main() {
     // General metadata applied to the enclosing module or crate.
     #![crate_type = &quot;lib&quot;]
@@ -471,10 +467,8 @@ apply to the item that follows the attribute.</p>
 <span class='kw'>type</span> <span class='ident'>int8_t</span> <span class='op'>=</span> <span class='ident'>i8</span>;</pre>
 
 <blockquote>
-<p><strong>Note:</strong> At some point in the future, the compiler will distinguish between
-language-reserved and user-available attributes. Until then, there is
-effectively no difference between an attribute handled by a loadable syntax
-extension and the compiler.</p>
+<p><strong>ノート:</strong> 将来のいつか、コンパイラは、予約済アトリビュートとユーザー定義アトリビュートを区別します。
+今の所所は違いは有りません。</p>
 </blockquote>
 
     <script type="text/javascript">
