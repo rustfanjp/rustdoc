@@ -412,9 +412,8 @@
     
 <h4 id="generic-functions" class='section-header'><a
                            href="#generic-functions">Generic functions</a></h4>
-<p>A <em>generic function</em> allows one or more <em>parameterized types</em> to appear in its
-signature. Each type parameter must be explicitly declared, in an
-angle-bracket-enclosed, comma-separated list following the function name.</p>
+<p><em>ジェネリック関数(generic function)</em> は、1個以上の <em>型仮引数(type parameter)</em> をシグネチャに持ちます。
+それぞれの型仮引数は、関数名の直後に、角括弧で囲み、コンマ区切りのリストで明示的に記述する必要があります。</p>
 <span class='rusttest'>fn main() {
     // foo is generic over A and B
     
@@ -425,18 +424,17 @@ angle-bracket-enclosed, comma-separated list following the function name.</p>
 
 <span class='kw'>fn</span> <span class='ident'>foo</span><span class='op'>&lt;</span><span class='ident'>A</span>, <span class='ident'>B</span><span class='op'>&gt;</span>(<span class='ident'>x</span>: <span class='ident'>A</span>, <span class='ident'>y</span>: <span class='ident'>B</span>) {</pre>
 
-<p>Inside the function signature and body, the name of the type parameter can be
-used as a type name. <a href="#traits">Trait</a> bounds can be specified for type parameters
-to allow methods with that trait to be called on values of that type. This is
-specified using the <code>where</code> syntax:</p>
+<p>関数のシグネチャと本体の内側では、型仮引数の名前は、型名として扱う事ができます。
+<a href="traits.html">トレイト(trait)</a>束縛によって型仮引数がそのトレイトを使ってメソッド呼び出し出来ます。
+トレイト束縛は、<code>where</code>文法によって指定できます。</p>
 <span class='rusttest'>fn main() {
     fn foo&lt;T&gt;(x: T) where T: Debug {
     
 }</span><pre class='rust rust-example-rendered'>
 <span class='kw'>fn</span> <span class='ident'>foo</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span>(<span class='ident'>x</span>: <span class='ident'>T</span>) <span class='kw'>where</span> <span class='ident'>T</span>: <span class='ident'>Debug</span> {</pre>
 
-<p>When a generic function is referenced, its type is instantiated based on the
-context of the reference. For example, calling the <code>foo</code> function here:</p>
+<p>ジェネリック関数が参照されると、参照された文脈によって型がインスタンス化されます。
+例えば、<code>foo</code>関数を呼び出してみます。</p>
 <span class='rusttest'>fn main() {
     use std::fmt::Debug;
     
@@ -456,12 +454,12 @@ context of the reference. For example, calling the <code>foo</code> function her
 
 <span class='ident'>foo</span>(<span class='kw-2'>&amp;</span>[<span class='number'>1</span>, <span class='number'>2</span>]);</pre>
 
-<p>will instantiate type parameter <code>T</code> with <code>i32</code>.</p>
+<p>この場合、型仮引数<code>T</code>を<code>i32</code>としてインスタンス化しています。</p>
 
-<p>The type parameters can also be explicitly supplied in a trailing
-<a href="#paths">path</a> component after the function name. This might be necessary if
-there is not sufficient context to determine the type parameters. For example,
-<code>mem::size_of::&lt;u32&gt;() == 4</code>.</p>
+<p><a href="paths.html">パス(path)</a>を指定する事で、型実引数を指定する事もできます。
+これは、通常の関数呼び出しの文法では、型実引数を決定できない場合に用いられます。</p>
+
+<p><code>mem::size_of::&lt;u32&gt;() == 4</code></p>
 
     <script type="text/javascript">
         window.playgroundUrl = "https://play.rust-lang.org";

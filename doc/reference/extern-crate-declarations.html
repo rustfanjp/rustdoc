@@ -412,19 +412,16 @@
     
 <h4 id="extern-crate-declarations" class='section-header'><a
                            href="#extern-crate-declarations">Extern crate declarations</a></h4>
-<p>An <em><code>extern crate</code> declaration</em> specifies a dependency on an external crate.
-The external crate is then bound into the declaring scope as the <code>ident</code>
-provided in the <code>extern_crate_decl</code>.</p>
+<p><code>extern crate</code>宣言は、外部クレート(crate)への依存性を指定します。
+外部クレートのスコープは、<code>extern_crate_decl</code>に与えられた<code>ident</code>に束縛されます。</p>
 
-<p>The external crate is resolved to a specific <code>soname</code> at compile time, and a
-runtime linkage requirement to that <code>soname</code> is passed to the linker for
-loading at runtime. The <code>soname</code> is resolved at compile time by scanning the
-compiler&#39;s library path and matching the optional <code>crateid</code> provided against
-the <code>crateid</code> attributes that were declared on the external crate when it was
-compiled. If no <code>crateid</code> is provided, a default <code>name</code> attribute is assumed,
-equal to the <code>ident</code> given in the <code>extern_crate_decl</code>.</p>
+<p>外部クレートは、コンパイル時に<code>soname</code>を解決されます。
+そして、その<code>soname</code>に対する実行時のリンケージ要求がリンカーに渡されます。
+<code>soname</code>はコンパイル時に解決されますが、そのためにコンパイラのライブラリパスが走査され、<code>crateid</code>アトリビュートにマッチする物が選ばれます。
+もし<code>crateid</code>が与えられなかった場合、<code>name</code>アトリビュートを元にマッチングされます。
+<code>name</code>アトリビュートは、<code>extern_crate_decl</code>に与えられる<code>ident</code>です。</p>
 
-<p>Three examples of <code>extern crate</code> declarations:</p>
+<p>これが3つの<code>extern crate</code>宣言です。</p>
 <span class='rusttest'>fn main() {
     extern crate pcre;
     

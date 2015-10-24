@@ -412,31 +412,25 @@
     
 <h4 id="use-declarations" class='section-header'><a
                            href="#use-declarations">Use declarations</a></h4>
-<p>A <em>use declaration</em> creates one or more local name bindings synonymous with
-some other <a href="#paths">path</a>. Usually a <code>use</code> declaration is used to shorten the
-path required to refer to a module item. These declarations may appear at the
-top of <a href="#modules">modules</a> and <a href="grammar.html#block-expressions">blocks</a>.</p>
+<p><em>use宣言(use declaration)</em>は、1つ以上の<a href="paths.html">パス</a>に対するローカルなシノニムを定義します。
+通常、<code>use</code>宣言はモジュールアイテム(module item)のパスを短縮するために使われます。
+これらの宣言は、<a href="modules.html">モジュール</a>と<a href="blocks.html">ブロック</a>のトップに現れるかもしれません。</p>
 
 <blockquote>
-<p><strong>Note</strong>: Unlike in many languages,
-<code>use</code> declarations in Rust do <em>not</em> declare linkage dependency with external crates.
-Rather, <a href="#extern-crate-declarations"><code>extern crate</code> declarations</a> declare linkage dependencies.</p>
+<p><strong>ノート</strong>: 他の多くの言語と違い、Rustの<code>use</code>宣言は、外部クレートへのリンケージ依存性は宣言しません。
+そのためには、[<code>extern crate</code>宣言][extern-crate-declarations]を使用してください。</p>
 </blockquote>
 
-<p>Use declarations support a number of convenient shortcuts:</p>
+<p><code>use</code>宣言はいくつかの短縮形をサポートします。</p>
 
 <ul>
-<li>Rebinding the target name as a new local name, using the syntax <code>use p::q::r as x;</code></li>
-<li>Simultaneously binding a list of paths differing only in their final element,
-using the glob-like brace syntax <code>use a::b::{c,d,e,f};</code></li>
-<li>Binding all paths matching a given prefix, using the asterisk wildcard syntax
-<code>use a::b::*;</code></li>
-<li>Simultaneously binding a list of paths differing only in their final element
-and their immediate parent module, using the <code>self</code> keyword, such as
-<code>use a::b::{self, c, d};</code></li>
+<li>あるターゲットの名前を別のローカルな名前に束縛します。<code>use p::q::r as x;</code></li>
+<li>最後だけが事なる複数のパスを同時に束縛できます。<code>use a::b::{c, d, e, f};</code></li>
+<li>最後だけが事なる複数のパスと、それらの親モジュールを同時に束縛できます。<code>use a::b::{self, c, d};</code></li>
+<li>パターンにマッチする全てのパスを一度に束縛できます。<code>use a::b::*;</code></li>
 </ul>
 
-<p>An example of <code>use</code> declarations:</p>
+<p><code>use</code>宣言の例です。</p>
 <span class='rusttest'>use std::option::Option::{Some, None};
 use std::collections::hash_map::{self, HashMap};
 
@@ -471,15 +465,13 @@ fn main() {
     <span class='ident'>bar</span>(<span class='ident'>map1</span>, <span class='ident'>map2</span>);
 }</pre>
 
-<p>Like items, <code>use</code> declarations are private to the containing module, by
-default. Also like items, a <code>use</code> declaration can be public, if qualified by
-the <code>pub</code> keyword. Such a <code>use</code> declaration serves to <em>re-export</em> a name. A
-public <code>use</code> declaration can therefore <em>redirect</em> some public name to a
-different target definition: even a definition with a private canonical path,
-inside a different module. If a sequence of such redirections form a cycle or
-cannot be resolved unambiguously, they represent a compile-time error.</p>
+<p>他のアイテムと同様に、<code>use</code>宣言はデフォルトでモジュール内でプライベート(private)です。
+また、他のアイテムと同様に<code>pub</code>キーワードで修飾する事で、パブリック(public)にできます。
+パブリックな<code>use</code>宣言は名前の_再エクスポート(re-export)_として働きます。
+パブリックな<code>use</code>宣言は、パブリックな名前を別のターゲットに <em>リダイレクト(redirect)</em> 出来ます。
+もし、その様なリダイレクトの連鎖が循環し、曖昧さを解決できない場合、コンパイル時エラーとなります。</p>
 
-<p>An example of re-exporting:</p>
+<p>再エクスポートの例です。</p>
 <span class='rusttest'>fn main() { }
 mod quux {
     pub use quux::foo::{bar, baz};
@@ -499,19 +491,14 @@ mod quux {
     }
 }</pre>
 
-<p>In this example, the module <code>quux</code> re-exports two public names defined in
-<code>foo</code>.</p>
+<p>この例では、<code>quux</code>モジュールは、<code>foo</code>で定義された2つのアイテムを再エクスポートしています。
+また、<code>use</code>アイテムの中で指定されているパスは、標準パスです。
+従って、<code>use</code>アイテムの中を<code>foo::{bar, baz}</code>と書く事は出来ません。
+<code>use</code>アイテムにいきなり書く事が出来るモジュールは、クレートのルートで宣言された物だけです。
+<code>use</code>アイテムのパスが、<code>self</code>か<code>super</code>キーワードから始まった場合、パスは今のモジュールか親モジュールからの相対パスです。
+<code>use</code>のパス指定のルールは、<code>extern crate</code>宣言に対しても同様です。</p>
 
-<p>Also note that the paths contained in <code>use</code> items are relative to the crate
-root. So, in the previous example, the <code>use</code> refers to <code>quux::foo::{bar, baz}</code>, and not simply to <code>foo::{bar, baz}</code>. This also means that top-level
-module declarations should be at the crate root if direct usage of the declared
-modules within <code>use</code> items is desired. It is also possible to use <code>self</code> and
-<code>super</code> at the beginning of a <code>use</code> item to refer to the current and direct
-parent modules respectively. All rules regarding accessing declared modules in
-<code>use</code> declarations apply to both module declarations and <code>extern crate</code>
-declarations.</p>
-
-<p>An example of what will and will not work for <code>use</code> items:</p>
+<p><code>use</code>アイテムの色々な例です。</p>
 <span class='rusttest'>#![allow(unused_imports)]
 use foo::baz::foobaz;    // good: foo is at the root of the crate
 

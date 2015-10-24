@@ -412,24 +412,23 @@
     
 <h3 id="functions" class='section-header'><a
                            href="#functions">Functions</a></h3>
-<p>A <em>function item</em> defines a sequence of <a href="#statements">statements</a> and an
-optional final <a href="#expressions">expression</a>, along with a name and a set of
-parameters. Functions are declared with the keyword <code>fn</code>. Functions declare a
-set of <em>input</em> <a href="#variables"><em>variables</em></a> as parameters, through which the caller
-passes arguments into the function, and the <em>output</em> <a href="#types"><em>type</em></a>
-of the value the function will return to its caller on completion.</p>
+<p><em>関数アイテム(function item)</em> は、名前を持ち、<a href="statements.html">文(statement)</a>の列と、省略可能な<a href="expressions.html">式(expression)</a>と、仮引数の集合を持ちます。
+関数は、<code>fn</code>キーワードと共に始まります。
+関数は、*入力(input)* <a href="variables.html"><em>変数(variable)</em></a>を仮引数として宣言します。
+関数呼び出しの際には、実引数を関数に渡します。
+関数は、*出力*(output)* <a href="types.html"><em>型(type)</em></a>を返値として宣言します。</p>
 
-<p>A function may also be copied into a first-class <em>value</em>, in which case the
-value has the corresponding <a href="#function-types"><em>function type</em></a>, and can be used
-otherwise exactly as a function item (with a minor additional cost of calling
-the function indirectly).</p>
+<p>関数は、第一級*値(value)*としてコピーされるかもしれません。
+この値は、対応する<a href="function-types.html"><em>関数型(function type)</em></a>を持ちます。
+関数型は、関数アイテムと同様に呼び出せますが、関数呼び出しについて呼ぶなコストが有ります。</p>
 
-<p>Every control path in a function logically ends with a <code>return</code> expression or a
-diverging expression. If the outermost block of a function has a
-value-producing expression in its final-expression position, that expression is
-interpreted as an implicit <code>return</code> expression applied to the final-expression.</p>
+<p>(訳注) 関数オブジェクトは通常、書き換え可能な関数ポインタとして実装されます。
+関数ポインタのデリファレンスは通常、インライン化できないので、ポインタを辿るコストがかかります。</p>
 
-<p>An example of a function:</p>
+<p>関数の全てのコントロールパスは、<code>return</code>式か、分岐(diverge)式で終わります。
+もし関数の一番外側のブロックが、final-expressionの位置に値を生成する式を持っていた場合、その式が暗黙の<code>return</code>式だと見なされます。</p>
+
+<p>これが関数の例です。</p>
 <span class='rusttest'>fn main() {
     fn add(x: i32, y: i32) -&gt; i32 {
         return x + y;
@@ -440,8 +439,10 @@ interpreted as an implicit <code>return</code> expression applied to the final-e
     <span class='kw'>return</span> <span class='ident'>x</span> <span class='op'>+</span> <span class='ident'>y</span>;
 }</pre>
 
-<p>As with <code>let</code> bindings, function arguments are irrefutable patterns, so any
-pattern that is valid in a let binding is also valid as an argument.</p>
+<p><code>let</code>束縛と同じように、関数の仮引数は不可反駁(ireefutable)パターンです。
+<code>let</code>で有効なパターンは関数の仮引数でも有効です。</p>
+
+<p>(訳注) 不可反駁パターンとは、必ずマッチが成功するパターンです。</p>
 <span class='rusttest'>fn main() {
     fn first((value, _): (i32, i32)) -&gt; i32 { value }
     

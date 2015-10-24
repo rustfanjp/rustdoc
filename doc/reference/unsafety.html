@@ -412,16 +412,14 @@
     
 <h4 id="unsafety" class='section-header'><a
                            href="#unsafety">Unsafety</a></h4>
-<p>Unsafe operations are those that potentially violate the memory-safety
-guarantees of Rust&#39;s static semantics.</p>
+<p>安全でない(unsafe)な操作とは、Rustの意味論で保証されているメモリ安全性(memory-safety)を破り得る操作の事です。</p>
 
-<p>The following language level features cannot be used in the safe subset of
-Rust:</p>
+<p>次の様な操作は、安全性を保証されている範囲では使えません。</p>
 
 <ul>
-<li>Dereferencing a <a href="#pointer-types">raw pointer</a>.</li>
-<li>Reading or writing a <a href="#mutable-statics">mutable static variable</a>.</li>
-<li>Calling an unsafe function (including an intrinsic or foreign function).</li>
+<li><a href="pointer-types.html">生ポインタ(raw pointer)</a>のデリファレンス。</li>
+<li><a href="mutable-statics.html">ミュータブル静的変数(mutable static variable)</a>に対する読み書き。</li>
+<li>安全でない関数(intrinsicsや外部関数)の呼び出し。</li>
 </ul>
 
     <script type="text/javascript">
