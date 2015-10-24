@@ -1,0 +1,6 @@
+% Enumerations
+
+### Enumerations
+
+**FIXME:** grammar?
+

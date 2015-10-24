@@ -1,0 +1,17 @@
+% Number literals
+
+#### Number literals
+
+```antlr
+num_lit : nonzero_dec [ dec_digit | '_' ] * float_suffix ?
+        | '0' [       [ dec_digit | '_' ] * float_suffix ?
+              | 'b'   [ '1' | '0' | '_' ] +
+              | 'o'   [ oct_digit | '_' ] +
+              | 'x'   [ hex_digit | '_' ] +  ] ;
+
+float_suffix : [ exponent | '.' dec_lit exponent ? ] ? ;
+
+exponent : ['E' | 'e'] ['-' | '+' ] ? dec_lit ;
+dec_lit : [ dec_digit | '_' ] + ;
+```
+

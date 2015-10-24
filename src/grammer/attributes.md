@@ -1,0 +1,11 @@
+% Attributes
+
+## Attributes
+
+```antlr
+attribute : '#' '!' ? '[' meta_item ']' ;
+meta_item : ident [ '=' literal
+                  | '(' meta_seq ')' ] ? ;
+meta_seq : meta_item [ ',' meta_seq ] ? ;
+```
+

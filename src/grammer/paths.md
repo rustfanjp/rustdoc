@@ -1,0 +1,14 @@
+% Paths
+
+## Paths
+
+```antlr
+expr_path : [ "::" ] ident [ "::" expr_path_tail ] + ;
+expr_path_tail : '<' type_expr [ ',' type_expr ] + '>'
+               | expr_path ;
+
+type_path : ident [ type_path_tail ] + ;
+type_path_tail : '<' type_expr [ ',' type_expr ] + '>'
+               | "::" type_path ;
+```
+

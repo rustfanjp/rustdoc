@@ -1,0 +1,12 @@
+% Match expressions
+
+### Match expressions
+
+```antlr
+match_expr : "match" no_struct_literal_expr '{' match_arm * '}' ;
+
+match_arm : attribute * match_pat "=>" [ expr "," | '{' block '}' ] ;
+
+match_pat : pat [ '|' pat ] * [ "if" expr ] ? ;
+```
+

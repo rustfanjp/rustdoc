@@ -1,0 +1,9 @@
+% External blocks
+
+### External blocks
+
+```antlr
+extern_block_item : "extern" '{' extern_block '}' ;
+extern_block : [ foreign_fn ] * ;
+```
+

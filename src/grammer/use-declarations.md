@@ -1,0 +1,15 @@
+% Use declarations
+
+##### Use declarations
+
+```antlr
+use_decl : vis ? "use" [ path "as" ident
+                        | path_glob ] ;
+
+path_glob : ident [ "::" [ path_glob
+                          | '*' ] ] ?
+          | '{' path_item [ ',' path_item ] * '}' ;
+
+path_item : ident | "self" ;
+```
+

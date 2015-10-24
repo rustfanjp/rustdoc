@@ -1,0 +1,6 @@
+% Traits
+
+### Traits
+
+**FIXME:** grammar?
+

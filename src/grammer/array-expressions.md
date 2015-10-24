@@ -1,0 +1,10 @@
+% Array expressions
+
+### Array expressions
+
+```antlr
+array_expr : '[' "mut" ? array_elems? ']' ;
+
+array_elems : [expr [',' expr]*] | [expr ';' expr] ;
+```
+

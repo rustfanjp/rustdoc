@@ -1,0 +1,9 @@
+% Extern crate declarations
+
+##### Extern crate declarations
+
+```antlr
+extern_crate_decl : "extern" "crate" crate_name
+crate_name: ident | ( ident "as" ident )
+```
+
