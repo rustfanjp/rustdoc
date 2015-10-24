@@ -412,13 +412,13 @@
     
 <h4 id="mutable-statics" class='section-header'><a
                            href="#mutable-statics">Mutable statics</a></h4>
-<p>もし、静的アイテム(static item)が<code>mut</code>キーワードと共に宣言された場合、その静的アイテムはミュータブル(mutable)であり、その静的アイテムに対する変更操作を行える。
-Rustの目標の1つに、平行性バグを起こしにくい事がある。
-そして、静的アイテムに対する変更操作は、競合条件の原因となりやすい。
-このため、ミュータブル(mutable)な静的アイテムに対する読み書きは、<code>unsafe</code>ブロック(block)の中で行う必要がある。
-ユーザーは、同じプロセスの他のスレッドに対して、ミュータブル静的アイテムに対する変更操作が安全である事を保証する必要がある。</p>
+<p>もし、静的アイテム(static item)が<code>mut</code>キーワードと共に宣言された場合、その静的アイテムはミュータブル(mutable)であり、その静的アイテムに対する変更操作を行えます。
+Rustの目標の1つに、平行性バグを起こしにくい事があります。
+そして、静的アイテムに対する変更操作は、競合条件の原因となりやすいです。
+このため、ミュータブル(mutable)な静的アイテムに対する読み書きは、<code>unsafe</code>ブロック(block)の中で行う必要が有ります。
+ユーザーは、同じプロセスの他のスレッドに対して、ミュータブル静的アイテムに対する変更操作が安全である事を保証する必要が有ります。</p>
 
-<p>ミュータブル静的アイテムは非常に便利で、<code>extern</code>ブロックの中で、Cライブラリと共に使ったり、Cライブラリから持ってきたりする事ができる。</p>
+<p>ミュータブル静的アイテムは非常に便利で、<code>extern</code>ブロックの中で、Cライブラリと共に使ったり、Cライブラリから持ってきたりする事ができます。</p>
 <span class='rusttest'>fn main() {
     fn atomic_add(_: &amp;mut u32, _: u32) -&gt; u32 { 2 }
     
@@ -458,7 +458,7 @@ Rustの目標の1つに、平行性バグを起こしにくい事がある。
     <span class='kw'>return</span> <span class='ident'>atomic_add</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>LEVELS</span>, <span class='number'>1</span>);
 }</pre>
 
-<p>ミュータブル静的アイテムは、<code>Sync</code>で無くてよいという意外は通常の静的アイテムと同じ制限を持つ。</p>
+<p>ミュータブル静的アイテムは、<code>Sync</code>で無くてよいという意外は通常の静的アイテムと同じ制限を持ちます。</p>
 
     <script type="text/javascript">
         window.playgroundUrl = "https://play.rust-lang.org";
