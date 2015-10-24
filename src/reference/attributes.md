@@ -2,24 +2,20 @@
 
 ## Attributes
 
-Any item declaration may have an _attribute_ applied to it. Attributes in Rust
-are modeled on Attributes in ECMA-335, with the syntax coming from ECMA-334
-(C#). An attribute is a general, free-form metadatum that is interpreted
-according to name, convention, and language and compiler version. Attributes
-may appear as any of:
+いかなるアイテム(item)の宣言も _アトリビュート(attribute)_を持てます。
+RustのアトリビュートはECMA-335でモデル化され、文法は、ECMA-334(C#)から来ています。
+アトリビュートは一般的には、自由形式のメタデータです。
+アトリビュートは、名前、慣習、言語、コンパイラバージョン等として解釈されます。
+アトリビュートは次の様な形式を持ちます。
 
-* A single identifier, the attribute name
-* An identifier followed by the equals sign '=' and a literal, providing a
-  key/value pair
-* An identifier followed by a parenthesized list of sub-attribute arguments
+* 1つの識別子、アトリビュート名
+* 識別子 '=' リテラルの形式、キー/値ペア
+* 括弧で囲まれた識別子のリスト、サブアトリビュートに対する引数
 
-Attributes with a bang ("!") after the hash ("#") apply to the item that the
-attribute is declared within. Attributes that do not have a bang after the hash
-apply to the item that follows the attribute.
+"#!"で始まるアトリビュートは、アトリビュートを囲んでいるアイテムに適応されます。
+"#"だけで始まるアトリビュートは、直後に続くアイテムに適応されます。
 
-An example of attributes:
-
-```{.rust}
+```rust
 // General metadata applied to the enclosing module or crate.
 #![crate_type = "lib"]
 
@@ -40,8 +36,5 @@ mod bar {
 type int8_t = i8;
 ```
 
-> **Note:** At some point in the future, the compiler will distinguish between
-> language-reserved and user-available attributes. Until then, there is
-> effectively no difference between an attribute handled by a loadable syntax
-> extension and the compiler.
-
+> **ノート:** 将来のいつか、コンパイラは、予約済アトリビュートとユーザー定義アトリビュートを区別します。
+> 今の所所は違いは有りません。
