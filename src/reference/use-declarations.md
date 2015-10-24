@@ -12,7 +12,7 @@ _use宣言(use declaration)_は、1つ以上の[パス][paths]に対するロー
 [paths]: paths.html
 [modules]: modules.html
 [blocks]: blocks.html
-
+[extern-crate-declarations]: extern-crate-declarations.html
 `use`宣言はいくつかの短縮形をサポートします。
 
 * あるターゲットの名前を別のローカルな名前に束縛します。`use p::q::r as x;`
