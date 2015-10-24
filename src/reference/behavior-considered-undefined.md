@@ -2,37 +2,28 @@
 
 ##### Behavior considered undefined
 
-The following is a list of behavior which is forbidden in all Rust code,
-including within `unsafe` blocks and `unsafe` functions. Type checking provides
-the guarantee that these issues are never caused by safe code.
+これは、`unsafe`ブロック(block)や`unsafe`関数(function)も含めて、全てのRustコードで禁止されている動作のリストです。
+型チェックによって、安全なコードでは、これらの動作を起こさない事が保証されています。
 
-* Data races
-* Dereferencing a null/dangling raw pointer
-* Reads of [undef](http://llvm.org/docs/LangRef.html#undefined-values)
-  (uninitialized) memory
-* Breaking the [pointer aliasing
-  rules](http://llvm.org/docs/LangRef.html#pointer-aliasing-rules)
-  with raw pointers (a subset of the rules used by C)
-* `&mut` and `&` follow LLVM’s scoped [noalias] model, except if the `&T`
-  contains an `UnsafeCell<U>`. Unsafe code must not violate these aliasing
-  guarantees.
-* Mutating non-mutable data (that is, data reached through a shared reference or
-  data owned by a `let` binding), unless that data is contained within an `UnsafeCell<U>`.
-* Invoking undefined behavior via compiler intrinsics:
-  * Indexing outside of the bounds of an object with `std::ptr::offset`
-    (`offset` intrinsic), with
-    the exception of one byte past the end which is permitted.
-  * Using `std::ptr::copy_nonoverlapping_memory` (`memcpy32`/`memcpy64`
-    intrinsics) on overlapping buffers
-* Invalid values in primitive types, even in private fields/locals:
-  * Dangling/null references or boxes
-  * A value other than `false` (0) or `true` (1) in a `bool`
-  * A discriminant in an `enum` not included in the type definition
-  * A value in a `char` which is a surrogate or above `char::MAX`
-  * Non-UTF-8 byte sequences in a `str`
-* Unwinding into Rust from foreign code or unwinding from Rust into foreign
-  code. Rust's failure system is not compatible with exception handling in
-  other languages. Unwinding must be caught and handled at FFI boundaries.
+* データ競合。
+* null生ポインタ、ダングリング生ポインタのデリファレンス。
+* [undef][undefined-values](未初期化)メモリの読み出し。
+* [ポインタエイリアシング規則][pointer-aliasing-rules]違反。
+* `&mut`と`&`の、noaliasルール違反。ただし、`&T`が`UnsafeCell<U>`を含んでいた場合は、良い。
+* mutableでないデータを変更する事。ただし、`UnsafeCell<UL`を含んでいた場合は、良い。
+* コンパイラ組み込み機能による未定義動作呼び出し。
+  * `std::ptr::offset`(`offset`組み込み)によって、オブジェクトの領域の外側の指定する。ただし、1バイト外側は許される。
+  * `std::ptr::copy_nonoverlapping_memory`(`memcpy32`/`memcpy64`組み込み)をオーバーラップした領域に対して呼び出す。
+* プリミティブ(primitive)型に対する不正な値。
+  * 参照(reference)かボックス(box)に対するダングリング/ヌル値の設定。
+  * `bool`にたいして`false`(0)と`true`(1)以外の値の設定。
+  * `enum`型に対する定義されていない値の設定。
+  * `char`型に対する、サロゲートや`char::MAX`を超える値の設定。
+  * `str`型に対する、非UTF8バイト列の設定。
+* Rustプログラムと外部プログラムの間のアンワインド(unwind)。特に、Rustのエラー処理システムは他の言語での例外ハンドリング機構と互換性が無い。unwindはFFI境界を通して管理される。
 
+(訳注) noaliasルールとは、引数に渡されたポインタの指している領域に、引数に渡されていない静的変数などを通してアクセスする事。
+
+[undefined-values]: http://llvm.org/docs/LangRef.html#undefined-values
+[pointer-aliasing-rules]: http://llvm.org/docs/LangRef.html#pointer-aliasing-rules
 [noalias]: http://llvm.org/docs/LangRef.html#noalias
-
