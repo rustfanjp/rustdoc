@@ -412,23 +412,19 @@
     
 <h3 id="external-blocks" class='section-header'><a
                            href="#external-blocks">External blocks</a></h3>
-<p>External blocks form the basis for Rust&#39;s foreign function interface.
-Declarations in an external block describe symbols in external, non-Rust
-libraries.</p>
+<p>externブロック(external block)は、Rustの外部関数インターフェース(Foregin FUnction Interface, FFI)の基礎となります。
+externブロック内の宣言は、非Rustライブラリのシンボルを示します。</p>
 
-<p>Functions within external blocks are declared in the same way as other Rust
-functions, with the exception that they may not have a body and are instead
-terminated by a semicolon.</p>
+<p>externブロック内の関数(function)は、普通のRust関数と同様に定義されます。
+ただし、externブロック内の関数は、本体を持たず、セミコロン(<code>;</code>)で終端されます。</p>
 
-<p>Functions within external blocks may be called by Rust code, just like
-functions defined in Rust. The Rust compiler automatically translates between
-the Rust ABI and the foreign ABI.</p>
+<p>externブロック内の関数は、あたかもRustコードとして関数が定義されているかの様に、Rustコード内から呼び出す事が出来ます。
+Rustコンパイラは自動的にABIの翻訳を行います。</p>
 
-<p>A number of <a href="#attributes">attributes</a> control the behavior of external blocks.</p>
+<p>いくつかの<a href="attributes.html">アトリビュート(attribute)</a>はexternブロックの振舞を制御します。</p>
 
-<p>By default external blocks assume that the library they are calling uses the
-standard C &quot;cdecl&quot; ABI. Other ABIs may be specified using an <code>abi</code> string, as
-shown here:</p>
+<p>デフォルトでは、externブロックは、呼び出そうとしているライブラリは標準Cの&quot;cdecl&quot;ABIを使用していると想定します。
+他のABIは、<code>abi</code>文字列によって指定します。</p>
 <span class='rusttest'>fn main() {
     // Interface to the Windows API
     extern &quot;stdcall&quot; { }
@@ -437,9 +433,8 @@ shown here:</p>
 <span class='comment'>// Interface to the Windows API</span>
 <span class='kw'>extern</span> <span class='string'>&quot;stdcall&quot;</span> { }</pre>
 
-<p>The <code>link</code> attribute allows the name of the library to be specified. When
-specified the compiler will attempt to link against the native library of the
-specified name.</p>
+<p><code>link</code>アトリビュートはライブラリの名前を指定します。
+Rustコンパイラは、指定された名前をもつネイティブライブラリに対してリンクしようとします。</p>
 <span class='rusttest'>fn main() {
     #[link(name = &quot;crypto&quot;)]
     extern { }
@@ -448,12 +443,11 @@ specified name.</p>
 <span class='attribute'>#[<span class='ident'>link</span>(<span class='ident'>name</span> <span class='op'>=</span> <span class='string'>&quot;crypto&quot;</span>)]</span>
 <span class='kw'>extern</span> { }</pre>
 
-<p>The type of a function declared in an extern block is <code>extern &quot;abi&quot; fn(A1, ..., An) -&gt; R</code>, where <code>A1...An</code> are the declared types of its arguments and <code>R</code> is
-the declared return type.</p>
+<p>externブロック内で宣言された関数の型は、<code>extern &quot;abi&quot; fn(A1, ..., A2) -&gt;R</code>となります。
+<code>A1 ... An</code>は仮引数の型であり、<code>R</code>は返値型です。</p>
 
-<p>It is valid to add the <code>link</code> attribute on an empty extern block. You can use
-this to satisfy the linking requirements of extern blocks elsewhere in your code
-(including upstream crates) instead of adding the attribute to each extern block.</p>
+<p>空の外部ブロックに対して<code>link</code>アトリビュートを付けても良いです。
+これによって、それぞれの外部ブロックに対してアトリビュートを付ける必要が無くなります。</p>
 
     <script type="text/javascript">
         window.playgroundUrl = "https://play.rust-lang.org";

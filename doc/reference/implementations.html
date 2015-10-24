@@ -412,10 +412,9 @@
     
 <h3 id="implementations" class='section-header'><a
                            href="#implementations">Implementations</a></h3>
-<p>An <em>implementation</em> is an item that implements a <a href="#traits">trait</a> for a
-specific type.</p>
+<p><em>実装(implementatino)</em> は、特定の型に対して<a href="traits.html">トレイト(trait)</a>を実装するアイテムです。</p>
 
-<p>Implementations are defined with the keyword <code>impl</code>.</p>
+<p>実装は、<code>impl</code>キーワードと共に定義されます。</p>
 <span class='rusttest'>fn main() {
     #[derive(Copy, Clone)]
     struct Point {x: f64, y: f64};
@@ -464,12 +463,11 @@ specific type.</p>
     }
 }</pre>
 
-<p>It is possible to define an implementation without referring to a trait. The
-methods in such an implementation can only be used as direct calls on the
-values of the type that the implementation targets. In such an implementation,
-the trait type and <code>for</code> after <code>impl</code> are omitted. Such implementations are
-limited to nominal types (enums, structs), and the implementation must appear
-in the same crate as the <code>self</code> type:</p>
+<p>トレイト指定する事なく、実装を定義する事も可能です。
+その様な実装におけるメソッドは、実装している型の値に対する直接呼び出しでしか使えません。
+この場合、<code>impl</code>の後に<code>for</code>はきません。
+トレイトを指定しない実装は、列挙子か構造体にしか使えません。
+また、<code>self</code>型は、実装している型を示します。</p>
 <span class='rusttest'>fn main() {
     struct Point {x: i32, y: i32}
     
@@ -494,12 +492,11 @@ in the same crate as the <code>self</code> type:</p>
 <span class='kw'>let</span> <span class='ident'>my_point</span> <span class='op'>=</span> <span class='ident'>Point</span> {<span class='ident'>x</span>: <span class='number'>10</span>, <span class='ident'>y</span>:<span class='number'>11</span>};
 <span class='ident'>my_point</span>.<span class='ident'>log</span>();</pre>
 
-<p>When a trait <em>is</em> specified in an <code>impl</code>, all methods declared as part of the
-trait must be implemented, with matching types and type parameter counts.</p>
+<p><code>impl</code>の中でトレイトが指定されると、トライとの中の全てのメソッドは実装されなければなりません。</p>
 
-<p>An implementation can take type parameters, which can be different from the
-type parameters taken by the trait it implements. Implementation parameters
-are written after the <code>impl</code> keyword.</p>
+<p>実装は、型仮引数を取る事もできます。
+この型仮引数は、実装しようとしているトレイトが取る型仮引数とは異なっていても良いです。
+実装の型仮引数は、<code>impl</code>キーワードの後に記述します。</p>
 <span class='rusttest'>fn main() {
     trait Seq&lt;T&gt; { fn dummy(&amp;self, _: T) { } }
     impl&lt;T&gt; Seq&lt;T&gt; for Vec&lt;T&gt; {

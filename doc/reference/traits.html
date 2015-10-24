@@ -412,33 +412,29 @@
     
 <h3 id="traits" class='section-header'><a
                            href="#traits">Traits</a></h3>
-<p>A <em>trait</em> describes an abstract interface that types can
-implement. This interface consists of associated items, which come in
-three varieties:</p>
+<p>_トレイト(trait) は、型(type)の抽象インターフェイスを記述します。
+このインターフェイスは、3種類の付随するアイテム(item)を持ちます。</p>
 
 <ul>
-<li>functions</li>
-<li>constants</li>
-<li>types</li>
+<li>関数(function)</li>
+<li>定数(constant)</li>
+<li>型</li>
 </ul>
 
-<p>Associated functions whose first parameter is named <code>self</code> are called
-methods and may be invoked using <code>.</code> notation (e.g., <code>x.foo()</code>).</p>
+<p>最初の仮引数が<code>self</code>という名前である付随関数は、メソッドとも呼ばれ、<code>x.foo()</code>の様に<code>.</code>を使った呼び出し規則を持ちます。</p>
 
-<p>All traits define an implicit type parameter <code>Self</code> that refers to
-&quot;the type that is implementing this interface&quot;. Traits may also
-contain additional type parameters. These type parameters (including
-<code>Self</code>) may be constrained by other traits and so forth as usual.</p>
+<p>全てのトレイトは、暗黙に型パラメタ(type parameter)<code>Self</code>を定義します。
+<code>Self</code>はこのインターフェイスを実装している型を指します。
+トレイトは追加で、型仮引数を持つ事も出来ます。
+これらの型仮引数は、ほかのトレイトによって制限が付くかもしれません。</p>
 
-<p>Trait bounds on <code>Self</code> are considered &quot;supertraits&quot;. These are
-required to be acyclic.  Supertraits are somewhat different from other
-constraints in that they affect what methods are available in the
-vtable when the trait is used as a <a href="#trait-objects">trait object</a>.</p>
+<p><code>Self</code>に束縛されているトレイトは、&quot;親トレイト(supertrait)&quot;と見なされる。
+トレイトによる束縛は循環しては成らない。
+親トレイトは、トレイトが<a href="trait-objects.html">トレイトオブジェクト(trait object)</a>として使われた時に、vtableに存在するメソッドに影響を与える点で、ほかの制約とは異なります。</p>
 
-<p>Traits are implemented for specific types through separate
-<a href="#implementations">implementations</a>.</p>
+<p>トレイトは、<a href="implementations.html">実装(implementation)</a>を通して、実装されます。</p>
 
-<p>Consider the following trait:</p>
+<p>次のトレイトを考えます。</p>
 <span class='rusttest'>fn main() {
     type Surface = i32;
     type BoundingBox = i32;
@@ -453,12 +449,11 @@ vtable when the trait is used as a <a href="#trait-objects">trait object</a>.</p
     <span class='kw'>fn</span> <span class='ident'>bounding_box</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>BoundingBox</span>;
 }</pre>
 
-<p>This defines a trait with two methods. All values that have
-<a href="#implementations">implementations</a> of this trait in scope can have their
-<code>draw</code> and <code>bounding_box</code> methods called, using <code>value.bounding_box()</code>
-<a href="#method-call-expressions">syntax</a>.</p>
+<p>このトレイトは2つのメソッドを定義します。
+このスコープ内で、このトレイトにたいする実装を持つ全ての値は、<code>draw</code>と<code>bounding_box</code>メソッドを持ちます。
+メソッドは、<a href="method-call-expressions.html">メソッド呼び出し式</a>によって呼び出せます。</p>
 
-<p>Traits can include default implementations of methods, as in:</p>
+<p>トレイトはデフォルトの実装を記述する事も出来ます。</p>
 <span class='rusttest'>fn main() {
     trait Foo {
         fn bar(&amp;self);
@@ -471,13 +466,12 @@ vtable when the trait is used as a <a href="#trait-objects">trait object</a>.</p
     <span class='kw'>fn</span> <span class='ident'>baz</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) { <span class='macro'>println</span><span class='macro'>!</span>(<span class='string'>&quot;We called baz.&quot;</span>); }
 }</pre>
 
-<p>Here the <code>baz</code> method has a default implementation, so types that implement
-<code>Foo</code> need only implement <code>bar</code>. It is also possible for implementing types
-to override a method that has a default implementation.</p>
+<p>ここで、<code>baz</code>メソッドはデフォルトの実装を持っています。
+従って、それぞれの型は<code>bar</code>だけを実装すれば良いです。
+デフォルトの実装をオーバーライドする事も出来ます。</p>
 
-<p>Type parameters can be specified for a trait to make it generic. These appear
-after the trait name, using the same syntax used in <a href="#generic-functions">generic
-functions</a>.</p>
+<p>型仮引数を指定する事で、トレイトをジェネリック(generic)にする事もできます。
+型仮引数はトレイト名の後の指定され、<a href="generic-functions.html">ジェネリック関数(generic function)</a>と同様な文法が用いられます。</p>
 <span class='rusttest'>fn main() {
     trait Seq&lt;T&gt; {
        fn len(&amp;self) -&gt; u32;
@@ -492,9 +486,8 @@ functions</a>.</p>
    <span class='kw'>fn</span> <span class='ident'>iter</span><span class='op'>&lt;</span><span class='ident'>F</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>F</span>) <span class='kw'>where</span> <span class='ident'>F</span>: <span class='ident'>Fn</span>(<span class='ident'>T</span>);
 }</pre>
 
-<p>It is also possible to define associated types for a trait. Consider the
-following example of a <code>Container</code> trait. Notice how the type is available
-for use in the method signatures:</p>
+<p>トレイトに付随型を定義する事もできます。
+例えば、次の<code>Container</code>トレイトを考えてみます。</p>
 <span class='rusttest'>fn main() {
     trait Container {
         type E;
@@ -509,9 +502,8 @@ for use in the method signatures:</p>
     <span class='kw'>fn</span> <span class='ident'>insert</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>Self</span>::<span class='ident'>E</span>);
 }</pre>
 
-<p>In order for a type to implement this trait, it must not only provide
-implementations for every method, but it must specify the type <code>E</code>. Here&#39;s
-an implementation of <code>Container</code> for the standard library type <code>Vec</code>:</p>
+<p>型がこのトレイトを実装するにはメソッドだけでなく、<code>E</code>型も指定する必要があります。。
+これは、標準ライブラリにおける<code>Vec</code>型の<code>Container</code>の実装です。</p>
 <span class='rusttest'>fn main() {
     trait Container {
         type E;
@@ -531,16 +523,15 @@ an implementation of <code>Container</code> for the standard library type <code>
     <span class='kw'>fn</span> <span class='ident'>insert</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>x</span>: <span class='ident'>T</span>) { <span class='self'>self</span>.<span class='ident'>push</span>(<span class='ident'>x</span>); }
 }</pre>
 
-<p>Generic functions may use traits as <em>bounds</em> on their type parameters. This
-will have two effects:</p>
+<p>ジェネリック関数は、トレイトを型仮引数の <em>束縛(bound)</em> にも用います。
+これは次の様な2つの効果が有ります。</p>
 
 <ul>
-<li>Only types that have the trait may instantiate the parameter.</li>
-<li>Within the generic function, the methods of the trait can be
-called on values that have the parameter&#39;s type.</li>
+<li>あると例とを実装しているような型だけを仮引数としてインスタンス化します。</li>
+<li>ジェネリック関数の中で、トレイトのメソッドは、仮引数型を持つ値について呼び出す事ができます。</li>
 </ul>
 
-<p>For example:</p>
+<p>これが例です。</p>
 <span class='rusttest'>fn main() {
     type Surface = i32;
     trait Shape { fn draw(&amp;self, Surface); }
@@ -555,13 +546,12 @@ called on values that have the parameter&#39;s type.</li>
     <span class='ident'>sh</span>.<span class='ident'>draw</span>(<span class='ident'>surface</span>);
 }</pre>
 
-<p>Traits also define an <a href="#trait-objects">trait object</a> with the same
-name as the trait. Values of this type are created by coercing from a
-pointer of some specific type to a pointer of trait type. For example,
-<code>&amp;T</code> could be coerced to <code>&amp;Shape</code> if <code>T: Shape</code> holds (and similarly
-for <code>Box&lt;T&gt;</code>). This coercion can either be implicit or
-<a href="#type-cast-expressions">explicit</a>. Here is an example of an explicit
-coercion:</p>
+<p>トレイトは、さらに、<a href="trait-objects.html">トレイトオブジェクト(trait object)</a>をトレイトと同じ名前で定義できます。
+トレイトオブジェクトの値は、ある型のポインターをこのトレイト型にキャストする事で作られます。
+例えば、<code>&amp;T</code>は<code>T: Shapre</code>であれば、<code>&amp;Shape</code>にキャストできます。
+<code>Box&lt;T&gt;</code>についても同様です。
+このキャストは暗黙でも[明示的(explicit)][type-cast-expressions]にも行えます。
+これが明示的なキャストの例です。</p>
 <span class='rusttest'>fn main() {
     trait Shape { }
     impl Shape for i32 { }
@@ -574,17 +564,14 @@ coercion:</p>
 <span class='kw'>let</span> <span class='ident'>mycircle</span> <span class='op'>=</span> <span class='number'>0i32</span>;
 <span class='kw'>let</span> <span class='ident'>myshape</span>: <span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>Shape</span><span class='op'>&gt;</span> <span class='op'>=</span> <span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='ident'>mycircle</span>) <span class='kw'>as</span> <span class='ident'>Box</span><span class='op'>&lt;</span><span class='ident'>Shape</span><span class='op'>&gt;</span>;</pre>
 
-<p>The resulting value is a box containing the value that was cast, along with
-information that identifies the methods of the implementation that was used.
-Values with a trait type can have <a href="#method-call-expressions">methods called</a> on
-them, for any method in the trait, and can be used to instantiate type
-parameters that are bounded by the trait.</p>
+<p>この値は、キャストされた値を持つボックス(box)になります。
+また、このボックスはどの実装を
+トレイト型を持った値は<a href="method-call-expressions.html">メソッド呼び出し</a>を用いる事が出来ます。
+これは、トレイトに束縛された型仮引数をインスタンス化します。</p>
 
-<p>Trait methods may be static, which means that they lack a <code>self</code> argument.
-This means that they can only be called with function call syntax (<code>f(x)</code>) and
-not method call syntax (<code>obj.f()</code>). The way to refer to the name of a static
-method is to qualify it with the trait name, treating the trait name like a
-module. For example:</p>
+<p>トレイトメソッドは静的で、<code>self</code>実引数を持ちません。
+つまり、トレイトメソッドは<code>f(x)</code>といった関数呼び出し文法でのみ呼び出せます。
+トレイトの静的メソッドを呼び出すには、トレイト名をモジュール名の様にして扱います。</p>
 <span class='rusttest'>fn main() {
     trait Num {
         fn from_i32(n: i32) -&gt; Self;
@@ -603,7 +590,7 @@ module. For example:</p>
 }
 <span class='kw'>let</span> <span class='ident'>x</span>: <span class='ident'>f64</span> <span class='op'>=</span> <span class='ident'>Num</span>::<span class='ident'>from_i32</span>(<span class='number'>42</span>);</pre>
 
-<p>Traits may inherit from other traits. For example, in</p>
+<p>トレイトは、他のトレイトから継承(inherit)されることもあります。</p>
 <span class='rusttest'>fn main() {
     trait Shape { fn area(&amp;self) -&gt; f64; }
     trait Circle : Shape { fn radius(&amp;self) -&gt; f64; }
@@ -612,16 +599,11 @@ module. For example:</p>
 <span class='kw'>trait</span> <span class='ident'>Shape</span> { <span class='kw'>fn</span> <span class='ident'>area</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>f64</span>; }
 <span class='kw'>trait</span> <span class='ident'>Circle</span> : <span class='ident'>Shape</span> { <span class='kw'>fn</span> <span class='ident'>radius</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>f64</span>; }</pre>
 
-<p>the syntax <code>Circle : Shape</code> means that types that implement <code>Circle</code> must also
-have an implementation for <code>Shape</code>. Multiple supertraits are separated by <code>+</code>,
-<code>trait Circle : Shape + PartialEq { }</code>. In an implementation of <code>Circle</code> for a
-given type <code>T</code>, methods can refer to <code>Shape</code> methods, since the typechecker
-checks that any type with an implementation of <code>Circle</code> also has an
-implementation of <code>Shape</code>.</p>
+<p><code>Circle : Shape</code>という文法は、<code>Circle</code>を実装する型は、<code>Shape</code>も実装する必要がある事を表します。
+複数の親トレイトは <code>+</code>によって分けられ、<code>trait Circle : Shape + PartialEq {}</code>の様に記述されます。
+<code>Circle</code>を実装している型<code>T</code>は、<code>Shape</code>のメソッドも備えています。</p>
 
-<p>In type-parameterized functions, methods of the supertrait may be called on
-values of subtrait-bound type parameters. Referring to the previous example of
-<code>trait Circle : Shape</code>:</p>
+<p>型仮引数を持つ関数において、親トレイトのメソッドは、子トレイトに束縛された型仮引数の値で呼び出されるかもしれません。</p>
 <span class='rusttest'>fn main() {
     trait Shape { fn area(&amp;self) -&gt; f64; }
     trait Circle : Shape { fn radius(&amp;self) -&gt; f64; }
@@ -636,7 +618,7 @@ values of subtrait-bound type parameters. Referring to the previous example of
     <span class='ident'>c</span>.<span class='ident'>radius</span>() <span class='op'>*</span> <span class='ident'>c</span>.<span class='ident'>area</span>()
 }</pre>
 
-<p>Likewise, supertrait methods may also be called on trait objects.</p>
+<p>同様に、親トレイトメソッドは、トレイトオブジェクトで呼び出されるかもしれません。</p>
 <span class='rusttest'>fn main() {
     trait Shape { fn area(&amp;self) -&gt; f64; }
     trait Circle : Shape { fn radius(&amp;self) -&gt; f64; }
