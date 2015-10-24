@@ -2,33 +2,32 @@
 
 ### Traits
 
-A _trait_ describes an abstract interface that types can
-implement. This interface consists of associated items, which come in
-three varieties:
+_トレイト(trait) は、型(type)の抽象インターフェイスを記述します。
+このインターフェイスは、3種類の付随するアイテム(item)を持ちます。
 
-- functions
-- constants
-- types
+- 関数(function)
+- 定数(constant)
+- 型
 
-Associated functions whose first parameter is named `self` are called
-methods and may be invoked using `.` notation (e.g., `x.foo()`).
+最初の仮引数が`self`という名前である付随関数は、メソッドとも呼ばれ、`x.foo()`の様に`.`を使った呼び出し規則を持ちます。
 
-All traits define an implicit type parameter `Self` that refers to
-"the type that is implementing this interface". Traits may also
-contain additional type parameters. These type parameters (including
-`Self`) may be constrained by other traits and so forth as usual.
+全てのトレイトは、暗黙に型パラメタ(type parameter)`Self`を定義します。
+`Self`はこのインターフェイスを実装している型を指します。
+トレイトは追加で、型仮引数を持つ事も出来ます。
+これらの型仮引数は、ほかのトレイトによって制限が付くかもしれません。
 
-Trait bounds on `Self` are considered "supertraits". These are
-required to be acyclic.  Supertraits are somewhat different from other
-constraints in that they affect what methods are available in the
-vtable when the trait is used as a [trait object](#trait-objects).
+`Self`に束縛されているトレイトは、"親トレイト(supertrait)"と見なされる。
+トレイトによる束縛は循環しては成らない。
+親トレイトは、トレイトが[トレイトオブジェクト(trait object)][trait-objects]として使われた時に、vtableに存在するメソッドに影響を与える点で、ほかの制約とは異なります。
 
-Traits are implemented for specific types through separate
-[implementations](#implementations).
+トレイトは、[実装(implementation)][implementations]を通して、実装されます。
 
-Consider the following trait:
+[trait-objects]: trait-objects.html
+[implementations]: implementations.html
 
-```
+次のトレイトを考えます。
+
+```rust
 # type Surface = i32;
 # type BoundingBox = i32;
 trait Shape {
@@ -37,29 +36,31 @@ trait Shape {
 }
 ```
 
-This defines a trait with two methods. All values that have
-[implementations](#implementations) of this trait in scope can have their
-`draw` and `bounding_box` methods called, using `value.bounding_box()`
-[syntax](#method-call-expressions).
+このトレイトは2つのメソッドを定義します。
+このスコープ内で、このトレイトにたいする実装を持つ全ての値は、`draw`と`bounding_box`メソッドを持ちます。
+メソッドは、[メソッド呼び出し式][method-call-expressions]によって呼び出せます。
 
-Traits can include default implementations of methods, as in:
+[method-call-expressions]: method-call-expressions.html
 
-```
+トレイトはデフォルトの実装を記述する事も出来ます。
+
+```rust
 trait Foo {
     fn bar(&self);
     fn baz(&self) { println!("We called baz."); }
 }
 ```
 
-Here the `baz` method has a default implementation, so types that implement
-`Foo` need only implement `bar`. It is also possible for implementing types
-to override a method that has a default implementation.
+ここで、`baz`メソッドはデフォルトの実装を持っています。
+従って、それぞれの型は`bar`だけを実装すれば良いです。
+デフォルトの実装をオーバーライドする事も出来ます。
 
-Type parameters can be specified for a trait to make it generic. These appear
-after the trait name, using the same syntax used in [generic
-functions](#generic-functions).
+型仮引数を指定する事で、トレイトをジェネリック(generic)にする事もできます。
+型仮引数はトレイト名の後の指定され、[ジェネリック関数(generic function)][generic-functions]と同様な文法が用いられます。
 
-```
+[generic-functions]: generic-functions.html
+
+```rust
 trait Seq<T> {
    fn len(&self) -> u32;
    fn elt_at(&self, n: u32) -> T;
@@ -67,11 +68,10 @@ trait Seq<T> {
 }
 ```
 
-It is also possible to define associated types for a trait. Consider the
-following example of a `Container` trait. Notice how the type is available
-for use in the method signatures:
+トレイトに付随型を定義する事もできます。
+例えば、次の`Container`トレイトを考えてみます。
 
-```
+```rust
 trait Container {
     type E;
     fn empty() -> Self;
@@ -79,11 +79,10 @@ trait Container {
 }
 ```
 
-In order for a type to implement this trait, it must not only provide
-implementations for every method, but it must specify the type `E`. Here's
-an implementation of `Container` for the standard library type `Vec`:
+型がこのトレイトを実装するにはメソッドだけでなく、`E`型も指定する必要があります。。
+これは、標準ライブラリにおける`Vec`型の`Container`の実装です。
 
-```
+```rust
 # trait Container {
 #     type E;
 #     fn empty() -> Self;
@@ -96,16 +95,15 @@ impl<T> Container for Vec<T> {
 }
 ```
 
-Generic functions may use traits as _bounds_ on their type parameters. This
-will have two effects:
+ジェネリック関数は、トレイトを型仮引数の _束縛(bound)_ にも用います。
+これは次の様な2つの効果が有ります。
 
-- Only types that have the trait may instantiate the parameter.
-- Within the generic function, the methods of the trait can be
-  called on values that have the parameter's type.
+- あると例とを実装しているような型だけを仮引数としてインスタンス化します。
+- ジェネリック関数の中で、トレイトのメソッドは、仮引数型を持つ値について呼び出す事ができます。
 
-For example:
+これが例です。
 
-```
+```rust
 # type Surface = i32;
 # trait Shape { fn draw(&self, Surface); }
 fn draw_twice<T: Shape>(surface: Surface, sh: T) {
@@ -114,34 +112,30 @@ fn draw_twice<T: Shape>(surface: Surface, sh: T) {
 }
 ```
 
-Traits also define an [trait object](#trait-objects) with the same
-name as the trait. Values of this type are created by coercing from a
-pointer of some specific type to a pointer of trait type. For example,
-`&T` could be coerced to `&Shape` if `T: Shape` holds (and similarly
-for `Box<T>`). This coercion can either be implicit or
-[explicit](#type-cast-expressions). Here is an example of an explicit
-coercion:
+トレイトは、さらに、[トレイトオブジェクト(trait object)][trait-objects]をトレイトと同じ名前で定義できます。
+トレイトオブジェクトの値は、ある型のポインターをこのトレイト型にキャストする事で作られます。
+例えば、`&T`は`T: Shapre`であれば、`&Shape`にキャストできます。
+`Box<T>`についても同様です。
+このキャストは暗黙でも[明示的(explicit)][type-cast-expressions]にも行えます。
+これが明示的なキャストの例です。
 
-```
+```rust
 trait Shape { }
 impl Shape for i32 { }
 let mycircle = 0i32;
 let myshape: Box<Shape> = Box::new(mycircle) as Box<Shape>;
 ```
 
-The resulting value is a box containing the value that was cast, along with
-information that identifies the methods of the implementation that was used.
-Values with a trait type can have [methods called](#method-call-expressions) on
-them, for any method in the trait, and can be used to instantiate type
-parameters that are bounded by the trait.
+この値は、キャストされた値を持つボックス(box)になります。
+また、このボックスはどの実装を
+トレイト型を持った値は[メソッド呼び出し][method-call-expressions]を用いる事が出来ます。
+これは、トレイトに束縛された型仮引数をインスタンス化します。
 
-Trait methods may be static, which means that they lack a `self` argument.
-This means that they can only be called with function call syntax (`f(x)`) and
-not method call syntax (`obj.f()`). The way to refer to the name of a static
-method is to qualify it with the trait name, treating the trait name like a
-module. For example:
+トレイトメソッドは静的で、`self`実引数を持ちません。
+つまり、トレイトメソッドは`f(x)`といった関数呼び出し文法でのみ呼び出せます。
+トレイトの静的メソッドを呼び出すには、トレイト名をモジュール名の様にして扱います。
 
-```
+```rust
 trait Num {
     fn from_i32(n: i32) -> Self;
 }
@@ -151,25 +145,20 @@ impl Num for f64 {
 let x: f64 = Num::from_i32(42);
 ```
 
-Traits may inherit from other traits. For example, in
+トレイトは、他のトレイトから継承(inherit)されることもあります。
 
-```
+```rust
 trait Shape { fn area(&self) -> f64; }
 trait Circle : Shape { fn radius(&self) -> f64; }
 ```
 
-the syntax `Circle : Shape` means that types that implement `Circle` must also
-have an implementation for `Shape`. Multiple supertraits are separated by `+`,
-`trait Circle : Shape + PartialEq { }`. In an implementation of `Circle` for a
-given type `T`, methods can refer to `Shape` methods, since the typechecker
-checks that any type with an implementation of `Circle` also has an
-implementation of `Shape`.
+`Circle : Shape`という文法は、`Circle`を実装する型は、`Shape`も実装する必要がある事を表します。
+複数の親トレイトは `+`によって分けられ、`trait Circle : Shape + PartialEq {}`の様に記述されます。
+`Circle`を実装している型`T`は、`Shape`のメソッドも備えています。
 
-In type-parameterized functions, methods of the supertrait may be called on
-values of subtrait-bound type parameters. Referring to the previous example of
-`trait Circle : Shape`:
+型仮引数を持つ関数において、親トレイトのメソッドは、子トレイトに束縛された型仮引数の値で呼び出されるかもしれません。
 
-```
+```rust
 # trait Shape { fn area(&self) -> f64; }
 # trait Circle : Shape { fn radius(&self) -> f64; }
 fn radius_times_area<T: Circle>(c: T) -> f64 {
@@ -178,9 +167,9 @@ fn radius_times_area<T: Circle>(c: T) -> f64 {
 }
 ```
 
-Likewise, supertrait methods may also be called on trait objects.
+同様に、親トレイトメソッドは、トレイトオブジェクトで呼び出されるかもしれません。
 
-```{.ignore}
+```rust
 # trait Shape { fn area(&self) -> f64; }
 # trait Circle : Shape { fn radius(&self) -> f64; }
 # impl Shape for i32 { fn area(&self) -> f64 { 0.0 } }
@@ -189,4 +178,3 @@ Likewise, supertrait methods may also be called on trait objects.
 let mycircle = Box::new(mycircle) as Box<Circle>;
 let nonsense = mycircle.radius() * mycircle.area();
 ```
-
