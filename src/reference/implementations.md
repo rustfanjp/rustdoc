@@ -2,12 +2,13 @@
 
 ### Implementations
 
-An _implementation_ is an item that implements a [trait](#traits) for a
-specific type.
+_実装(implementatino)_ は、特定の型に対して[トレイト(trait)][traits]を実装するアイテムです。
 
-Implementations are defined with the keyword `impl`.
+[traits]: traits.html
 
-```
+実装は、`impl`キーワードと共に定義されます。
+
+```rust
 # #[derive(Copy, Clone)]
 # struct Point {x: f64, y: f64};
 # type Surface = i32;
@@ -35,14 +36,13 @@ impl Shape for Circle {
 }
 ```
 
-It is possible to define an implementation without referring to a trait. The
-methods in such an implementation can only be used as direct calls on the
-values of the type that the implementation targets. In such an implementation,
-the trait type and `for` after `impl` are omitted. Such implementations are
-limited to nominal types (enums, structs), and the implementation must appear
-in the same crate as the `self` type:
+トレイト指定する事なく、実装を定義する事も可能です。
+その様な実装におけるメソッドは、実装している型の値に対する直接呼び出しでしか使えません。
+この場合、`impl`の後に`for`はきません。
+トレイトを指定しない実装は、列挙子か構造体にしか使えません。
+また、`self`型は、実装している型を示します。
 
-```
+```rust
 struct Point {x: i32, y: i32}
 
 impl Point {
@@ -54,15 +54,13 @@ impl Point {
 let my_point = Point {x: 10, y:11};
 my_point.log();
 ```
+`impl`の中でトレイトが指定されると、トライとの中の全てのメソッドは実装されなければなりません。
 
-When a trait _is_ specified in an `impl`, all methods declared as part of the
-trait must be implemented, with matching types and type parameter counts.
+実装は、型仮引数を取る事もできます。
+この型仮引数は、実装しようとしているトレイトが取る型仮引数とは異なっていても良いです。
+実装の型仮引数は、`impl`キーワードの後に記述します。
 
-An implementation can take type parameters, which can be different from the
-type parameters taken by the trait it implements. Implementation parameters
-are written after the `impl` keyword.
-
-```
+```rust
 # trait Seq<T> { fn dummy(&self, _: T) { } }
 impl<T> Seq<T> for Vec<T> {
    /* ... */
@@ -71,4 +69,3 @@ impl Seq<bool> for u32 {
    /* Treat the integer as a sequence of bits */
 }
 ```
-
