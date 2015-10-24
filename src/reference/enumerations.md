@@ -37,7 +37,7 @@ a = Animal::Cat { name: "Spotty".to_string(), weight: 2.7 };
 列挙子は判別子を持ちます。
 判別子には値を割り当てられます。
 
-```
+```rust
 enum Foo {
     Bar = 123,
 }
@@ -46,7 +46,7 @@ enum Foo {
 もし、判別子が割り当てられなかった場合、0から始まり、それぞれのバリアント毎に1ずつ増えて生きます。
 列挙子からその内部の値にキャストできます。
 
-```
+```rust
 # enum Foo { Bar = 123 }
 let x = Foo::Bar as u32; // x is now 123u32
 ```
