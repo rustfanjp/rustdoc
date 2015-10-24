@@ -1,37 +1,33 @@
 % Macros
 
-By now you’ve learned about many of the tools Rust provides for abstracting and
-reusing code. These units of code reuse have a rich semantic structure. For
-example, functions have a type signature, type parameters have trait bounds,
-and overloaded functions must belong to a particular trait.
+これまで、コードの抽象化と再利用を手助けするツールについて学びました。
+これらのコードは複雑な意味論的構造を持っています。
+例えば、関数は型シグネチャを持っていて、型パラメタはトレイト束縛を持っていて、オーバロード関数は特定のトレイトに属しています。
 
-This structure means that Rust’s core abstractions have powerful compile-time
-correctness checking. But this comes at the price of reduced flexibility. If
-you visually identify a pattern of repeated code, you may find it’s difficult
-or cumbersome to express that pattern as a generic function, a trait, or
-anything else within Rust’s semantics.
+これらの構造は、Rustの抽象化が強力なコンパイル時正当性チェックをもたらすことを意味しています。
+しかしながら、これらの構造はの利用は文法の柔軟さとのトレードオフにあります。
+もし、見た目から繰り返しのパターンが明らかなコードがあった時、その様なパターンをジェネリック関数、トレイト等として表現するのは通常難しいです。
 
-Macros allow us to abstract at a syntactic level. A macro invocation is
-shorthand for an "expanded" syntactic form. This expansion happens early in
-compilation, before any static checking. As a result, macros can capture many
-patterns of code reuse that Rust’s core abstractions cannot.
+マクロは、構文階層を抽象化します。
+マクロ呼び出しは、構文要素に展開されます。
+これらの展開は、コンパイルの速い段階で行われ、静的チェックの前に行われます。
+結果として、Rustの意味論ではとらえられないコードのパターンなどを捉えられます。
 
-The drawback is that macro-based code can be harder to understand, because
-fewer of the built-in rules apply. Like an ordinary function, a well-behaved
-macro can be used without understanding its implementation. However, it can be
-difficult to design a well-behaved macro!  Additionally, compiler errors in
-macro code are harder to interpret, because they describe problems in the
-expanded code, not the source-level form that developers use.
+欠点としては、マクロベースのコードは、理解するのが困難である事です。
+通常の関数と同様に、良くできたマクロは、実装を理解しなくても使う事ができます。
+しかしながら、マクロを上手く設計するのは難しいかもしれません！
+それに、マクロコード内でコンパイルエラーが起きた場合、ユーザーには解釈が難しいです。
+なぜならば、問題は、ソースコードでは無く、展開されたコード内で起きるからです。
 
-These drawbacks make macros something of a "feature of last resort". That’s not
-to say that macros are bad; they are part of Rust because sometimes they’re
-needed for truly concise, well-abstracted code. Just keep this tradeoff in
-mind.
+これらの欠点のために、マクロは"最後の手段"であるべきです。
+これは、マクロを悪く言っているのではありません。
+いくつかのコードは、マクロによって非常に良く抽象化行えます。
+ただ、そこにトレードオフがある事を忘れないでください！
 
 # Defining a macro
 
-You may have seen the `vec!` macro, used to initialize a [vector][vector] with
-any number of elements.
+`vec!`マクロを見た事あるかもしれません。
+これは、[ベクタ(vector)][vector]を任意個の要素で初期化するのに使われます。
 
 [vector]: vectors.html
 
@@ -40,8 +36,9 @@ let x: Vec<u32> = vec![1, 2, 3];
 # assert_eq!(x, [1, 2, 3]);
 ```
 
-This can’t be an ordinary function, because it takes any number of arguments.
-But we can imagine it as syntactic shorthand for
+これは普通の関数にはできません。
+なぜなら、任意個の引数を取れないからです。
+しかし、これは構文的な短縮形だと見做せます。
 
 ```rust
 let x: Vec<u32> = {
@@ -54,10 +51,9 @@ let x: Vec<u32> = {
 # assert_eq!(x, [1, 2, 3]);
 ```
 
-We can implement this shorthand, using a macro: [^actual]
+この短縮形もマクロによって実装できます。[^actual]
 
-[^actual]: The actual definition of `vec!` in libcollections differs from the
-           one presented here, for reasons of efficiency and reusability.
+[^actual]: libcollections内の実際の`vec!`の定義は、これとは異なります。
 
 ```rust
 macro_rules! vec {
@@ -75,42 +71,37 @@ macro_rules! vec {
 #     assert_eq!(vec![1,2,3], [1, 2, 3]);
 # }
 ```
+新しい文法が色々出てきました！
+ちょっとずつ見てみましょう。
 
-Whoa, that’s a lot of new syntax! Let’s break it down.
-
-```ignore
+```rust
 macro_rules! vec { ... }
 ```
 
-This says we’re defining a macro named `vec`, much as `fn vec` would define a
-function named `vec`. In prose, we informally write a macro’s name with an
-exclamation point, e.g. `vec!`. The exclamation point is part of the invocation
-syntax and serves to distinguish a macro from an ordinary function.
+これは、`vec`というマクロを定義しています。
+感嘆符は呼び出し規則の一部で、通常の関数呼び出しとマクロの呼び出しを区別するのに役に立ちます。
 
 ## Matching
 
-The macro is defined through a series of rules, which are pattern-matching
-cases. Above, we had
+このマクロは、パターンパッチングによるいくつかの規則によって定義されています。
 
-```ignore
+```rust
 ( $( $x:expr ),* ) => { ... };
 ```
 
-This is like a `match` expression arm, but the matching happens on Rust syntax
-trees, at compile time. The semicolon is optional on the last (here, only)
-case. The "pattern" on the left-hand side of `=>` is known as a ‘matcher’.
-These have [their own little grammar] within the language.
+これは、`match`式の腕(arm)の様ですが、このマッチングはRustの構文木に対してコンパイル時に行われます。
+セミコロンはあってもなくても良いです。
+パターンの`=>`の左辺は'マッチ部(matcher)'と言い、ちょっとした[文法][macro-grammer]を持っています。
 
-[their own little grammar]: ../reference.html#macros
+[macro-grammer]: ../reference/macros.html
 
-The matcher `$x:expr` will match any Rust expression, binding that syntax tree
-to the ‘metavariable’ `$x`. The identifier `expr` is a ‘fragment specifier’;
-the full possibilities are enumerated later in this chapter.
-Surrounding the matcher with `$(...),*` will match zero or more expressions,
-separated by commas.
+マッチ部の`$x:expr`は、任意のRust式にマッチします。
+マッチした構文木は、'メタ変数(metavariable)'、`$x`に束縛されます。
+識別子`expr`は、'フラグメント指定子(fragment specifier)'と呼ばれます。
+可能なフラグメント指定子は後ほど示しますが、フラグメント指定子はマッチする構文の属性を指定します。
+このマッチ部を囲む`$(...),*`は、コンマで区切られた任意個の式にマッチします。
 
-Aside from the special matcher syntax, any Rust tokens that appear in a matcher
-must match exactly. For example,
+マッチ部のための特別な文法は別として、マッチ部に現れるどのトークンも正確にマッチする必要が有ります。
 
 ```rust
 macro_rules! foo {
@@ -123,19 +114,19 @@ fn main() {
 }
 ```
 
-will print
+これは次の様にプリントします。
 
 ```text
 mode Y: 3
 ```
 
-With
+次の例では、コンパイルエラーとなります。
 
-```rust,ignore
+```rust
 foo!(z => 3);
 ```
 
-we get the compiler error
+エラーメッセージは次の様になります。
 
 ```text
 error: no rules expected the token `z`
@@ -143,19 +134,17 @@ error: no rules expected the token `z`
 
 ## Expansion
 
-The right-hand side of a macro rule is ordinary Rust syntax, for the most part.
-But we can splice in bits of syntax captured by the matcher. From the original
-example:
+マクロ規則の右辺は、ほとんど普通のRust文法です。
+唯一の違いは、マッチした構文木を利用する場合です。
 
-```ignore
+```rust
 $(
     temp_vec.push($x);
 )*
 ```
 
-Each matched expression `$x` will produce a single `push` statement in the
-macro expansion. The repetition in the expansion proceeds in "lockstep" with
-repetition in the matcher (more on this in a moment).
+この例では、それぞれのマッチした式`x`がそれぞれの`push`に展開されます。
+マクロ展開における繰り返しは、マッチ部の他の繰り返しと一緒に"行進"します。
 
 Because `$x` was already declared as matching an expression, we don’t repeat
 `:expr` on the right-hand side. Also, we don’t include a separating comma as
