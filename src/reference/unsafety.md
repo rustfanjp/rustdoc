@@ -2,13 +2,13 @@
 
 #### Unsafety
 
-Unsafe operations are those that potentially violate the memory-safety
-guarantees of Rust's static semantics.
+安全でない(unsafe)な操作とは、Rustの意味論で保証されているメモリ安全性(memory-safety)を破り得る操作の事です。
 
-The following language level features cannot be used in the safe subset of
-Rust:
+次の様な操作は、安全性を保証されている範囲では使えません。
 
-- Dereferencing a [raw pointer](#pointer-types).
-- Reading or writing a [mutable static variable](#mutable-statics).
-- Calling an unsafe function (including an intrinsic or foreign function).
+- [生ポインタ(raw pointer)][pointer-types]のデリファレンス。
+- [ミュータブル静的変数(mutable static variable)][mutable-statics]に対する読み書き。
+- 安全でない関数(intrinsicsや外部関数)の呼び出し。
 
+[pointer-types]: pointer-types.html
+[mutable-statics]: mutable-statics.html
