@@ -2,25 +2,22 @@
 
 #### Extern crate declarations
 
-An _`extern crate` declaration_ specifies a dependency on an external crate.
-The external crate is then bound into the declaring scope as the `ident`
-provided in the `extern_crate_decl`.
+`extern crate`宣言は、外部クレート(crate)への依存性を指定します。
+外部クレートのスコープは、`extern_crate_decl`に与えられた`ident`に束縛されます。
 
-The external crate is resolved to a specific `soname` at compile time, and a
-runtime linkage requirement to that `soname` is passed to the linker for
-loading at runtime. The `soname` is resolved at compile time by scanning the
-compiler's library path and matching the optional `crateid` provided against
-the `crateid` attributes that were declared on the external crate when it was
-compiled. If no `crateid` is provided, a default `name` attribute is assumed,
-equal to the `ident` given in the `extern_crate_decl`.
+外部クレートは、コンパイル時に`soname`を解決されます。
+そして、その`soname`に対する実行時のリンケージ要求がリンカーに渡されます。
+`soname`はコンパイル時に解決されますが、そのためにコンパイラのライブラリパスが走査され、`crateid`アトリビュートにマッチする物が選ばれます。
+もし`crateid`が与えられなかった場合、`name`アトリビュートを元にマッチングされます。
+`name`アトリビュートは、`extern_crate_decl`に与えられる`ident`です。
 
-Three examples of `extern crate` declarations:
+これが3つの`extern crate`宣言です。
 
-```{.ignore}
+
+```{rust.ignore}
 extern crate pcre;
 
 extern crate std; // equivalent to: extern crate std as std;
 
 extern crate std as ruststd; // linking to 'std' under another name
 ```
-

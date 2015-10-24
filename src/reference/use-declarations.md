@@ -2,27 +2,25 @@
 
 #### Use declarations
 
-A _use declaration_ creates one or more local name bindings synonymous with
-some other [path](#paths). Usually a `use` declaration is used to shorten the
-path required to refer to a module item. These declarations may appear at the
-top of [modules](#modules) and [blocks](grammar.html#block-expressions).
+_use宣言(use declaration)_は、1つ以上の[パス][paths]に対するローカルなシノニムを定義します。
+通常、`use`宣言はモジュールアイテム(module item)のパスを短縮するために使われます。
+これらの宣言は、[モジュール][modules]と[ブロック][blocks]のトップに現れるかもしれません。
 
-> **Note**: Unlike in many languages,
-> `use` declarations in Rust do *not* declare linkage dependency with external crates.
-> Rather, [`extern crate` declarations](#extern-crate-declarations) declare linkage dependencies.
+> **ノート**: 他の多くの言語と違い、Rustの`use`宣言は、外部クレートへのリンケージ依存性は宣言しません。
+> そのためには、[`extern crate`宣言][extern-crate-declarations]を使用してください。
 
-Use declarations support a number of convenient shortcuts:
+[paths]: paths.html
+[modules]: modules.html
+[blocks]: blocks.html
 
-* Rebinding the target name as a new local name, using the syntax `use p::q::r as x;`
-* Simultaneously binding a list of paths differing only in their final element,
-  using the glob-like brace syntax `use a::b::{c,d,e,f};`
-* Binding all paths matching a given prefix, using the asterisk wildcard syntax
-  `use a::b::*;`
-* Simultaneously binding a list of paths differing only in their final element
-  and their immediate parent module, using the `self` keyword, such as
-  `use a::b::{self, c, d};`
+`use`宣言はいくつかの短縮形をサポートします。
 
-An example of `use` declarations:
+* あるターゲットの名前を別のローカルな名前に束縛します。`use p::q::r as x;`
+* 最後だけが事なる複数のパスを同時に束縛できます。`use a::b::{c, d, e, f};`
+* 最後だけが事なる複数のパスと、それらの親モジュールを同時に束縛できます。`use a::b::{self, c, d};`
+* パターンにマッチする全てのパスを一度に束縛できます。`use a::b::*;`
+
+`use`宣言の例です。
 
 ```rust
 use std::option::Option::{Some, None};
@@ -43,17 +41,15 @@ fn main() {
 }
 ```
 
-Like items, `use` declarations are private to the containing module, by
-default. Also like items, a `use` declaration can be public, if qualified by
-the `pub` keyword. Such a `use` declaration serves to _re-export_ a name. A
-public `use` declaration can therefore _redirect_ some public name to a
-different target definition: even a definition with a private canonical path,
-inside a different module. If a sequence of such redirections form a cycle or
-cannot be resolved unambiguously, they represent a compile-time error.
+他のアイテムと同様に、`use`宣言はデフォルトでモジュール内でプライベート(private)です。
+また、他のアイテムと同様に`pub`キーワードで修飾する事で、パブリック(public)にできます。
+パブリックな`use`宣言は名前の_再エクスポート(re-export)_として働きます。
+パブリックな`use`宣言は、パブリックな名前を別のターゲットに_リダイレクト(redirect)_出来ます。
+もし、その様なリダイレクトの連鎖が循環し、曖昧さを解決できない場合、コンパイル時エラーとなります。
 
-An example of re-exporting:
+再エクスポートの例です。
 
-```
+```rust
 # fn main() { }
 mod quux {
     pub use quux::foo::{bar, baz};
@@ -64,23 +60,16 @@ mod quux {
     }
 }
 ```
+この例では、`quux`モジュールは、`foo`で定義された2つのアイテムを再エクスポートしています。
+また、`use`アイテムの中で指定されているパスは、標準パスです。
+従って、`use`アイテムの中を`foo::{bar, baz}`と書く事は出来ません。
+`use`アイテムにいきなり書く事が出来るモジュールは、クレートのルートで宣言された物だけです。
+`use`アイテムのパスが、`self`か`super`キーワードから始まった場合、パスは今のモジュールか親モジュールからの相対パスです。
+`use`のパス指定のルールは、`extern crate`宣言に対しても同様です。
 
-In this example, the module `quux` re-exports two public names defined in
-`foo`.
+`use`アイテムの色々な例です。
 
-Also note that the paths contained in `use` items are relative to the crate
-root. So, in the previous example, the `use` refers to `quux::foo::{bar,
-baz}`, and not simply to `foo::{bar, baz}`. This also means that top-level
-module declarations should be at the crate root if direct usage of the declared
-modules within `use` items is desired. It is also possible to use `self` and
-`super` at the beginning of a `use` item to refer to the current and direct
-parent modules respectively. All rules regarding accessing declared modules in
-`use` declarations apply to both module declarations and `extern crate`
-declarations.
-
-An example of what will and will not work for `use` items:
-
-```
+```rust
 # #![allow(unused_imports)]
 use foo::baz::foobaz;    // good: foo is at the root of the crate
 
@@ -107,4 +96,3 @@ mod foo {
 
 fn main() {}
 ```
-
