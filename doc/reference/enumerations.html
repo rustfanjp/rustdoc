@@ -412,13 +412,12 @@
     
 <h3 id="enumerations" class='section-header'><a
                            href="#enumerations">Enumerations</a></h3>
-<p>An <em>enumeration</em> is a simultaneous definition of a nominal <a href="#enumerated-types">enumerated
-type</a> as well as a set of <em>constructors</em>, that can be used
-to create or pattern-match values of the corresponding enumerated type.</p>
+<p><em>列挙子(enumeration)</em> は、[列挙型(enumerated type)][enumerated-types]の同時定義で、さらに <em>コンストラクタ(constructor)</em>も定義します。
+これによって、列挙型の値を作ったり、パターンマッチを行ったり出来ます。</p>
 
-<p>Enumerations are declared with the keyword <code>enum</code>.</p>
+<p>列挙子は、<code>enum</code>キーワードと共に宣言されます。</p>
 
-<p>An example of an <code>enum</code> item and its use:</p>
+<p><code>enum</code>アイテム(item)の例です。</p>
 <span class='rusttest'>fn main() {
     enum Animal {
         Dog,
@@ -437,7 +436,7 @@ to create or pattern-match values of the corresponding enumerated type.</p>
 <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>a</span>: <span class='ident'>Animal</span> <span class='op'>=</span> <span class='ident'>Animal</span>::<span class='ident'>Dog</span>;
 <span class='ident'>a</span> <span class='op'>=</span> <span class='ident'>Animal</span>::<span class='ident'>Cat</span>;</pre>
 
-<p>Enumeration constructors can have either named or unnamed fields:</p>
+<p>列挙子のコンストラクタは、名前付き/無名フィールドを持てます。</p>
 <span class='rusttest'>fn main() {
     enum Animal {
         Dog (String, f64),
@@ -456,10 +455,11 @@ to create or pattern-match values of the corresponding enumerated type.</p>
 <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>a</span>: <span class='ident'>Animal</span> <span class='op'>=</span> <span class='ident'>Animal</span>::<span class='ident'>Dog</span>(<span class='string'>&quot;Cocoa&quot;</span>.<span class='ident'>to_string</span>(), <span class='number'>37.2</span>);
 <span class='ident'>a</span> <span class='op'>=</span> <span class='ident'>Animal</span>::<span class='ident'>Cat</span> { <span class='ident'>name</span>: <span class='string'>&quot;Spotty&quot;</span>.<span class='ident'>to_string</span>(), <span class='ident'>weight</span>: <span class='number'>2.7</span> };</pre>
 
-<p>In this example, <code>Cat</code> is a <em>struct-like enum variant</em>,
-whereas <code>Dog</code> is simply called an enum variant.</p>
+<p>この場合、<code>Cat</code>は、 <em>構造体列挙子バリアント(struct-like enum variant)</em> です。
+一方で、<code>Dog</code>は単なる列挙子バリアントです。</p>
 
-<p>Enums have a discriminant. You can assign them explicitly:</p>
+<p>列挙子は判別子を持ちます。
+判別子には値を割り当てられます。</p>
 <span class='rusttest'>fn main() {
     enum Foo {
         Bar = 123,
@@ -470,10 +470,8 @@ whereas <code>Dog</code> is simply called an enum variant.</p>
     <span class='ident'>Bar</span> <span class='op'>=</span> <span class='number'>123</span>,
 }</pre>
 
-<p>If a discriminant isn&#39;t assigned, they start at zero, and add one for each
-variant, in order.</p>
-
-<p>You can cast an enum to get this value:</p>
+<p>もし、判別子が割り当てられなかった場合、0から始まり、それぞれのバリアント毎に1ずつ増えて生きます。
+列挙子からその内部の値にキャストできます。</p>
 <span class='rusttest'>fn main() {
     enum Foo { Bar = 123 }
     let x = Foo::Bar as u32; // x is now 123u32
@@ -481,8 +479,10 @@ variant, in order.</p>
 }</span><pre class='rust rust-example-rendered'>
 <span class='kw'>let</span> <span class='ident'>x</span> <span class='op'>=</span> <span class='ident'>Foo</span>::<span class='ident'>Bar</span> <span class='kw'>as</span> <span class='ident'>u32</span>; <span class='comment'>// x is now 123u32</span></pre>
 
-<p>This only works as long as none of the variants have data attached. If
-it were <code>Bar(i32)</code>, this is disallowed.</p>
+<p>これは、列挙子にバリアントが割り当てられていない場合にのみ許されます。
+例えば、<code>Bar(i32)</code>という列挙子バリアントを持っている場合、キャストは許されません。</p>
+
+<p>(訳注) ちょっと分かり辛いですが、C/C++で言うenumとunionの合いの子見たいな物です。</p>
 
     <script type="text/javascript">
         window.playgroundUrl = "https://play.rust-lang.org";

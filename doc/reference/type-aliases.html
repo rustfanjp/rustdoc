@@ -412,13 +412,11 @@
     
 <h3 id="type-aliases" class='section-header'><a
                            href="#type-aliases">Type aliases</a></h3>
-<p>A <em>type alias</em> defines a new name for an existing <a href="#types">type</a>. Type
-aliases are declared with the keyword <code>type</code>. Every value has a single,
-specific type, but may implement several different traits, or be compatible with
-several different type constraints.</p>
+<p><em>型エイリアス(type alias)</em> はすでに存在する[型(type)][types]の新しい名前を定義します。
+型エイリアスは<code>type</code>キーワードと共に宣言されます。
+全ての値は、特定の1つの型を持ちますが、異なるトレイト(trait)や、複数の異なった型制約(type constraint)と互換性があるかもしれません。</p>
 
-<p>For example, the following defines the type <code>Point</code> as a synonym for the type
-<code>(u8, u8)</code>, the type of pairs of unsigned 8 bit integers:</p>
+<p>例えば、次の定義は、<code>Point</code>を<code>(u8, u8)</code>型、符号無8ビット整数のペアのシノニムとして定義しています。</p>
 <span class='rusttest'>fn main() {
     type Point = (u8, u8);
     let p: Point = (41, 68);
