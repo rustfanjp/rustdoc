@@ -2,24 +2,15 @@
 
 ##### Unsafe blocks
 
-A block of code can be prefixed with the `unsafe` keyword, to permit calling
-`unsafe` functions or dereferencing raw pointers within a safe function.
+ブロック(block)は、`unsafe`キーワードを伴う事で、`unsafe`関数(function)や、生ポインタのデリファレンスなどの安全でない(unsafe)操作を行えます。
 
-When a programmer has sufficient conviction that a sequence of potentially
-unsafe operations is actually safe, they can encapsulate that sequence (taken
-as a whole) within an `unsafe` block. The compiler will consider uses of such
-code safe, in the surrounding context.
+プログラマが、unsafeな操作を含むコードが実際には安全だという確信がある時、そのコードブロックを`unsafe`ブロックに出来ます。
+コンパイラは、そのコードが安全であると見なし、安全でない操作を許可します。
 
-Unsafe blocks are used to wrap foreign libraries, make direct use of hardware
-or implement features not directly present in the language. For example, Rust
-provides the language features necessary to implement memory-safe concurrency
-in the language but the implementation of threads and message passing is in the
-standard library.
+安全でないブロックは、外部ライブラリのラッッパー、ハードウェア操作、言語に存在しない機能を実装するのに良く使われます。
+例えば、Rustは、平行性についてのメモリ安全性を必要とする機能を提供していますが、スレッドやメッセージパッシングは標準ライブラリとして実装されています。
 
-Rust's type system is a conservative approximation of the dynamic safety
-requirements, so in some cases there is a performance cost to using safe code.
-For example, a doubly-linked list is not a tree structure and can only be
-represented with reference-counted pointers in safe code. By using `unsafe`
-blocks to represent the reverse links as raw pointers, it can be implemented
-with only boxes.
-
+Rustの型システムは、動的安全性要求を保守的に満たそうとします。
+安全なコードを使おうとすると、しばしばパフォーマンスコストがかかります。
+例えば、ダブルリンクリストを安全に実装するには、参照カウントポインタを仕様する必要があります。
+`unsafe`を使う事、ダブルリンクリストを生ポインタで実装でき、これにはボックス(box)があれば十分です。
