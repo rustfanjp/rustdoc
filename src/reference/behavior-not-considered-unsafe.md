@@ -2,17 +2,17 @@
 
 ##### Behavior not considered unsafe
 
-This is a list of behavior not considered *unsafe* in Rust terms, but that may
-be undesired.
+これは、Rustにおいて*安全では無い(unsafe)*とは、考えられてい*ない*(つまり安全)な事柄のリストです。
+特に、安全ではありますが、望ましくない事柄です。
+一見すると安全出ないと思われますが、実は安全なので、ここにまとめてあります。
 
-* Deadlocks
-* Leaks of memory and other resources
-* Exiting without calling destructors
-* Integer overflow
-  - Overflow is considered "unexpected" behavior and is always user-error,
-    unless the `wrapping` primitives are used. In non-optimized builds, the compiler
-    will insert debug checks that panic on overflow, but in optimized builds overflow
-    instead results in wrapped values. See [RFC 560] for the rationale and more details.
+* デッドロック
+* メモリリーク
+* 終了時のデストラクタ(destructor)呼び出しの省略
+* 整数オーバーフロー
+  - オーバーフローは、"想定されていない"振る舞いで、もし起きたらそれはユーザーの責任です。
+    `wrapping`プリミティブ(primitive)が使われた場合は、その限りでは有りません。
+    デバッグビルドでは、コンパイラはオーバーフローを検出しパニックを起こすコードを挿入しますが、リリースビルドでは、オーバーフローを起こすと丸められた値を返します。
+    詳しくは、[RFC 560]を参照して下さい。
 
 [RFC 560]: https://github.com/rust-lang/rfcs/blob/master/text/0560-integer-overflow.md
-
