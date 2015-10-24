@@ -2,25 +2,22 @@
 
 ## Visibility and Privacy
 
-These two terms are often used interchangeably, and what they are attempting to
-convey is the answer to the question "Can this item be used at this location?"
+可視性(visibility)とプライバシー(privacy)はしばしば混同されます。
+これら2つの概念は、「このアイテムはこの場所で使えるのか」という問題を解決します。
 
-Rust's name resolution operates on a global hierarchy of namespaces. Each level
-in the hierarchy can be thought of as some item. The items are one of those
-mentioned above, but also include external crates. Declaring or defining a new
-module can be thought of as inserting a new tree into the hierarchy at the
-location of the definition.
+Rustのの名前解決は、名前空間のグローバル階層に基づいて行われます。
+この階層におけるそれぞれのレベルは、なんらかのアイテムに対応しています。
+アイテムには、外部クレート(crate)も含みます。
+新たにモジュールを宣言か定義する事はこの階層に新たな木を挿入する事です。
 
-To control whether interfaces can be used across modules, Rust checks each use
-of an item to see whether it should be allowed or not. This is where privacy
-warnings are generated, or otherwise "you used a private item of another module
-and weren't allowed to."
+モジュール間のインタフェースを制御するために、Rustは、あるアイテムの使用が許されるかどうかをチェックします。
+ここでは、プライバシー警告が生成されます。
 
-By default, everything in Rust is *private*, with one exception. Enum variants
-in a `pub` enum are also public by default. When an item is declared as `pub`,
-it can be thought of as being accessible to the outside world. For example:
+デフォルトでは、Rustにおける全ては、 *プライベート* です。
+唯一の例外は、列挙バリアント(enum variant)は、デフォルトでパブリックです。
+アイテムが`pub`として宣言されると、外側のモジュールからもアクセスできます。
 
-```
+```rust
 # fn main() {}
 // Declare a private struct
 struct Foo;
@@ -37,50 +34,34 @@ pub enum State {
 }
 ```
 
-With the notion of an item being either public or private, Rust allows item
-accesses in two cases:
+アイテムがパブリックかプライベートかによって、アイテムへのアクセスは2通り有ります。
 
-1. If an item is public, then it can be used externally through any of its
-   public ancestors.
-2. If an item is private, it may be accessed by the current module and its
-   descendants.
+1. もしアイテムがパブリックならば、そのアイテムのパブリックな祖先からアクセス出来ます。
+2. もしアイテムがプライベートならば、今のモジュールの子孫からアクセス出来ます。
 
-These two cases are surprisingly powerful for creating module hierarchies
-exposing public APIs while hiding internal implementation details. To help
-explain, here's a few use cases and what they would entail:
+この2つのケースは、APIを公開しながら実装を内側に隠す様なモジュール階層を上で協力なツールとなります。
+そこで、いくつかのユースケースを見てみましょう。
 
-* A library developer needs to expose functionality to crates which link
-  against their library. As a consequence of the first case, this means that
-  anything which is usable externally must be `pub` from the root down to the
-  destination item. Any private item in the chain will disallow external
-  accesses.
+* ライブラリ開発者は、そのライブラリにリンクしているクレートに対して機能を公開しなければなりません。
+  従って、ライブラリクレートのルートから公開するアイテムまでが`pub`である必要があります。
+  この`pub`の連鎖の中にプライベートなアイテムが有ると、外部からアクセスできなくなります。
 
-* A crate needs a global available "helper module" to itself, but it doesn't
-  want to expose the helper module as a public API. To accomplish this, the
-  root of the crate's hierarchy would have a private module which then
-  internally has a "public API". Because the entire crate is a descendant of
-  the root, then the entire local crate can access this private module through
-  the second case.
+* クレートは、グローバルな"ヘルパーモジュール"を用いる事が良くあります。
+  また、このヘルパーモジュールは、公開したく無いとします。
+  これを達成するためには、クレートのルートにヘルパーAPIを持ったプライベートモジュールを持てば良いです。
+  このプライベートモジュールの子孫からはヘルパーAPIにアクセスできますが、外からはアクセスできません。
 
-* When writing unit tests for a module, it's often a common idiom to have an
-  immediate child of the module to-be-tested named `mod test`. This module
-  could access any items of the parent module through the second case, meaning
-  that internal implementation details could also be seamlessly tested from the
-  child module.
+* モジュールに対する単体テストを書く時、テストしたいモジュールの直下に`mod test`モジュールを持たせるのが典型的なイディオムです。
+  このテストモジュールは元のモジュールの子孫なので、プライベートメンバにもアクセスできます。
 
-In the second case, it mentions that a private item "can be accessed" by the
-current module and its descendants, but the exact meaning of accessing an item
-depends on what the item is. Accessing a module, for example, would mean
-looking inside of it (to import more items). On the other hand, accessing a
-function would mean that it is invoked. Additionally, path expressions and
-import statements are considered to access an item in the sense that the
-import/expression is only valid if the destination is in the current visibility
-scope.
+プライベートアイテムに対して"アクセスできる"の意味は、どの種類のアイテムを対象としているかによって異なります。
+例えば、アイテムがモジュールである場合、そのモジュールの内側に対してアクセスし内側のアイテムをインポートする事が出来ます。
+一方で、関数にアクセスできるというのは、関数を呼び出せるという意味になります。
+さらに、パス式(path expression)やインポート文(import statement)は、このパス式やインポート文が指定している場所が、今の可視スコープ内に有る事を意味します。
 
-Here's an example of a program which exemplifies the three cases outlined
-above:
+ここに、これらの例が有ります。
 
-```
+```rust
 // This module is private, meaning that no external crate can access this
 // module. Because it is private at the root of this current crate, however, any
 // module in the crate may access any publicly visible item in this module.
@@ -130,7 +111,6 @@ pub mod submodule {
 # fn main() {}
 ```
 
-For a rust program to pass the privacy checking pass, all paths must be valid
-accesses given the two rules above. This includes all use statements,
-expressions, types, etc.
-
+全てのrustプログラムは、プライバシーチェックをパスしなければなりません。
+そのために、全てのパスが有効なアクセスである必要が有ります。
+これには、文、式、型等を含みます。

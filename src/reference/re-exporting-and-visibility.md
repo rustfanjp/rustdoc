@@ -2,12 +2,10 @@
 
 ### Re-exporting and Visibility
 
-Rust allows publicly re-exporting items through a `pub use` directive. Because
-this is a public directive, this allows the item to be used in the current
-module through the rules above. It essentially allows public access into the
-re-exported item. For example, this program is valid:
+Rustは、`pub use`によってアイテムを再エクスポートして公開する事を許しています。
+これによって、今のモジュール内のアイテムを公開する事が出来ます。
 
-```
+```rust
 pub use self::implementation::api;
 
 mod implementation {
@@ -19,10 +17,7 @@ mod implementation {
 # fn main() {}
 ```
 
-This means that any external crate referencing `implementation::api::f` would
-receive a privacy violation, while the path `api::f` would be allowed.
+これは、`implementation::api::f`を参照している外部クレートは、プライバシー侵害している事になります。
+一方で、`api::f`のパスに対するアクセスは許可されます。
 
-When re-exporting a private item, it can be thought of as allowing the "privacy
-chain" being short-circuited through the reexport instead of passing through
-the namespace hierarchy as it normally would.
-
+プライベートなアイテムを再エクスポートする時、これはプライバシーチェインをショートしている事になります。
