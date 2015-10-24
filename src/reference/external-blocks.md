@@ -2,43 +2,37 @@
 
 ### External blocks
 
-External blocks form the basis for Rust's foreign function interface.
-Declarations in an external block describe symbols in external, non-Rust
-libraries.
+externブロック(external block)は、Rustの外部関数インターフェース(Foregin FUnction Interface, FFI)の基礎となります。
+externブロック内の宣言は、非Rustライブラリのシンボルを示します。
 
-Functions within external blocks are declared in the same way as other Rust
-functions, with the exception that they may not have a body and are instead
-terminated by a semicolon.
+externブロック内の関数(function)は、普通のRust関数と同様に定義されます。
+ただし、externブロック内の関数は、本体を持たず、セミコロン(`;`)で終端されます。
 
-Functions within external blocks may be called by Rust code, just like
-functions defined in Rust. The Rust compiler automatically translates between
-the Rust ABI and the foreign ABI.
+externブロック内の関数は、あたかもRustコードとして関数が定義されているかの様に、Rustコード内から呼び出す事が出来ます。
+Rustコンパイラは自動的にABIの翻訳を行います。
 
-A number of [attributes](#attributes) control the behavior of external blocks.
+いくつかの[アトリビュート(attribute)][attributes]はexternブロックの振舞を制御します。
 
-By default external blocks assume that the library they are calling uses the
-standard C "cdecl" ABI. Other ABIs may be specified using an `abi` string, as
-shown here:
+[attributes]: attributes.html
 
-```ignore
+デフォルトでは、externブロックは、呼び出そうとしているライブラリは標準Cの"cdecl"ABIを使用していると想定します。
+他のABIは、`abi`文字列によって指定します。
+
+```rust
 // Interface to the Windows API
 extern "stdcall" { }
 ```
 
-The `link` attribute allows the name of the library to be specified. When
-specified the compiler will attempt to link against the native library of the
-specified name.
+`link`アトリビュートはライブラリの名前を指定します。
+Rustコンパイラは、指定された名前をもつネイティブライブラリに対してリンクしようとします。
 
-```{.ignore}
+```rust
 #[link(name = "crypto")]
 extern { }
 ```
 
-The type of a function declared in an extern block is `extern "abi" fn(A1, ...,
-An) -> R`, where `A1...An` are the declared types of its arguments and `R` is
-the declared return type.
+externブロック内で宣言された関数の型は、`extern "abi" fn(A1, ..., A2) ->R`となります。
+`A1 ... An`は仮引数の型であり、`R`は返値型です。
 
-It is valid to add the `link` attribute on an empty extern block. You can use
-this to satisfy the linking requirements of extern blocks elsewhere in your code
-(including upstream crates) instead of adding the attribute to each extern block.
-
+空の外部ブロックに対して`link`アトリビュートを付けても良いです。
+これによって、それぞれの外部ブロックに対してアトリビュートを付ける必要が無くなります。
