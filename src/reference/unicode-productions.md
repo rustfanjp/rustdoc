@@ -2,11 +2,9 @@
 
 ## Unicode productions
 
-A few productions in Rust's grammar permit Unicode code points outside the
-ASCII range. We define these productions in terms of character properties
-specified in the Unicode standard, rather than in terms of ASCII-range code
-points. The grammar has a [Special Unicode Productions][unicodeproductions]
-section that lists these productions.
+Rust文法の生成規則は、ASCII範囲外のUnicodeコードポイントを認めています。
+Rust文法では、生成規則はASCIIコードポイントでは無く、Unicodeコードポイントに基づいて定義されています。
+Rust文法は、これらの生成規則のリストのセクション、[特別なUnicode生成規則][unicodeproductions]を持っています。
 
+/* TODO: grammer */
 [unicodeproductions]: grammar.html#special-unicode-productions
-

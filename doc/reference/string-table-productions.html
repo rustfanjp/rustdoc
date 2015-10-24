@@ -412,18 +412,15 @@
     
 <h2 id="string-table-productions" class='section-header'><a
                            href="#string-table-productions">String table productions</a></h2>
-<p>Some rules in the grammar &mdash; notably <a href="#unary-operator-expressions">unary
-operators</a>, <a href="#binary-operator-expressions">binary
-operators</a>, and <a href="grammar.html#keywords">keywords</a> &mdash; are
-given in a simplified form: as a listing of a table of unquoted, printable
-whitespace-separated strings. These cases form a subset of the rules regarding
-the <a href="#tokens">token</a> rule, and are assumed to be the result of a
-lexical-analysis phase feeding the parser, driven by a DFA, operating over the
-disjunction of all such string table entries.</p>
+<p>Rust文法のいくつかの規則は、非常に簡単です。
+特に<a href="unary-operator-expressions.html">単項演算子(unary operator)</a>、<a href="binary-operator-expressions.html">二項演算子(binary operator)</a>、<a href="grammar.html#keywords">キーワード(keyword)</a>は、単に引用符無しの、空白で分けられた、印字可能文字列の表です。
+これらは、<a href="tokens.html">トークン(token)</a>の生成規則のためのサブ規則となっています。
+通常、ソースコードは、決定性有限オートマトンによるパーサーによる字句解析フェイズにおいてトークン列に分解されます。</p>
 
-<p>When such a string enclosed in double-quotes (<code>&quot;</code>) occurs inside the grammar,
-it is an implicit reference to a single member of such a string table
-production. See <a href="#tokens">tokens</a> for more information.</p>
+<p>/* TODO: grammer */</p>
+
+<p>文法規則中で、二重引用符(<code>&quot;</code>)で囲まれた文字列を見た場合、それは上で述べた単純な文法を持った生成規則を指し示します。
+詳細は、<a href="tokens.html">トークン</a>を参照して下さい。</p>
 
     <script type="text/javascript">
         window.playgroundUrl = "https://play.rust-lang.org";
