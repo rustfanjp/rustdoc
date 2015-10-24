@@ -412,8 +412,7 @@
     
 <h3 id="type-parameters" class='section-header'><a
                            href="#type-parameters">Type parameters</a></h3>
-<p>Within the body of an item that has type parameter declarations, the names of
-its type parameters are types:</p>
+<p>アイテム(item)の本体が、型仮引数宣言(type parameter declaration)を持つとき、その型仮引数の名前は、型を指し示します。</p>
 <span class='rusttest'>fn main() {
     fn to_vec&lt;A: Clone&gt;(xs: &amp;[A]) -&gt; Vec&lt;A&gt; {
         if xs.is_empty() {
@@ -436,8 +435,8 @@ its type parameters are types:</p>
     <span class='ident'>rest</span>
 }</pre>
 
-<p>Here, <code>first</code> has type <code>A</code>, referring to <code>to_vec</code>&#39;s <code>A</code> type parameter; and <code>rest</code>
-has type <code>Vec&lt;A&gt;</code>, a vector with element type <code>A</code>.</p>
+<p>ここで、<code>first</code>は型<code>A</code>を持ち、<code>A</code>は<code>to_vec</code>の<code>A</code>型仮引数を示します。
+<code>rest</code>は、<code>Vec&lt;A&gt;</code>型を持ち、このベクタの要素型は<code>A</code>です。</p>
 
     <script type="text/javascript">
         window.playgroundUrl = "https://play.rust-lang.org";

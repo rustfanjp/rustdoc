@@ -412,13 +412,13 @@
     
 <h3 id="modules" class='section-header'><a
                            href="#modules">Modules</a></h3>
-<p>A module is a container for zero or more <a href="#items">items</a>.</p>
+<p>モジュール(module)は、任意個の<a href="items.html">アイテム(item)</a>を持っています。</p>
 
-<p>A <em>module item</em> is a module, surrounded in braces, named, and prefixed with the
-keyword <code>mod</code>. A module item introduces a new, named module into the tree of
-modules making up a crate. Modules can nest arbitrarily.</p>
+<p><em>モジュールアイテム</em>は、モジュールであり、波括弧で囲まれ、名前を持ち、<code>mod</code>キーワードと共に宣言されます。
+モジュールアイテムは、新しいモジュールをクレート(crate)のモジュール木に導入します。
+モジュールは好きなだけネストできます。</p>
 
-<p>An example of a module:</p>
+<p>モジュールの例です。</p>
 <span class='rusttest'>fn main() {
     mod math {
         type Complex = (f64, f64);
@@ -450,15 +450,13 @@ modules making up a crate. Modules can nest arbitrarily.</p>
     }
 }</pre>
 
-<p>Modules and types share the same namespace. Declaring a named type with
-the same name as a module in scope is forbidden: that is, a type definition,
-trait, struct, enumeration, or type parameter can&#39;t shadow the name of a module
-in scope, or vice versa.</p>
+<p>モジュールと型は、同じ名前空間を持ちます。
+あるスコープ内です、同じ名前の型とモジュールを宣言する事は禁止されています。
+また、型定義、トレイト(trait)、構造体(struct)、列挙型(enumeration)、型仮引数(type parameter)も同様です。</p>
 
-<p>A module without a body is loaded from an external file, by default with the
-same name as the module, plus the <code>.rs</code> extension. When a nested submodule is
-loaded from an external file, it is loaded from a subdirectory path that
-mirrors the module hierarchy.</p>
+<p>本体を持たないモジュールは、外部ファイルからロードされます。
+デフォルトでは、モジュールの名前に<code>.rs</code>拡張子を足したファイル名を探索します。
+ネストしたサブモジュールが外部ファイルからロードされる時、モジュール階層に基づいたディレクトリ階層から外部ファイルの位置が推定されます。</p>
 <span class='rusttest'>fn main() {
     // Load the `vec` module from `vec.rs`
     mod vec;
@@ -479,8 +477,7 @@ mirrors the module hierarchy.</p>
     <span class='kw'>mod</span> <span class='ident'>local_data</span>;
 }</pre>
 
-<p>The directories and files used for loading external file modules can be
-influenced with the <code>path</code> attribute.</p>
+<p>外部ファイルをロードするためにディレクトリとファイルは<code>path</code>アトリビュートによって変更できます。</p>
 <span class='rusttest'>fn main() {
     #[path = &quot;thread_files&quot;]
     mod thread {

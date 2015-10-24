@@ -2,13 +2,15 @@
 
 ### Modules
 
-A module is a container for zero or more [items](#items).
+モジュール(module)は、任意個の[アイテム(item)][items]を持っています。
 
-A _module item_ is a module, surrounded in braces, named, and prefixed with the
-keyword `mod`. A module item introduces a new, named module into the tree of
-modules making up a crate. Modules can nest arbitrarily.
+[items]: items.html
 
-An example of a module:
+_モジュールアイテム_は、モジュールであり、波括弧で囲まれ、名前を持ち、`mod`キーワードと共に宣言されます。
+モジュールアイテムは、新しいモジュールをクレート(crate)のモジュール木に導入します。
+モジュールは好きなだけネストできます。
+
+モジュールの例です。
 
 ```
 mod math {
@@ -28,17 +30,15 @@ mod math {
 }
 ```
 
-Modules and types share the same namespace. Declaring a named type with
-the same name as a module in scope is forbidden: that is, a type definition,
-trait, struct, enumeration, or type parameter can't shadow the name of a module
-in scope, or vice versa.
+モジュールと型は、同じ名前空間を持ちます。
+あるスコープ内です、同じ名前の型とモジュールを宣言する事は禁止されています。
+また、型定義、トレイト(trait)、構造体(struct)、列挙型(enumeration)、型仮引数(type parameter)も同様です。
 
-A module without a body is loaded from an external file, by default with the
-same name as the module, plus the `.rs` extension. When a nested submodule is
-loaded from an external file, it is loaded from a subdirectory path that
-mirrors the module hierarchy.
+本体を持たないモジュールは、外部ファイルからロードされます。
+デフォルトでは、モジュールの名前に`.rs`拡張子を足したファイル名を探索します。
+ネストしたサブモジュールが外部ファイルからロードされる時、モジュール階層に基づいたディレクトリ階層から外部ファイルの位置が推定されます。
 
-```{.ignore}
+```rust
 // Load the `vec` module from `vec.rs`
 mod vec;
 
@@ -49,10 +49,9 @@ mod thread {
 }
 ```
 
-The directories and files used for loading external file modules can be
-influenced with the `path` attribute.
+外部ファイルをロードするためにディレクトリとファイルは`path`アトリビュートによって変更できます。
 
-```{.ignore}
+```rust
 #[path = "thread_files"]
 mod thread {
     // Load the `local_data` module from `thread_files/tls.rs`

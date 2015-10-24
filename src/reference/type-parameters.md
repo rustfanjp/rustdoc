@@ -2,8 +2,7 @@
 
 ### Type parameters
 
-Within the body of an item that has type parameter declarations, the names of
-its type parameters are types:
+アイテム(item)の本体が、型仮引数宣言(type parameter declaration)を持つとき、その型仮引数の名前は、型を指し示します。
 
 ```ignore
 fn to_vec<A: Clone>(xs: &[A]) -> Vec<A> {
@@ -17,6 +16,5 @@ fn to_vec<A: Clone>(xs: &[A]) -> Vec<A> {
 }
 ```
 
-Here, `first` has type `A`, referring to `to_vec`'s `A` type parameter; and `rest`
-has type `Vec<A>`, a vector with element type `A`.
-
+ここで、`first`は型`A`を持ち、`A`は`to_vec`の`A`型仮引数を示します。
+`rest`は、`Vec<A>`型を持ち、このベクタの要素型は`A`です。
