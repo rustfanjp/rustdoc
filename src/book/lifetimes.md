@@ -1,63 +1,63 @@
 % Lifetimes
 
-This guide is one of three presenting Rust’s ownership system. This is one of
-Rust’s most unique and compelling features, with which Rust developers should
-become quite acquainted. Ownership is how Rust achieves its largest goal,
-memory safety. There are a few distinct concepts, each with its own chapter:
+このガイドでは、Rustのオーナーシップ(ownership)システムの一つについて解説します。
+これは、Rustの開発者が必ず学ぶベき事項です。
+オーナーシップによって、Rustはメモリ安全性という偉大な目標を達成しています。
+オーナシップには以下の様な異なる概念が有ります。
 
-* [ownership][ownership], the key concept
-* [borrowing][borrowing], and their associated feature ‘references’
-* lifetimes, which you’re reading now
+* [オーナーシップ(ownership)][ownership]、基本のコンセプト。
+* [ボローイングborrowing][borrowing]、'参照(reference)'。
+* 寿命(lifetime)、今読んでいるこれ。
 
-These three chapters are related, and in order. You’ll need all three to fully
-understand the ownership system.
+これらの3つのチャプターは互いに関連しています。
+これら全てを必ず理解して下さい。
 
 [ownership]: ownership.html
 [borrowing]: references-and-borrowing.html
 
 # Meta
 
-Before we get to the details, two important notes about the ownership system.
+詳細に行く前に、オーナーシップの重要性について学びましょう。
 
-Rust has a focus on safety and speed. It accomplishes these goals through many
-‘zero-cost abstractions’, which means that in Rust, abstractions cost as little
-as possible in order to make them work. The ownership system is a prime example
-of a zero-cost abstraction. All of the analysis we’ll talk about in this guide
-is _done at compile time_. You do not pay any run-time cost for any of these
-features.
+Rustは安全性と速度の両立に注目しています。
+Rustは'ゼロコスト抽象化'によってこれを達成しています。
+つまり、Rustでは抽象化に伴うコストを可能な限り最小化しています。
+オーナーシップシステムはゼロコスト抽象化の主な例です。
+ここで話す様々な解析は、 _コンパイル時_ に行われます。
+ですので、実行時コストについては心配する必要は有りません。
 
-However, this system does have a certain cost: learning curve. Many new users
-to Rust experience something we like to call ‘fighting with the borrow
-checker’, where the Rust compiler refuses to compile a program that the author
-thinks is valid. This often happens because the programmer’s mental model of
-how ownership should work doesn’t match the actual rules that Rust implements.
-You probably will experience similar things at first. There is good news,
-however: more experienced Rust developers report that once they work with the
-rules of the ownership system for a period of time, they fight the borrow
-checker less and less.
+(訳注) 実際には、安全性要件を満たすために記述できないコードが有るので、(手動/自動)最適化に制約が有ります。
+逆に、安全性要件を不変条件としてアグレッシブな最適化ができる可能性もあります。
 
-With that in mind, let’s learn about lifetimes.
+しかし、オーナーシップシステムにはある種のコストが有ります。
+すなわち、学習コストです。
+多くのRust新規ユーザーは、"ボローチェッカー恐怖症"を経験します。
+つまり一見ユーザーが正しいと信じているコードが、コンパイラによって拒絶されるのです。
+これはしばしば、プログラマのオーナーシップについてのメンタルモデルがRustシステムのオーナーシップと異なるためだと考えられます。
+良いニュースもあります！
+多くの経験を積んだRUstユーザーは、一度オーナーシップシステムになれると、ボロチェッカーに手間取る事は無くなると言います。
+
+これを胸に留めて、寿命について学んでみましょう。
 
 # Lifetimes
 
-Lending out a reference to a resource that someone else owns can be
-complicated. For example, imagine this set of operations:
+あるリソースに対する参照を、他の者に貸し出すというのは、しばしば複雑なプロセスです。
+例えば次の例を考えてみます。
 
-- I acquire a handle to some kind of resource.
-- I lend you a reference to the resource.
-- I decide I’m done with the resource, and deallocate it, while you still have
-  your reference.
-- You decide to use the resource.
+- あるリソースのハンドルを取得(acquire)する。
+- リソースに対する参照を、誰かに貸す。
+- リソースをデアロケートする。どこかの誰かはまだ参照を持っている。
+- その誰かはリソースを使い続ける。
 
-Uh oh! Your reference is pointing to an invalid resource. This is called a
-dangling pointer or ‘use after free’, when the resource is memory.
+あらら！
+誰かさんの参照は不正なリソースを指しています。
+これはダングリングポインタや'use after free'と呼ばれます。
 
-To fix this, we have to make sure that step four never happens after step
-three. The ownership system in Rust does this through a concept called
-lifetimes, which describe the scope that a reference is valid for.
+これを防ぐには、ステップ3の後に、ステップ4が起きないようにしなければなりません。
+Rustのオーナーシップシステムは寿命システムによって達成します。
+寿命はある参照があるスコープ内で有効かどうかを決定します。
 
-When we have a function that takes a reference by argument, we can be implicit
-or explicit about the lifetime of the reference:
+もし関数が参照を引数として場合、寿命は暗黙的か明示的に指定されます。
 
 ```rust
 // implicit
@@ -69,41 +69,41 @@ fn bar<'a>(x: &'a i32) {
 }
 ```
 
-The `'a` reads ‘the lifetime a’. Technically, every reference has some lifetime
-associated with it, but the compiler lets you elide them in common cases.
-Before we get to that, though, let’s break the explicit example down:
+`a`は、'寿命a'と読みます。
+_全て_ の参照は寿命を持ちます。
+しばしば、寿命指定は省略できます。
+次の部分を見てみましょう。
 
-```rust,ignore
+```rust
 fn bar<'a>(...)
 ```
 
-This part declares our lifetimes. This says that `bar` has one lifetime, `'a`.
-If we had two reference parameters, it would look like this:
+この部分は寿命を宣言しています。
+これは、`bar`は、1つの寿命`'a`を持つ、という意味です。
+もし、2つの参照変数を持っていた場合、次の様に書きます。
 
-```rust,ignore
+```rust
 fn bar<'a, 'b>(...)
 ```
 
-Then in our parameter list, we use the lifetimes we’ve named:
+引数リストで、名前を付けた寿命を使っています。
 
-```rust,ignore
+```rust
 ...(x: &'a i32)
 ```
 
-If we wanted an `&mut` reference, we’d do this:
+`&mut`参照の場合は次の様にします。
 
-```rust,ignore
+```rust
 ...(x: &'a mut i32)
 ```
 
-If you compare `&mut i32` to `&'a mut i32`, they’re the same, it’s just that
-the lifetime `'a` has snuck in between the `&` and the `mut i32`. We read `&mut
-i32` as ‘a mutable reference to an i32’ and `&'a mut i32` as ‘a mutable
-reference to an `i32` with the lifetime `'a`’.
+`&mut i32`と`&'a mut i32`を比べると、これらはほぼ同じですが、`'a`が `&`と`mut i32`の間に割り込んでいます。
+`'a`は、寿命`'a`のミュータブル参照という意味です。
 
 # In `struct`s
 
-You’ll also need explicit lifetimes when working with [`struct`][structs]s:
+[構造体(struct)][structs]に対しても、明示的な寿命指定が必要です。
 
 ```rust
 struct Foo<'a> {
@@ -120,7 +120,7 @@ fn main() {
 
 [structs]: structs.html
 
-As you can see, `struct`s can also have lifetimes. In a similar way to functions,
+みてわかる通り、この構造体は寿命を持っています。
 
 ```rust
 struct Foo<'a> {
@@ -128,20 +128,11 @@ struct Foo<'a> {
 # }
 ```
 
-declares a lifetime, and
-
-```rust
-# struct Foo<'a> {
-x: &'a i32,
-# }
-```
-
-uses it. So why do we need a lifetime here? We need to ensure that any reference
-to a `Foo` cannot outlive the reference to an `i32` it contains.
+なぜここで寿命が必要なのでしょうか？
+寿命によって、参照`x`が`Foo`よりも長く生きる事が出来ない様にしています。
 
 ## `impl` blocks
-
-Let’s implement a method on `Foo`:
+`Foo`にメソッドを実装してみましょう。
 
 ```rust
 struct Foo<'a> {
@@ -160,13 +151,12 @@ fn main() {
 }
 ```
 
-As you can see, we need to declare a lifetime for `Foo` in the `impl` line. We repeat
-`'a` twice, just like on functions: `impl<'a>` defines a lifetime `'a`, and `Foo<'a>`
-uses it.
+この様に、`impl`内で、`Foo`に対する寿命を宣言する必要があります。
+そこで、今回は`impl`に対して寿命を宣言し、`Foo`に対してその寿命を指定しています。
 
 ## Multiple lifetimes
 
-If you have multiple references, you can use the same lifetime multiple times:
+複数の参照を持っている場合、同じ寿命を使えます。
 
 ```rust
 fn x_or_y<'a>(x: &'a str, y: &'a str) -> &'a str {
@@ -174,9 +164,9 @@ fn x_or_y<'a>(x: &'a str, y: &'a str) -> &'a str {
 # }
 ```
 
-This says that `x` and `y` both are alive for the same scope, and that the
-return value is also alive for that scope. If you wanted `x` and `y` to have
-different lifetimes, you can use multiple lifetime parameters:
+これは、`x`と`y`が同じスコープ内で生きていて、死ぬ時は同時に死ぬ事を意味しています。
+返値も同じスコープ内まで生きています。
+もし、`x`と`y`に違う寿命を持たせないのなら、複数の寿命を宣言出来ます。
 
 ```rust
 fn x_or_y<'a, 'b>(x: &'a str, y: &'b str) -> &'a str {
@@ -184,13 +174,12 @@ fn x_or_y<'a, 'b>(x: &'a str, y: &'b str) -> &'a str {
 # }
 ```
 
-In this example, `x` and `y` have different valid scopes, but the return value
-has the same lifetime as `x`.
+この例でぇあ、`x`と`y`は異なる有効なスコープを持っています。
+しかしながら、返値の寿命は`x`までです。
 
 ## Thinking in scopes
 
-A way to think about lifetimes is to visualize the scope that a reference is
-valid for. For example:
+スコープを視覚化する事で寿命の見通しが良くなります。
 
 ```rust
 fn main() {
@@ -201,7 +190,7 @@ fn main() {
 }                   // -+ y goes out of scope
 ```
 
-Adding in our `Foo`:
+`Foo`を追加します。
 
 ```rust
 struct Foo<'a> {
@@ -216,10 +205,10 @@ fn main() {
 }                         // -+ f and y go out of scope
 ```
 
-Our `f` lives within the scope of `y`, so everything works. What if it didn’t?
-This code won’t work:
+`f`は`y`のスコープ内で生きているので、これはコンパイル可能です。
+もし、そうでないと、コンパイルできません。
 
-```rust,ignore
+```rust
 struct Foo<'a> {
     x: &'a i32,
 }
@@ -237,80 +226,72 @@ fn main() {
 }                             // -+ x goes out of scope
 ```
 
-Whew! As you can see here, the scopes of `f` and `y` are smaller than the scope
-of `x`. But when we do `x = &f.x`, we make `x` a reference to something that’s
-about to go out of scope.
+わお！
+`f`と`y`のスコープは、`x`のスコープよりも狭いです。
+しかし、`x = &f.x`によって`x`はすでに死んでいるスコープを参照してしまいます。
 
-Named lifetimes are a way of giving these scopes a name. Giving something a
-name is the first step towards being able to talk about it.
+名前付き寿命は、これらのスコープに名前を与える方法です。
 
 ## 'static
 
-The lifetime named ‘static’ is a special lifetime. It signals that something
-has the lifetime of the entire program. Most Rust programmers first come across
-`'static` when dealing with strings:
+'static'と名付けられた寿命は、特別な寿命です。
+これは、寿命がプログラム全体で続く事を示します。
+多くのプログラマは、文字列を扱う時に`'static`寿命に出会います。
 
 ```rust
 let x: &'static str = "Hello, world.";
 ```
 
-String literals have the type `&'static str` because the reference is always
-alive: they are baked into the data segment of the final binary. Another
-example are globals:
+文字列リテラルは`&'static str`型です。
+なぜなら参照は常に生きているからです。
+この本体は、最終的にはバイナリのデータセグメントに埋め込まれます。
+他にはグローバルなオブジェクトも`'static`寿命を持ちます。
 
 ```rust
 static FOO: i32 = 5;
 let x: &'static i32 = &FOO;
 ```
 
-This adds an `i32` to the data segment of the binary, and `x` is a reference
-to it.
+これは、1つの`i32`をデータセグメントに追加します。
+`x`はグローバルなオブジェクトに対する参照なので`'static`寿命を持てます。
 
 ## Lifetime Elision
 
-Rust supports powerful local type inference in function bodies, but it’s
-forbidden in item signatures to allow reasoning about the types based on
-the item signature alone. However, for ergonomic reasons a very restricted
-secondary inference algorithm called “lifetime elision” applies in function
-signatures. It infers only based on the signature components themselves and not
-based on the body of the function, only infers lifetime parameters, and does
-this with only three easily memorizable and unambiguous rules. This makes
-lifetime elision a shorthand for writing an item signature, while not hiding
-away the actual types involved as full local inference would if applied to it.
+Rustは関数本体の中等では協力な型推論機構を持っています。
+しかしながら、アイテムシグネチャの中では型推論を禁止しています。
+ただし、これにも例外が有り、関数シグネチャの中では"寿命省略(lifetime elision)"というアルゴリズムによって型推論を行います。
+寿命省略は関数シグネチャのみに基づいて行われ、関数本体に対しては考慮されません。
+寿命省略は簡単明快な規則で、普通の型推論の様に、実際の型を隠しはしません。
 
-When talking about lifetime elision, we use the term *input lifetime* and
-*output lifetime*. An *input lifetime* is a lifetime associated with a parameter
-of a function, and an *output lifetime* is a lifetime associated with the return
-value of a function. For example, this function has an input lifetime:
+これから、 *入力寿命(input lifetime)* と *出力寿命(output lifetime)* という用語を使います。
+入力寿命は、関数のパラメタの寿命で、出力寿命は、返値の寿命です。
+例えば、この関数は入力寿命を持っています。
 
-```rust,ignore
+```rustr
 fn foo<'a>(bar: &'a str)
 ```
 
-This one has an output lifetime:
+次の例は出力寿命を持ちます。
 
-```rust,ignore
+```rust
 fn foo<'a>() -> &'a str
 ```
 
-This one has a lifetime in both positions:
+次の例は、入力寿命と出力寿命両方を持ちます。
 
-```rust,ignore
+```rust
 fn foo<'a>(bar: &'a str) -> &'a str
 ```
 
-Here are the three rules:
+入力寿命と出力寿命について3つの規則があります。
 
-* Each elided lifetime in a function’s arguments becomes a distinct lifetime
-  parameter.
+* 関数の実引数のそれぞれの寿命が省略されると、新たな寿命を持った引数となります。
 
-* If there is exactly one input lifetime, elided or not, that lifetime is
-  assigned to all elided lifetimes in the return values of that function.
+* 入力寿命が1つある場合、省略されているかどうかの依らず、出力寿命の省略された寿命はこの入力寿命になります。
 
-* If there are multiple input lifetimes, but one of them is `&self` or `&mut
-  self`, the lifetime of `self` is assigned to all elided output lifetimes.
+* もし複数の入力寿命が有り、ひとつが`&self`か`&mut self`の時、出力変数の省略された寿命は`self`の寿命となります。
 
-Otherwise, it is an error to elide an output lifetime.
+そうでなければ、出力寿命を省略するのはエラーです。
 
 ### Examples
 
